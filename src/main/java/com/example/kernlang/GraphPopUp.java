@@ -27,6 +27,14 @@ public class GraphPopUp extends Stage {
         viewButton.setOnAction(e -> this.close());
         layout.getChildren().add(viewButton);
 
+        // "new node" button
+        Button nodeButton = new Button("new Node");
+        nodeButton.setOnAction(e -> {
+            cursorState.drawCircle();
+            this.close();
+        });
+        layout.getChildren().add(nodeButton);
+
         Scene scene = new Scene(layout, 500, 300);
         //scene.getStylesheets().add(String.valueOf(Main.class.getResource(".css")));
         this.setScene(scene);

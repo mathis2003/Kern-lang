@@ -1,5 +1,7 @@
 package com.example.kernlang;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
 /**
@@ -26,13 +28,11 @@ public class CursorState {
 
     public void setStateDraggingEdge() {
         state = State.DRAGGING_EDGE;
-        startX = currentX;
-        startY = currentY;
         importLine = new Line();
         importLine.setStartX(startX);
         importLine.setStartY(startY);
-        importLine.setEndX(currentX);
-        importLine.setEndY(currentY);
+        importLine.setEndX(startX);
+        importLine.setEndY(startY);
         this.cbv.getChildren().add(importLine);
     }
 
@@ -54,5 +54,14 @@ public class CursorState {
 
     public boolean isFree() {
         return state == State.FREE;
+    }
+
+    public void drawCircle() {
+        Circle c = new Circle();
+        c.setCenterX(startX);
+        c.setCenterY(startY);
+        c.setRadius(20);
+        c.setFill(Color.GRAY);
+        cbv.getChildren().add(c);
     }
 }
