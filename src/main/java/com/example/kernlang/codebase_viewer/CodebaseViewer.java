@@ -1,4 +1,4 @@
-package com.example.kernlang;
+package com.example.kernlang.codebase_viewer;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -13,9 +13,13 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
         cursorState = new CursorState(this);
         cursorState.addListener(this);
         this.setPrefSize(200, 200);
+
+        // the functions below are controllers for the cursorState model
         this.setOnMouseMoved(e -> cursorState.updatePosition(e.getSceneX(), e.getSceneY()));
         this.setOnMouseClicked(e -> {
             if (cursorState.isDraggingEdge()) {
+                cursorState.addEdge();
+            } else if (cursorState.isDraggingNode()){
                 cursorState.setStateFree();
             } else {
                 cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
