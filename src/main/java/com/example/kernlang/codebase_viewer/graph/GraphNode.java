@@ -1,26 +1,37 @@
 package com.example.kernlang.codebase_viewer.graph;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
-public class GraphNode extends Circle {
+public class GraphNode extends Pane {
+    private final Circle circle;
+    private final Text nodeNameText;
     private final int cluster;
     private int parentCluster;
     private final int codeFileKey;
     private SimpleDoubleProperty x, y;
+
+    private final int radius = 20;
 
     // These fields contain the edges of the imports, and the edges of the exports
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
 
     public GraphNode(int cluster, int parentCluster, int codeFileKey, double x, double y) {
-        this.setCenterX(x);
-        this.setCenterY(y);
-        this.setRadius(20);
-        this.setFill(Color.GRAY);
+        circle = new Circle();
+        circle.setCenterX(x);
+        circle.setCenterY(y);
+        circle.setRadius(radius);
+        circle.setFill(Color.GRAY);
+        nodeNameText = new Text("test");
+        nodeNameText.setX(x);
+        nodeNameText.setY(y);
+        this.getChildren().addAll(circle, nodeNameText);
         this.cluster = cluster;
         this.parentCluster = parentCluster;
         this.codeFileKey = codeFileKey;
@@ -30,6 +41,20 @@ public class GraphNode extends Circle {
         this.y = new SimpleDoubleProperty(y);
         this.x.addListener(e -> this.setCenterX(this.x.getValue()));
         this.y.addListener(e -> this.setCenterY(this.y.getValue()));
+    }
+
+    public void setNodeName(String s) {
+        nodeNameText.setText(s);
+    }
+
+    public void setCenterX(double x) {
+        circle.setCenterX(x);
+        nodeNameText.setX(x);
+    }
+
+    public void setCenterY(double y) {
+        circle.setCenterY(y);
+        nodeNameText.setY(y);
     }
 
     public SimpleDoubleProperty getXProperty() {

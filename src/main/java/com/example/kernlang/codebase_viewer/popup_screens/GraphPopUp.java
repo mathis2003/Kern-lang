@@ -1,8 +1,9 @@
-package com.example.kernlang.codebase_viewer;
+package com.example.kernlang.codebase_viewer.popup_screens;
 
+import com.example.kernlang.codebase_viewer.CursorState;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 public class GraphPopUp extends Stage {
     public GraphPopUp(CursorState cursorState) {
         super();
-        VBox layout = new VBox();
+        HBox layout = new HBox();
 
         // "new import" button
         Button importButton = new Button("import");
@@ -23,15 +24,10 @@ public class GraphPopUp extends Stage {
         });
         layout.getChildren().add(importButton);
 
-        // "view in editor" button
-        Button viewButton = new Button("View in Editor");
-        viewButton.setOnAction(e -> this.close());
-        layout.getChildren().add(viewButton);
-
         // "new node" button
         Button nodeButton = new Button("new Node");
         nodeButton.setOnAction(e -> {
-            cursorState.drawCircle();
+            new NodeCreationPopup(cursorState);
             this.close();
         });
         layout.getChildren().add(nodeButton);
@@ -43,6 +39,11 @@ public class GraphPopUp extends Stage {
             this.close();
         });
         layout.getChildren().add(moveNodeButton);
+
+        // "view in editor" button
+        Button viewButton = new Button("View in Editor");
+        viewButton.setOnAction(e -> this.close());
+        layout.getChildren().add(viewButton);
 
         Scene scene = new Scene(layout, 500, 300);
         //scene.getStylesheets().add(String.valueOf(Main.class.getResource(".css")));

@@ -128,8 +128,9 @@ public class CursorState implements Observable {
         return null;
     }
 
-    public void drawCircle() {
+    public void drawCircle(String name) {
         GraphNode node = new GraphNode(0, 0, 0, clickedX, clickedY);
+        node.setNodeName(name);
         cbv.getChildren().add(node);
         graphNodes.add(node);
     }

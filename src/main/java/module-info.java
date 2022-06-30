@@ -9,4 +9,6 @@ module com.example.kernlang {
     opens com.example.kernlang.codebase_viewer.graph to javafx.fxml;
     exports com.example.kernlang.codebase_viewer;
     opens com.example.kernlang.codebase_viewer to javafx.fxml;
+    exports com.example.kernlang.codebase_viewer.popup_screens;
+    opens com.example.kernlang.codebase_viewer.popup_screens to javafx.fxml;
 }

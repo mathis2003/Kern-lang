@@ -1,5 +1,6 @@
 package com.example.kernlang.codebase_viewer;
 
+import com.example.kernlang.codebase_viewer.popup_screens.GraphPopUp;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.layout.Pane;
