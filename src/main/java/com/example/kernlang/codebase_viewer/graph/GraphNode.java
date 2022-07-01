@@ -99,16 +99,17 @@ public class GraphNode extends Pane {
 
 
     public void setInvisible() {
-        circle.setFill(Color.TRANSPARENT);
-        nodeNameText.setFill(Color.TRANSPARENT);
+        circle.setVisible(false);
+        nodeNameText.setVisible(false);
     }
 
     public void setVisible() {
-        circle.setFill(Color.GRAY);
-        nodeNameText.setFill(Color.BLACK);
+        circle.setVisible(true);
+        nodeNameText.setVisible(true);
     }
 
     public void collapseSubClusters(GraphNode mainNode) {
+        mainNode.circle.setFill(Color.GREEN);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
             if (allExportsLandAtNode(childNode, mainNode)) {
@@ -129,12 +130,13 @@ public class GraphNode extends Pane {
         return true;
     }
 
-    public void openSubClusters() {
+    public void openSubClusters(GraphNode mainNode) {
+        mainNode.circle.setFill(Color.GRAY);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
             childNode.setVisible();
             importEdge.setVisible();
-            childNode.openSubClusters();
+            childNode.openSubClusters(mainNode);
         }
     }
 }

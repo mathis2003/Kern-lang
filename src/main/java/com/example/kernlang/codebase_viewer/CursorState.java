@@ -136,7 +136,7 @@ public class CursorState implements Observable {
 
     public void openSubClusters() {
         GraphNode node = getNodeAtPosition(clickedX, clickedY);
-        node.openSubClusters();
+        node.openSubClusters(node);
     }
 
     public void drawCircle(String name) {

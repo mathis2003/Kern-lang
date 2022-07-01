@@ -78,13 +78,13 @@ public class GraphEdge extends Pane {
     }
 
     public void setInvisible() {
-        line.setFill(Color.TRANSPARENT);
-        circle.setFill(Color.TRANSPARENT);
+        line.setVisible(false);
+        circle.setVisible(false);
     }
 
     public void setVisible() {
-        line.setFill(Color.GRAY);
-        circle.setFill(Color.RED);
+        line.setVisible(true);
+        circle.setVisible(true);
     }
 
     public void setEndNode(GraphNode endNode) {
