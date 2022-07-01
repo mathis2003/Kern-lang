@@ -40,6 +40,22 @@ public class GraphPopUp extends Stage {
         });
         layout.getChildren().add(moveNodeButton);
 
+        // "open clusters" button
+        Button openClustersButton = new Button("open clusters");
+        openClustersButton.setOnAction(e -> {
+            cursorState.openSubClusters();
+            this.close();
+        });
+        layout.getChildren().add(openClustersButton);
+
+        // "collapse clusters" button
+        Button collapseClustersButton = new Button("collapse clusters");
+        collapseClustersButton.setOnAction(e -> {
+            cursorState.collapseSubClusters();
+            this.close();
+        });
+        layout.getChildren().add(collapseClustersButton);
+
         // "view in editor" button
         Button viewButton = new Button("View in Editor");
         viewButton.setOnAction(e -> this.close());

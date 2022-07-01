@@ -47,6 +47,10 @@ public class GraphNode extends Pane {
         nodeNameText.setText(s);
     }
 
+    public double getRadius() {
+        return radius;
+    }
+
     public void setCenterX(double x) {
         circle.setCenterX(x);
         nodeNameText.setX(x);
@@ -91,5 +95,46 @@ public class GraphNode extends Pane {
 
     public ArrayList<GraphEdge> getImports() {
         return this.imports;
+    }
+
+
+    public void setInvisible() {
+        circle.setFill(Color.TRANSPARENT);
+        nodeNameText.setFill(Color.TRANSPARENT);
+    }
+
+    public void setVisible() {
+        circle.setFill(Color.GRAY);
+        nodeNameText.setFill(Color.BLACK);
+    }
+
+    public void collapseSubClusters(GraphNode mainNode) {
+        for (GraphEdge importEdge : imports) {
+            GraphNode childNode = importEdge.getEndNode();
+            if (allExportsLandAtNode(childNode, mainNode)) {
+                childNode.setInvisible();
+                importEdge.setInvisible();
+                childNode.collapseSubClusters(mainNode);
+            }
+        }
+    }
+
+    public boolean allExportsLandAtNode(GraphNode startNode, GraphNode endNode) {
+        for (GraphEdge exportEdge : startNode.exports) {
+            GraphNode nextNode = exportEdge.getStartNode();
+            if (nextNode.exports.size() == 0 && nextNode != endNode && startNode != endNode) return false;
+            else if (!allExportsLandAtNode(nextNode, endNode)) return false;
+        }
+
+        return true;
+    }
+
+    public void openSubClusters() {
+        for (GraphEdge importEdge : imports) {
+            GraphNode childNode = importEdge.getEndNode();
+            childNode.setVisible();
+            importEdge.setVisible();
+            childNode.openSubClusters();
+        }
     }
 }

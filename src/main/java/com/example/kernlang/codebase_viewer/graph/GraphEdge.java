@@ -77,11 +77,30 @@ public class GraphEdge extends Pane {
         return line.getEndY();
     }
 
+    public void setInvisible() {
+        line.setFill(Color.TRANSPARENT);
+        circle.setFill(Color.TRANSPARENT);
+    }
+
+    public void setVisible() {
+        line.setFill(Color.GRAY);
+        circle.setFill(Color.RED);
+    }
+
     public void setEndNode(GraphNode endNode) {
         this.endNode = endNode;
+        this.endNode.addExport(this);
         this.setEndX(endNode.getXProperty().getValue());
         this.setEndY(endNode.getYProperty().getValue());
         this.endNode.getXProperty().addListener(e -> this.setEndX(this.endNode.getXProperty().getValue()));
         this.endNode.getYProperty().addListener(e -> this.setEndY(this.endNode.getYProperty().getValue()));
+    }
+
+    public GraphNode getEndNode() {
+        return endNode;
+    }
+
+    public GraphNode getStartNode() {
+        return startNode;
     }
 }

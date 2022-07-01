@@ -121,11 +121,22 @@ public class CursorState implements Observable {
 
     public GraphNode getNodeAtPosition(double x, double y) {
         for (GraphNode node : graphNodes)
-            if (Math.abs(x - node.getXProperty().getValue()) < 5.0 && Math.abs(y - node.getYProperty().getValue()) < 5.0 )
+            if (Math.abs(x - node.getXProperty().getValue()) < node.getRadius() / 2 &&
+                    Math.abs(y - node.getYProperty().getValue()) < node.getRadius() / 2 )
                 return node;
 
         // if no node was found at the position, return null
         return null;
+    }
+
+    public void collapseSubClusters() {
+        GraphNode node = getNodeAtPosition(clickedX, clickedY);
+        node.collapseSubClusters(node);
+    }
+
+    public void openSubClusters() {
+        GraphNode node = getNodeAtPosition(clickedX, clickedY);
+        node.openSubClusters();
     }
 
     public void drawCircle(String name) {
