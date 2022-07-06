@@ -41,8 +41,8 @@ public class CursorState implements Observable {
     private double clickedX, clickedY;
     private double currentX, currentY;
 
-    GraphEdge importLine;
-    GraphNode draggedNode;
+    private GraphEdge importLine;
+    private GraphNode draggedNode;
 
     private State state = State.FREE;
 
@@ -54,25 +54,17 @@ public class CursorState implements Observable {
         this.cbv = cbv;
     }
 
-    public void setStateDraggingNode() {
-        draggedNode = getNodeAtPosition(clickedX, clickedY);
-        if (draggedNode != null) {
-            this.state = State.DRAGGING_NODE;
-        }
+    public void setStateDraggingNode(GraphNode node) {
+        draggedNode = node;
+        this.state = State.DRAGGING_NODE;
     }
 
-    public void setStateDraggingEdge() {
-        GraphNode startNode = getNodeAtPosition(clickedX, clickedY);
-        if (startNode != null) {
-            state = State.DRAGGING_EDGE;
-            importLine = new GraphEdge(startNode);
-            importLine.setEndX(clickedX);
-            importLine.setEndY(clickedY);
-            this.cbv.getChildren().add(importLine);
-        } else {
-            // TODO: show pop up saying you should select a node to start the import from
-        }
-
+    public void setStateDraggingEdge(GraphNode startNode) {
+        state = State.DRAGGING_EDGE;
+        importLine = new GraphEdge(startNode);
+        importLine.setEndX(clickedX);
+        importLine.setEndY(clickedY);
+        this.cbv.getChildren().add(importLine);
     }
 
     public void addEdge() {
@@ -127,16 +119,6 @@ public class CursorState implements Observable {
 
         // if no node was found at the position, return null
         return null;
-    }
-
-    public void collapseSubClusters() {
-        GraphNode node = getNodeAtPosition(clickedX, clickedY);
-        node.collapseSubClusters(node);
-    }
-
-    public void openSubClusters() {
-        GraphNode node = getNodeAtPosition(clickedX, clickedY);
-        node.openSubClusters(node);
     }
 
     public void drawCircle(String name) {
