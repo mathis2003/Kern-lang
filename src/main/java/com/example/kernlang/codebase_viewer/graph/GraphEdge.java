@@ -1,11 +1,9 @@
 package com.example.kernlang.codebase_viewer.graph;
 
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 
 /**
  * A GraphEdge has a startNode and an endNode, to whose coordinates it is bound.
@@ -35,20 +33,8 @@ public class GraphEdge extends Pane {
         circle.setRadius(arrowHeadRadius);
         this.getChildren().addAll(line, circle);
         this.startNode = startNode;
-        this.setStartX(startNode.getXProperty().getValue());
-        this.setStartY(startNode.getYProperty().getValue());
-        this.startNode.getXProperty().addListener(e -> this.setStartX(this.startNode.getXProperty().getValue()));
-        this.startNode.getYProperty().addListener(e -> this.setStartY(this.startNode.getYProperty().getValue()));
-    }
-
-    public void setStartX(double x) {
-        line.setStartX(x);
-        circle.setCenterX(x);
-    }
-
-    public void setStartY(double y) {
-        line.setStartY(y);
-        circle.setCenterY(y);
+        line.startXProperty().bind(this.startNode.getXProperty());
+        line.startYProperty().bind(this.startNode.getYProperty());
     }
 
     public void setEndX(double x) {
@@ -92,8 +78,10 @@ public class GraphEdge extends Pane {
         this.endNode.addExport(this);
         this.setEndX(endNode.getXProperty().getValue());
         this.setEndY(endNode.getYProperty().getValue());
-        this.endNode.getXProperty().addListener(e -> this.setEndX(this.endNode.getXProperty().getValue()));
-        this.endNode.getYProperty().addListener(e -> this.setEndY(this.endNode.getYProperty().getValue()));
+        line.endXProperty().bind(this.endNode.getXProperty());
+        line.endYProperty().bind(this.endNode.getYProperty());
+        circle.centerXProperty().bind(this.endNode.getXProperty());
+        circle.centerYProperty().bind(this.endNode.getYProperty());
     }
 
     public GraphNode getEndNode() {
