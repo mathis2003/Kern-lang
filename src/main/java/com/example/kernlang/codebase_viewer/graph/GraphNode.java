@@ -17,6 +17,7 @@ public class GraphNode extends Pane {
     private SimpleDoubleProperty x, y;
 
     private final int radius = 20;
+    private boolean collapsed;
 
     // These fields contain the edges of the imports, and the edges of the exports
     private final ArrayList<GraphEdge> imports;
@@ -41,6 +42,7 @@ public class GraphNode extends Pane {
         this.y = new SimpleDoubleProperty(y);
         this.x.addListener(e -> this.setCenterX(this.x.getValue()));
         this.y.addListener(e -> this.setCenterY(this.y.getValue()));
+        collapsed = false;
     }
 
     public void setNodeName(String s) {
@@ -109,6 +111,7 @@ public class GraphNode extends Pane {
     }
 
     public void collapseSubClusters(GraphNode mainNode) {
+        collapsed = true;
         mainNode.circle.setFill(Color.GREEN);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
@@ -131,6 +134,7 @@ public class GraphNode extends Pane {
     }
 
     public void openSubClusters(GraphNode mainNode) {
+        collapsed = false;
         mainNode.circle.setFill(Color.GRAY);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
@@ -138,5 +142,9 @@ public class GraphNode extends Pane {
             importEdge.setVisible();
             childNode.openSubClusters(mainNode);
         }
+    }
+
+    public boolean isCollapsed() {
+        return collapsed;
     }
 }

@@ -12,13 +12,18 @@ public class NodeContextMenu extends ContextMenu {
         move.setOnAction(e -> cs.setStateDraggingNode(node));
         MenuItem importMenuItem = new MenuItem("Import");
         importMenuItem.setOnAction(e -> cs.setStateDraggingEdge(node));
-        MenuItem openCluster = new MenuItem("Open Cluster");
-        openCluster.setOnAction(e -> node.openSubClusters(node));
-        MenuItem closeCluster = new MenuItem("Close Cluster");
-        closeCluster.setOnAction(e -> node.collapseSubClusters(node));
         MenuItem viewCode = new MenuItem("View Code");
         viewCode.setOnAction(e -> System.out.println("viewing code"));
-        getItems().addAll(move, importMenuItem, openCluster, closeCluster, viewCode);
+        getItems().addAll(move, importMenuItem, viewCode);
+        if (node.isCollapsed()) {
+            MenuItem openCluster = new MenuItem("Open Cluster");
+            openCluster.setOnAction(e -> node.openSubClusters(node));
+            getItems().add(openCluster);
+        } else if (node.getImports().size() != 0) {
+            MenuItem closeCluster = new MenuItem("Close Cluster");
+            closeCluster.setOnAction(e -> node.collapseSubClusters(node));
+            getItems().add(closeCluster);
+        }
         setAutoHide(true);
     }
 }
