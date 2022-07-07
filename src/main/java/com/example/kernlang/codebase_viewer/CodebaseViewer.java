@@ -1,11 +1,8 @@
 package com.example.kernlang.codebase_viewer;
 
-import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.popup_screens.FieldContextMenu;
-import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.Pane;
 
 public class CodebaseViewer extends Pane implements InvalidationListener {
@@ -23,20 +20,10 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
         this.setOnMouseClicked(e -> {
             if (cursorState.isDraggingEdge()) {
                 cursorState.addEdge();
-            } else if (cursorState.isDraggingNode()){
-                cursorState.setStateFree();
             } else {
-                GraphNode node = cursorState.getNodeAtPosition(e.getSceneX(), e.getSceneY());
                 cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
-                ContextMenu cm;
-                if (node != null) {
-                    cm = new NodeContextMenu(cursorState, node);
-                } else {
-                    cm = new FieldContextMenu(cursorState);
-                }
-                cm.show(this, e.getScreenX(), e.getScreenY());
+                new FieldContextMenu(cursorState).show(this, e.getScreenX(), e.getScreenY());
             }
-
         });
     }
 

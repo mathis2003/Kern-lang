@@ -1,5 +1,7 @@
 package com.example.kernlang.codebase_viewer.graph;
 
+import com.example.kernlang.codebase_viewer.CursorState;
+import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,7 +25,16 @@ public class GraphNode extends Pane {
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
 
-    public GraphNode(int cluster, int parentCluster, int codeFileKey, double x, double y) {
+    public GraphNode(int cluster, int parentCluster, int codeFileKey, double x, double y, CursorState cs) {
+        setOnMouseClicked(e -> {
+            if (cs.isDraggingNode()) {
+                cs.setStateFree();
+            } else {
+                cs.updateClickedPosition(e.getSceneX(), e.getSceneY());
+                new NodeContextMenu(cs, this).show(this, e.getScreenX(), e.getScreenY());
+            }
+            e.consume();
+        });
         circle = new Circle();
         circle.setCenterX(x);
         circle.setCenterY(y);
@@ -98,7 +109,6 @@ public class GraphNode extends Pane {
     public ArrayList<GraphEdge> getImports() {
         return this.imports;
     }
-
 
     public void setInvisible() {
         circle.setVisible(false);
