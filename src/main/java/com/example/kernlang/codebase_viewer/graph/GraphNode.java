@@ -93,8 +93,8 @@ public class GraphNode extends Pane {
      * For now, every GraphNode *does* keep both import edges and export edges, for perhaps future convenience.
      * @param importNode represents the GraphNode we want to import
      */
-    public void importGraphNode(GraphNode importNode) {
-        GraphEdge edge = new GraphEdge(this);
+    public void importGraphNode(GraphNode importNode, boolean isBound) {
+        GraphEdge edge = new GraphEdge(this, isBound);
         edge.setEndNode(importNode);
         imports.add(edge);
         importNode.addExport(edge);

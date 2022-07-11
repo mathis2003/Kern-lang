@@ -59,9 +59,9 @@ public class CursorState implements Observable {
         this.state = State.DRAGGING_NODE;
     }
 
-    public void setStateDraggingEdge(GraphNode startNode) {
+    public void setStateDraggingEdge(GraphNode startNode, boolean isBound) {
         state = State.DRAGGING_EDGE;
-        importLine = new GraphEdge(startNode);
+        importLine = new GraphEdge(startNode, isBound);
         importLine.setEndX(clickedX);
         importLine.setEndY(clickedY);
         this.cbv.getChildren().add(importLine);

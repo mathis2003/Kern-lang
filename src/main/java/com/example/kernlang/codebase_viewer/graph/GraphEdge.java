@@ -18,6 +18,8 @@ public class GraphEdge extends Pane {
     private final Circle circle;
     private final int arrowHeadRadius = 5;
 
+    private final boolean isBound;
+
     /**
      * Perhaps this strikes you as somewhat unusual,
      * but the endNode is left unspecified at the creation of a GraphEdge.
@@ -26,7 +28,8 @@ public class GraphEdge extends Pane {
      * of dragging this edge to another Node, in which case we already want to render the Edge,
      * as a form of visual feedback to the user.
      */
-    public GraphEdge(GraphNode startNode) {
+    public GraphEdge(GraphNode startNode, boolean isBound) {
+        this.isBound = isBound;
         this.line = new Line();
         this.circle = new Circle();
         circle.setFill(Color.RED);
@@ -35,6 +38,8 @@ public class GraphEdge extends Pane {
         this.startNode = startNode;
         line.startXProperty().bind(this.startNode.getXProperty());
         line.startYProperty().bind(this.startNode.getYProperty());
+
+        if (isBound) { line.setStroke(Color.GREEN); }
     }
 
     public void setEndX(double x) {

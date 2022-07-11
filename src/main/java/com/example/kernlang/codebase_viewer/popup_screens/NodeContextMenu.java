@@ -10,11 +10,15 @@ public class NodeContextMenu extends ContextMenu {
     public NodeContextMenu(CursorState cs, GraphNode node) {
         MenuItem move = new MenuItem("Move");
         move.setOnAction(e -> cs.setStateDraggingNode(node));
-        MenuItem importMenuItem = new MenuItem("Import");
-        importMenuItem.setOnAction(e -> cs.setStateDraggingEdge(node));
+        MenuItem importFreeMenuItem = new MenuItem("Import Free");
+        importFreeMenuItem.setOnAction(e -> cs.setStateDraggingEdge(node, false));
+
+        MenuItem importBoundMenuItem = new MenuItem("Import Bound");
+        importBoundMenuItem.setOnAction(e -> cs.setStateDraggingEdge(node, true));
+
         MenuItem viewCode = new MenuItem("View Code");
         viewCode.setOnAction(e -> System.out.println("viewing code"));
-        getItems().addAll(move, importMenuItem, viewCode);
+        getItems().addAll(move, importFreeMenuItem, importBoundMenuItem, viewCode);
         if (node.isCollapsed()) {
             MenuItem openCluster = new MenuItem("Open Cluster");
             openCluster.setOnAction(e -> node.openSubClusters(node));
