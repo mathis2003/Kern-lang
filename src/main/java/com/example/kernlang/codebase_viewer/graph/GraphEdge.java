@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 /**
  * A GraphEdge has a startNode and an endNode, to whose coordinates it is bound.
@@ -12,6 +13,8 @@ import javafx.scene.shape.Line;
 public class GraphEdge extends Pane {
     private final GraphNode startNode;
     private GraphNode endNode;
+
+    private final Text identifierText;
 
     private final Line line;
     // the circle below acts as the arrow head
@@ -28,13 +31,14 @@ public class GraphEdge extends Pane {
      * of dragging this edge to another Node, in which case we already want to render the Edge,
      * as a form of visual feedback to the user.
      */
-    public GraphEdge(GraphNode startNode, boolean isBound) {
+    public GraphEdge(GraphNode startNode, String identifier, boolean isBound) {
+        this.identifierText = new Text(identifier);
         this.isBound = isBound;
         this.line = new Line();
         this.circle = new Circle();
         circle.setFill(Color.RED);
         circle.setRadius(arrowHeadRadius);
-        this.getChildren().addAll(line, circle);
+        this.getChildren().addAll(line, circle, identifierText);
         this.startNode = startNode;
         line.startXProperty().bind(this.startNode.getXProperty());
         line.startYProperty().bind(this.startNode.getYProperty());
@@ -45,11 +49,13 @@ public class GraphEdge extends Pane {
     public void setEndX(double x) {
         line.setEndX(x);
         circle.setCenterX(x);
+        identifierText.setX((getStartX() + x) / 2);
     }
 
     public void setEndY(double y) {
         line.setEndY(y);
         circle.setCenterY(y);
+        identifierText.setY((getStartY() + y) / 2);
     }
 
     public double getStartX() {
@@ -87,6 +93,18 @@ public class GraphEdge extends Pane {
         line.endYProperty().bind(this.endNode.getYProperty());
         circle.centerXProperty().bind(this.endNode.getXProperty());
         circle.centerYProperty().bind(this.endNode.getYProperty());
+        startNode.getXProperty().addListener(e -> {
+            identifierText.setX((getStartX() + getEndX()) / 2);
+        });
+        endNode.getXProperty().addListener(e -> {
+            identifierText.setX((getStartX() + getEndX()) / 2);
+        });
+        startNode.getYProperty().addListener(e -> {
+            identifierText.setY((getStartY() + getEndY()) / 2);
+        });
+        endNode.getYProperty().addListener(e -> {
+            identifierText.setY((getStartY() + getEndY()) / 2);
+        });
     }
 
     public GraphNode getEndNode() {
