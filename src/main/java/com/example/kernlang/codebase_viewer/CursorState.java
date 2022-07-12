@@ -2,6 +2,7 @@ package com.example.kernlang.codebase_viewer;
 
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.codebase_viewer.graph.Types;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.paint.Color;
@@ -121,9 +122,9 @@ public class CursorState implements Observable {
         return null;
     }
 
-    public void drawCircle(String name) {
+    public void drawCircle(Types t) {
         GraphNode node = new GraphNode(0, 0, 0, clickedX, clickedY, this);
-        node.setNodeName(name);
+        node.setNodeType(t);
         cbv.getChildren().add(node);
         graphNodes.add(node);
     }

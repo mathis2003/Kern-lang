@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class GraphNode extends Pane {
     private final Circle circle;
-    private final Text nodeNameText;
+    private final Text nodeTypeText;
     private final int cluster;
     private int parentCluster;
     private final int codeFileKey;
@@ -40,10 +40,10 @@ public class GraphNode extends Pane {
         circle.setCenterY(y);
         circle.setRadius(radius);
         circle.setFill(Color.GRAY);
-        nodeNameText = new Text("test");
-        nodeNameText.setX(x);
-        nodeNameText.setY(y);
-        this.getChildren().addAll(circle, nodeNameText);
+        nodeTypeText = new Text();
+        nodeTypeText.setX(x);
+        nodeTypeText.setY(y);
+        this.getChildren().addAll(circle, nodeTypeText);
         this.cluster = cluster;
         this.parentCluster = parentCluster;
         this.codeFileKey = codeFileKey;
@@ -56,8 +56,8 @@ public class GraphNode extends Pane {
         collapsed = false;
     }
 
-    public void setNodeName(String s) {
-        nodeNameText.setText(s);
+    public void setNodeType(Types t) {
+        nodeTypeText.setText(t.getTypeName());
     }
 
     public double getRadius() {
@@ -66,12 +66,12 @@ public class GraphNode extends Pane {
 
     public void setCenterX(double x) {
         circle.setCenterX(x);
-        nodeNameText.setX(x);
+        nodeTypeText.setX(x);
     }
 
     public void setCenterY(double y) {
         circle.setCenterY(y);
-        nodeNameText.setY(y);
+        nodeTypeText.setY(y);
     }
 
     public SimpleDoubleProperty getXProperty() {
@@ -112,12 +112,12 @@ public class GraphNode extends Pane {
 
     public void setInvisible() {
         circle.setVisible(false);
-        nodeNameText.setVisible(false);
+        nodeTypeText.setVisible(false);
     }
 
     public void setVisible() {
         circle.setVisible(true);
-        nodeNameText.setVisible(true);
+        nodeTypeText.setVisible(true);
     }
 
     public void collapseSubClusters(GraphNode mainNode) {
