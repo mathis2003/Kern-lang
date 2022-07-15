@@ -2,7 +2,6 @@ package com.example.kernlang.codebase_viewer.graph;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
@@ -79,11 +78,13 @@ public class GraphEdge extends Pane {
 
     public void setInvisible() {
         line.setVisible(false);
+        identifierText.setVisible(false);
         arrowHead.setVisible(false);
     }
 
     public void setVisible() {
         line.setVisible(true);
+        identifierText.setVisible(true);
         arrowHead.setVisible(true);
     }
 
