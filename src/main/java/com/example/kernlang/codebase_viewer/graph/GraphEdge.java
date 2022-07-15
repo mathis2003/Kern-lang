@@ -17,8 +17,7 @@ public class GraphEdge extends Pane {
     private final Text identifierText;
 
     private final Line line;
-    // the circle below acts as the arrow head
-    //private final Circle circle;
+
     private final ArrowHead arrowHead;
 
     private final int arrowHeadRadius = 5;
@@ -45,9 +44,6 @@ public class GraphEdge extends Pane {
         this.arrowHead = new ArrowHead(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY(), arrowHeadRadius);
         arrowHead.setFill(Color.RED);
         arrowHead.setRadius(arrowHeadRadius);
-        //this.circle = new Circle();
-        //circle.setFill(Color.RED);
-        //circle.setRadius(arrowHeadRadius);
         this.getChildren().addAll(line, arrowHead, identifierText);
 
         if (isBound) { line.setStroke(Color.GREEN); }
@@ -98,8 +94,6 @@ public class GraphEdge extends Pane {
         this.setEndY(endNode.getYProperty().getValue());
         line.endXProperty().bind(this.endNode.getXProperty());
         line.endYProperty().bind(this.endNode.getYProperty());
-        //circle.centerXProperty().bind(this.endNode.getXProperty());
-        //circle.centerYProperty().bind(this.endNode.getYProperty());
         startNode.getXProperty().addListener(e -> {
             identifierText.setX((getStartX() + getEndX()) / 2);
             arrowHead.setNewStartX(line.getStartX());
