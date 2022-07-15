@@ -18,7 +18,9 @@ public class GraphEdge extends Pane {
 
     private final Line line;
     // the circle below acts as the arrow head
-    private final Circle circle;
+    //private final Circle circle;
+    private final ArrowHead arrowHead;
+
     private final int arrowHeadRadius = 5;
 
     private final boolean isBound;
@@ -35,26 +37,31 @@ public class GraphEdge extends Pane {
         this.identifierText = new Text(identifier);
         this.isBound = isBound;
         this.line = new Line();
-        this.circle = new Circle();
-        circle.setFill(Color.RED);
-        circle.setRadius(arrowHeadRadius);
-        this.getChildren().addAll(line, circle, identifierText);
+
         this.startNode = startNode;
         line.startXProperty().bind(this.startNode.getXProperty());
         line.startYProperty().bind(this.startNode.getYProperty());
+
+        this.arrowHead = new ArrowHead(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY(), arrowHeadRadius);
+        arrowHead.setFill(Color.RED);
+        arrowHead.setRadius(arrowHeadRadius);
+        //this.circle = new Circle();
+        //circle.setFill(Color.RED);
+        //circle.setRadius(arrowHeadRadius);
+        this.getChildren().addAll(line, arrowHead, identifierText);
 
         if (isBound) { line.setStroke(Color.GREEN); }
     }
 
     public void setEndX(double x) {
         line.setEndX(x);
-        circle.setCenterX(x);
+        arrowHead.setNewEndX(x);
         identifierText.setX((getStartX() + x) / 2);
     }
 
     public void setEndY(double y) {
         line.setEndY(y);
-        circle.setCenterY(y);
+        arrowHead.setNewEndY(y);
         identifierText.setY((getStartY() + y) / 2);
     }
 
@@ -76,12 +83,12 @@ public class GraphEdge extends Pane {
 
     public void setInvisible() {
         line.setVisible(false);
-        circle.setVisible(false);
+        arrowHead.setVisible(false);
     }
 
     public void setVisible() {
         line.setVisible(true);
-        circle.setVisible(true);
+        arrowHead.setVisible(true);
     }
 
     public void setEndNode(GraphNode endNode) {
@@ -91,19 +98,23 @@ public class GraphEdge extends Pane {
         this.setEndY(endNode.getYProperty().getValue());
         line.endXProperty().bind(this.endNode.getXProperty());
         line.endYProperty().bind(this.endNode.getYProperty());
-        circle.centerXProperty().bind(this.endNode.getXProperty());
-        circle.centerYProperty().bind(this.endNode.getYProperty());
+        //circle.centerXProperty().bind(this.endNode.getXProperty());
+        //circle.centerYProperty().bind(this.endNode.getYProperty());
         startNode.getXProperty().addListener(e -> {
             identifierText.setX((getStartX() + getEndX()) / 2);
+            arrowHead.setNewStartX(line.getStartX());
         });
         endNode.getXProperty().addListener(e -> {
             identifierText.setX((getStartX() + getEndX()) / 2);
+            arrowHead.setNewEndX(line.getEndX());
         });
         startNode.getYProperty().addListener(e -> {
             identifierText.setY((getStartY() + getEndY()) / 2);
+            arrowHead.setNewStartY(line.getStartY());
         });
         endNode.getYProperty().addListener(e -> {
             identifierText.setY((getStartY() + getEndY()) / 2);
+            arrowHead.setNewEndY(line.getEndY());
         });
     }
 
