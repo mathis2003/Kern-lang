@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -27,14 +28,16 @@ public class NodeCreationPopup extends Stage {
                 );
         final ComboBox<Types> comboBox = new ComboBox<>(options);
 
+        final TextField nameField = new TextField();
+
 
         Button createButton = new Button("create node");
         createButton.setOnAction(e -> {
-            cursorState.drawCircle(comboBox.getSelectionModel().getSelectedItem());
+            cursorState.drawCircle(nameField.getText(), comboBox.getSelectionModel().getSelectedItem());
             this.close();
         });
 
-        VBox layout = new VBox(comboBox, createButton);
+        VBox layout = new VBox(comboBox, nameField, createButton);
 
         Scene scene = new Scene(layout, 500, 300);
         this.setScene(scene);

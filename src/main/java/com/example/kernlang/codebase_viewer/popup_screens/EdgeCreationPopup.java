@@ -13,16 +13,15 @@ public class EdgeCreationPopup extends Stage {
     public EdgeCreationPopup(CursorState cursorState, GraphNode node) {
         super();
 
-        TextField nameField = new TextField();
         CheckBox isBoundCheckBox = new CheckBox("is bound");
         Button createButton = new Button("create edge");
         createButton.setOnAction(e -> {
-            cursorState.setStateDraggingEdge(node, nameField.getText(), isBoundCheckBox.isSelected());
+            cursorState.setStateDraggingEdge(node, isBoundCheckBox.isSelected());
             this.close();
         });
 
 
-        VBox layout = new VBox(nameField, isBoundCheckBox, createButton);
+        VBox layout = new VBox(isBoundCheckBox, createButton);
         layout.setSpacing(0.5);
 
 
