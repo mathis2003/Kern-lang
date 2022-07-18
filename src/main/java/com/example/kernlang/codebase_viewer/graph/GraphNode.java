@@ -14,9 +14,7 @@ public class GraphNode extends Pane {
     private final Circle circle;
     private final Text nodeNameText;
     private final String name;
-    private final int cluster;
-    private int parentCluster;
-    private final int codeFileKey;
+    private String codeString = "";
     private SimpleDoubleProperty x, y;
 
     private final int radius = 20;
@@ -26,7 +24,7 @@ public class GraphNode extends Pane {
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
 
-    public GraphNode(int cluster, int parentCluster, int codeFileKey, String name, double x, double y, CursorState cs) {
+    public GraphNode(String name, double x, double y, CursorState cs) {
         setOnMouseClicked(e -> {
             if (cs.isDraggingNode()) {
                 cs.setStateFree();
@@ -46,9 +44,6 @@ public class GraphNode extends Pane {
         nodeNameText.setX(x);
         nodeNameText.setY(y);
         this.getChildren().addAll(circle, nodeNameText);
-        this.cluster = cluster;
-        this.parentCluster = parentCluster;
-        this.codeFileKey = codeFileKey;
         this.imports = new ArrayList<>();
         this.exports = new ArrayList<>();
         this.x = new SimpleDoubleProperty(x);
@@ -56,6 +51,14 @@ public class GraphNode extends Pane {
         this.x.addListener(e -> this.setCenterX(this.x.getValue()));
         this.y.addListener(e -> this.setCenterY(this.y.getValue()));
         collapsed = false;
+    }
+
+    public void setCodeString(String codeString) {
+        this.codeString = codeString;
+    }
+
+    public String getCodeString() {
+        return this.codeString;
     }
 
     public void setNodeType(Types t) {
@@ -84,9 +87,6 @@ public class GraphNode extends Pane {
         return this.y;
     }
 
-    public int getCodeFileKey() {
-        return this.codeFileKey;
-    }
 
     /**
      * Note: the functionality of a GraphNode is asymetric, that is:

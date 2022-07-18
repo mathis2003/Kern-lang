@@ -5,6 +5,7 @@ import javafx.scene.control.SplitPane;
 
 public class IDE extends SplitPane {
     public IDE() {
-        this.getItems().addAll(new CodebaseViewer(), new TextEditor());
+        TextEditor textEditor = new TextEditor();
+        this.getItems().addAll(new CodebaseViewer(textEditor), textEditor);
     }
 }

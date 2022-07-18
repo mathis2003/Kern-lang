@@ -1,5 +1,6 @@
 package com.example.kernlang.codebase_viewer;
 
+import com.example.kernlang.TextEditor;
 import com.example.kernlang.codebase_viewer.popup_screens.FieldContextMenu;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -10,8 +11,8 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
 
     private static CursorState cursorState;
 
-    public CodebaseViewer() {
-        cursorState = new CursorState(this);
+    public CodebaseViewer(TextEditor textEditor) {
+        cursorState = new CursorState(this, textEditor);
         cursorState.addListener(this);
         this.setPrefSize(200, 200);
 

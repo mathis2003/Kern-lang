@@ -1,12 +1,11 @@
 package com.example.kernlang.codebase_viewer;
 
+import com.example.kernlang.TextEditor;
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,6 @@ public class CursorState implements Observable {
     }
 
     private double clickedX, clickedY;
-    private double currentX, currentY;
 
     private GraphEdge importLine;
     private GraphNode draggedNode;
@@ -48,11 +46,17 @@ public class CursorState implements Observable {
     private State state = State.FREE;
 
     private final CodebaseViewer cbv;
+    private final TextEditor textEditor;
 
-    public CursorState(CodebaseViewer cbv) {
+    public CursorState(CodebaseViewer cbv, TextEditor textEditor) {
         this.listeners = new ArrayList<>();
         this.graphNodes = new ArrayList<>();
         this.cbv = cbv;
+        this.textEditor = textEditor;
+    }
+
+    public void setTextEditorNode(GraphNode node) {
+        textEditor.setCurrentNode(node);
     }
 
     public void setStateDraggingNode(GraphNode node) {
@@ -96,14 +100,12 @@ public class CursorState implements Observable {
     }
 
     public void updatePosition(double x, double y) {
-        currentX = x;
-        currentY = y;
         if (isDraggingEdge()) {
-            importLine.setEndX(currentX);
-            importLine.setEndY(currentY);
+            importLine.setEndX(x);
+            importLine.setEndY(y);
         } else if (state == State.DRAGGING_NODE) {
-            draggedNode.getXProperty().set(currentX);
-            draggedNode.getYProperty().set(currentY);
+            draggedNode.getXProperty().set(x);
+            draggedNode.getYProperty().set(y);
         }
     }
 
@@ -123,7 +125,7 @@ public class CursorState implements Observable {
     }
 
     public void drawCircle(String name, Types t) {
-        GraphNode node = new GraphNode(0, 0, 0, name, clickedX, clickedY, this);
+        GraphNode node = new GraphNode(name, clickedX, clickedY, this);
         node.setNodeType(t);
         cbv.getChildren().add(node);
         graphNodes.add(node);
