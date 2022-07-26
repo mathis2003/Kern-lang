@@ -7,7 +7,7 @@ import com.example.kernlang.interpreter.frontend.parser.ASTNode;
 import com.example.kernlang.interpreter.frontend.parser.Parser;
 
 import java.util.ArrayList;
-
+// random comment
 public class Compiler {
     public static ASTNode compile(GraphNode node) {
         ASTNode astNode = null;
