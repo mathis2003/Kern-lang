@@ -34,6 +34,12 @@ public class CursorState implements Observable {
         }
     }
 
+    public void compileNodes() {
+        for (GraphNode node : graphNodes) {
+            node.compile();
+        }
+    }
+
     private enum State {
         DRAGGING_EDGE, DRAGGING_NODE, FREE
     }

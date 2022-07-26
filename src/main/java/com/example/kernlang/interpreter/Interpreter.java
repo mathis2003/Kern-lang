@@ -1,8 +1,8 @@
 package com.example.kernlang.interpreter;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.lexer.Lexer;
-import com.example.kernlang.interpreter.lexer.Token;
+import com.example.kernlang.interpreter.frontend.lexer.Lexer;
+import com.example.kernlang.interpreter.frontend.lexer.Token;
 
 import java.util.ArrayList;
 

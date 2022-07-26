@@ -28,6 +28,10 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
         });
     }
 
+    public void compileNodes() {
+        cursorState.compileNodes();
+    }
+
     @Override
     public void invalidated(Observable observable) {
     }

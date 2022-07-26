@@ -1,4 +1,4 @@
-package com.example.kernlang.interpreter.lexer;
+package com.example.kernlang.interpreter.frontend.lexer;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.Interpreter;
@@ -45,6 +45,15 @@ public class Lexer {
                     while (peek() != '\n' && !isAtEnd()) advance();
                 } else {
                     addToken(TokenType.TOK_MINUS);
+                }
+                break;
+            }
+            case '\'': {
+                char charLiteral = advance();
+                if (match('\'')) {
+                    addToken(TokenType.TOK_CHAR, charLiteral);
+                } else {
+                    Interpreter.error(graphNode, line, "char literal not closed by a quote");
                 }
                 break;
             }
@@ -95,6 +104,7 @@ public class Lexer {
         keywords.put("return", TokenType.TOK_RETURN);
         keywords.put("this",   TokenType.TOK_THIS);
         keywords.put("true",   TokenType.TOK_TRUE);
+        keywords.put("unit",   TokenType.TOK_UNIT);
     }
 
     private void identifier() {

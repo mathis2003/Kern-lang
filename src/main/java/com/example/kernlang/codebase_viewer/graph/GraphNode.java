@@ -2,6 +2,8 @@ package com.example.kernlang.codebase_viewer.graph;
 
 import com.example.kernlang.codebase_viewer.CursorState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
+import com.example.kernlang.interpreter.frontend.Compiler;
+import com.example.kernlang.interpreter.frontend.parser.ASTNode;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -14,6 +16,10 @@ public class GraphNode extends Pane {
     private final Circle circle;
     private final Text nodeNameText;
     private final String name;
+
+    private ASTNode ast;
+
+    private Types type;
     private String codeString = "";
     private SimpleDoubleProperty x, y;
 
@@ -62,7 +68,12 @@ public class GraphNode extends Pane {
     }
 
     public void setNodeType(Types t) {
+        this.type = t;
         nodeNameText.setText(this.name + " : " + t.getTypeName());
+    }
+
+    public Types getNodeType() {
+        return this.type;
     }
 
     public double getRadius() {
@@ -158,5 +169,13 @@ public class GraphNode extends Pane {
 
     public boolean isCollapsed() {
         return collapsed;
+    }
+
+    public void compile() {
+        this.ast = Compiler.compile(this);
+    }
+
+    public ASTNode getAST() {
+        return this.ast;
     }
 }
