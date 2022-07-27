@@ -62,6 +62,8 @@ public class Lexer {
             case '*': addToken(TokenType.TOK_STAR); break;
             case '<': addToken(TokenType.TOK_LESS);  break;
             case '>': addToken(TokenType.TOK_GREATER); break;
+            case '&': addToken(TokenType.TOK_AMPERSAND); break;
+            case '$': addToken(TokenType.TOK_DOLLAR_SIGN); break;
             case '!':
                 addToken(match('=') ? TokenType.TOK_BANG_EQUAL : TokenType.TOK_BANG);
                 break;

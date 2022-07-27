@@ -6,6 +6,7 @@ import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.LiteralExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.UnaryExpr;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.List;
@@ -18,28 +19,6 @@ public class Parser {
         this.tokens = tokens;
     }
 
-    /*public ASTNode parseFunctionNode() {
-
-    }*/
-
-    /*public void parseRecordNode() {
-
-    }*/
-
-    /*public void parseVariantNode() {
-
-    }*/
-
-    public LiteralExpr parsePrimitiveNode() {
-        // a literal node will have two tokens: the token of the literal itself and a EOF token
-        if (tokens.size() == 2) {
-            return new LiteralExpr(tokens.get(0));
-        } else {
-            // error
-            return null;
-        }
-    }
-
 
     /** Parse functions **/
 
@@ -49,7 +28,7 @@ public class Parser {
         return result;
     }
 
-    private Expr parseExpression() {
+    public Expr parseExpression() {
         return parseEquality();
     }
 
@@ -90,26 +69,26 @@ public class Parser {
     }
 
     private Expr parseFactor() {
-        // expect a literal such as 5, 10, 7, ...
-        Expr e = switch (peek().tokenType()) {
-            case TOK_NUMBER -> new LiteralExpr(peek());
-            case TOK_BANG -> new LiteralExpr(peek());
-            case TOK_AMPERSAND -> new LiteralExpr(peek());
-            case TOK_DOLLAR_SIGN -> new LiteralExpr(peek());
-            /*case TOK_OPEN_PAREN -> {
-                Expr expr = parseExpression();
-                consume(TokenType.TOK_CLOSE_PAREN, "Expect ')' after expression.");
-                e = expr;
-            }*/
-            default -> new Expr();
-        };
+        return parseUnary();
+    }
+
+    private Expr parseUnary() {
+        Expr e = null;
+
+        switch (peek().tokenType()) {
+            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return parseLiteral(); }
+            case TOK_BANG, TOK_AMPERSAND, TOK_DOLLAR_SIGN -> {
+                    Token operator = advance();
+                    e = new UnaryExpr(operator, parseUnary());
+            }
+        }
 
         return e;
     }
 
-    /*private Expr parseUnary() {
-
-    }*/
+    private LiteralExpr parseLiteral() {
+        return new LiteralExpr(advance());
+    }
 
     private Expr parseFunctionLiteral() {
         Expr result = null;
