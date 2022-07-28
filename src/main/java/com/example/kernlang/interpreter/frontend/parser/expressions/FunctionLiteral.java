@@ -22,7 +22,7 @@ public class FunctionLiteral extends Expr {
             stmts += tabs + "\t\tstatement:\n" + stmt.toString(indent + 3) + "\n";
         }
 
-        return "function:\n" + "\tparameters:" + args + "\tstatements" + stmts;
+        return tabs + "function:\n" + tabs + "\tparameters:" + args + tabs + "\tstatements" + stmts;
     }
 
     public void addParameter(String paramIdentifier) {

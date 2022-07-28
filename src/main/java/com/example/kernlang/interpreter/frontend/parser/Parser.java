@@ -79,8 +79,13 @@ public class Parser {
                     Token operator = advance();
                     e = new UnaryExpr(operator, parseUnary());
             }
+            case TOK_IDENTIFIER -> {
+                e = new IdentifierExpr(peek().lexeme());
+                advance();
+            }
             case TOK_OPEN_CURLY -> { return parseRecord(); }
             case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
+            case TOK_PERCENT -> { return parseFunctionCall(); }
         }
 
         return e;
@@ -110,6 +115,19 @@ public class Parser {
         return result;
     }
 
+    private FunctionCall parseFunctionCall() {
+        advance(); // skip over percent sign %
+
+        FunctionCall functionCall = new FunctionCall(parseExpression());
+
+        if (!match(TokenType.TOK_OPEN_PAREN))  error(peek(), "open parenthesis expected");
+
+        // parse arguments, when a closing paren is found, it skips over that and stops parsing arguments
+        while (!match(TokenType.TOK_CLOSE_PAREN)) functionCall.addArgument(parseExpression());
+
+        return functionCall;
+    }
+
     private FunctionLiteral parseFunctionLiteral() {
         advance(); // skip over backslash \
 
@@ -122,7 +140,7 @@ public class Parser {
         if (!match(TokenType.TOK_RIGHT_ARROW))
             error(peek(), "right arrow axpected after paramterlist of function literal");
 
-        if (!match(TokenType.TOK_OPEN_CURLY))  error(peek(), "open urly bracket expected");
+        if (!match(TokenType.TOK_OPEN_CURLY))  error(peek(), "open curly bracket expected");
 
         // parse statements, when it finds a "}", it skips that token and stops parsing statements
         while (!match(TokenType.TOK_CLOSE_CURLY)) result.addStmt(parseStmt());
