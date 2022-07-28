@@ -3,10 +3,7 @@ package com.example.kernlang.interpreter.frontend.parser;
 import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
-import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.LiteralExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.UnaryExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.*;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.List;
@@ -81,6 +78,7 @@ public class Parser {
                     Token operator = advance();
                     e = new UnaryExpr(operator, parseUnary());
             }
+            case TOK_OPEN_CURLY -> { return parseRecord(); }
         }
 
         return e;
@@ -88,6 +86,26 @@ public class Parser {
 
     private LiteralExpr parseLiteral() {
         return new LiteralExpr(advance());
+    }
+
+    private RecordExpr parseRecord() {
+        advance(); // skip over open curly {
+
+        RecordExpr result = new RecordExpr();
+
+        while (match(TokenType.TOK_IDENTIFIER)) {
+            String identifier = previous().lexeme();
+            if (match(TokenType.TOK_LEFT_ARROW)) {
+                result.addRecordField(identifier, parseExpression());
+            } else {
+                error(peek(), "leftarrow expected after identifier in record definition");
+            }
+        }
+
+        if (!match(TokenType.TOK_CLOSE_CURLY))
+            error(peek(), "no closing curly bracket at end of record definition");
+
+        return result;
     }
 
     private Expr parseFunctionLiteral() {
@@ -115,6 +133,10 @@ public class Parser {
     }
 
     private Token peek() {
+        return tokens.get(current);
+    }
+
+    private Token currentToken() {
         return tokens.get(current);
     }
 
