@@ -2,7 +2,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 
-public class UnaryExpr implements Expr {
+public class UnaryExpr extends Expr {
     private final Token operator;
     private final Expr expr;
 
@@ -12,8 +12,7 @@ public class UnaryExpr implements Expr {
     }
 
     public String toString(int indent) {
-        String tabs = "";
-        for (int i = 0; i < indent; i++) tabs += "\t";
+        String tabs = getTabs(indent);
 
         return tabs + "expression (unary):\n" +
                 tabs + "\toperator: " + operator.lexeme() + "\n" +

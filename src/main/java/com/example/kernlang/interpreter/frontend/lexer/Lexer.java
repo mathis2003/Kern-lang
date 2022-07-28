@@ -43,6 +43,8 @@ public class Lexer {
                 if (match('-')) {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if (match('>')) {
+                    addToken(TokenType.TOK_RIGHT_ARROW);
                 } else {
                     addToken(TokenType.TOK_MINUS);
                 }
@@ -57,6 +59,7 @@ public class Lexer {
                 }
                 break;
             }
+            case '\\': addToken(TokenType.TOK_BACKSLASH); break;
             case '+': addToken(TokenType.TOK_PLUS); break;
             case ';': addToken(TokenType.TOK_SEMI_COLON); break;
             case '*': addToken(TokenType.TOK_STAR); break;

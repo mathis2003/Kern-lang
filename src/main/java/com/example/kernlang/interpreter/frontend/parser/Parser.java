@@ -4,6 +4,7 @@ import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.*;
+import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.List;
@@ -79,6 +80,7 @@ public class Parser {
                     e = new UnaryExpr(operator, parseUnary());
             }
             case TOK_OPEN_CURLY -> { return parseRecord(); }
+            case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
         }
 
         return e;
@@ -108,8 +110,35 @@ public class Parser {
         return result;
     }
 
-    private Expr parseFunctionLiteral() {
-        Expr result = null;
+    private FunctionLiteral parseFunctionLiteral() {
+        advance(); // skip over backslash \
+
+        FunctionLiteral result = new FunctionLiteral();
+
+        // parse function parameters
+        while (match(TokenType.TOK_IDENTIFIER)) result.addParameter(previous().lexeme());
+
+        // expect "<- {" after parameters
+        if (!match(TokenType.TOK_RIGHT_ARROW))
+            error(peek(), "right arrow axpected after paramterlist of function literal");
+
+        if (!match(TokenType.TOK_OPEN_CURLY))  error(peek(), "open urly bracket expected");
+
+        // parse statements, when it finds a "}", it skips that token and stops parsing statements
+        while (!match(TokenType.TOK_CLOSE_CURLY)) result.addStmt(parseStmt());
+
+        return result;
+    }
+
+    private Stmt parseStmt() {
+        Stmt result = null;
+        switch (peek().tokenType()) {
+            case TOK_RETURN -> {
+                advance(); // skip over "return" keyword
+                result = new ReturnStmt(parseExpression());
+                break;
+            }
+        }
 
         return result;
     }

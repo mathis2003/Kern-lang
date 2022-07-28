@@ -2,7 +2,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 
-public class BinaryExpr implements Expr {
+public class BinaryExpr extends Expr {
 
     private final Expr leftExpr;
     private final Token operator;
@@ -15,8 +15,7 @@ public class BinaryExpr implements Expr {
     }
 
     public String toString(int indent) {
-        String tabs = "";
-        for (int i = 0; i < indent; i++) tabs += "\t";
+        String tabs = getTabs(indent);
 
         return tabs + "expression (binary):\n" +
                 tabs + "\toperator:" + "\n" +

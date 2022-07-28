@@ -2,7 +2,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 
-public class LiteralExpr implements Expr {
+public class LiteralExpr extends Expr {
     private final Token tok;
 
     public LiteralExpr(Token tok) {
@@ -14,8 +14,7 @@ public class LiteralExpr implements Expr {
     }
 
     public String toString(int indent) {
-        String tabs = "";
-        for (int i = 0; i < indent; i++) tabs += "\t";
+        String tabs = getTabs(indent);
 
         return tabs + "expression (literal):\n" +
                 tabs + "\ttype: " + tok.tokenType() + "\n" +

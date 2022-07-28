@@ -2,14 +2,13 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import java.util.ArrayList;
 
-public class RecordExpr implements Expr {
+public class RecordExpr extends Expr {
 
     private final ArrayList<RecordField> recordFields = new ArrayList<>();
 
     @Override
     public String toString(int indent) {
-        String tabs = "";
-        for (int i = 0; i < indent; i++) tabs += "\t";
+        String tabs = getTabs(indent);
 
         String fieldStrings = "";
         for (RecordField recordField : recordFields) {
@@ -25,8 +24,7 @@ public class RecordExpr implements Expr {
 
     private static record RecordField (String identifier, Expr expr) {
         public String toString(int indent) {
-            String tabs = "";
-            for (int i = 0; i < indent; i++) tabs += "\t";
+            String tabs = expr.getTabs(indent);
 
             return tabs + identifier + ":\n" + tabs + "\tvalue:\n" + expr.toString(indent + 2);
         }
