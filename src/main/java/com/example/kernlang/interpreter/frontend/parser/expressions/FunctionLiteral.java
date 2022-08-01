@@ -8,6 +8,11 @@ import java.util.ArrayList;
 public class FunctionLiteral extends Expr implements Literal {
     private final ArrayList<Stmt> statements = new ArrayList<>();
     private final ArrayList<String> paramIdentifiers = new ArrayList<>();
+    private final GraphNode functionContext;
+
+    public FunctionLiteral(GraphNode functionContext) {
+        this.functionContext = functionContext;
+    }
 
     @Override
     public String toString(int indent) {
@@ -35,6 +40,8 @@ public class FunctionLiteral extends Expr implements Literal {
         paramIdentifiers.add(paramIdentifier);
     }
 
+    public ArrayList<String> getParamIdentifiers() { return paramIdentifiers; }
+
     public void addStmt(Stmt stmt) {
         statements.add(stmt);
     }
@@ -43,4 +50,7 @@ public class FunctionLiteral extends Expr implements Literal {
         return statements;
     }
 
+    public GraphNode getFunctionContext() {
+        return functionContext;
+    }
 }

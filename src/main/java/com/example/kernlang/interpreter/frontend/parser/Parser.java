@@ -156,7 +156,7 @@ public class Parser {
     private FunctionLiteral parseFunctionLiteral() {
         advance(); // skip over backslash \
 
-        FunctionLiteral result = new FunctionLiteral();
+        FunctionLiteral result = new FunctionLiteral(tokens.get(0).node());
 
         // parse function parameters
         while (match(TokenType.TOK_IDENTIFIER)) result.addParameter(previous().lexeme());
