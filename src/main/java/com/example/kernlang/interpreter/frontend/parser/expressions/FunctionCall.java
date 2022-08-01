@@ -37,7 +37,13 @@ public class FunctionCall extends Expr {
 
     @Override
     public Literal interpret(GraphNode context) {
-        for (Stmt stmt : ((FunctionLiteral) functionExpr ).getStatements()) {
+        FunctionLiteral fLit = null;
+        if (! (functionExpr instanceof FunctionLiteral)) {
+            fLit = (FunctionLiteral) functionExpr.interpret(context);
+        } else {
+            fLit = (FunctionLiteral) functionExpr;
+        }
+        for (Stmt stmt : fLit.getStatements()) {
             if (stmt instanceof Assignment) {
                 Assignment assignStmt = (Assignment) stmt;
                 for (GraphEdge edge : context.getImports()) {

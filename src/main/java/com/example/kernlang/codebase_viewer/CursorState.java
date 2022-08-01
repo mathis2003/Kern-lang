@@ -47,11 +47,16 @@ public class CursorState implements Observable {
     private double clickedX, clickedY;
 
     private GraphEdge importLine;
+
+    public GraphEdge getImportLine() {
+        return importLine;
+    }
+
     private GraphNode draggedNode;
 
-    private State state = State.FREE;
+    public State state = State.FREE;
 
-    private final CodebaseViewer cbv;
+    public final CodebaseViewer cbv;
     private final TextEditor textEditor;
 
     public CursorState(CodebaseViewer cbv, TextEditor textEditor) {
@@ -79,11 +84,9 @@ public class CursorState implements Observable {
     }
 
     public void addEdge() {
-        GraphNode startNode = getNodeAtPosition(importLine.getStartX(), importLine.getStartY());
+        GraphNode startNode = importLine.getStartNode();
         GraphNode endNode = getNodeAtPosition(importLine.getEndX(), importLine.getEndY());
-        if (startNode == null) {
-            cbv.getChildren().remove(importLine);
-        } else if (endNode != null) {
+        if (endNode != null) {
             importLine.setEndNode(endNode);
             startNode.addImport(importLine);
         } else {
@@ -121,8 +124,8 @@ public class CursorState implements Observable {
 
     public GraphNode getNodeAtPosition(double x, double y) {
         for (GraphNode node : graphNodes)
-            if (Math.abs(x - node.getXProperty().getValue()) < node.getRadius() / 2 &&
-                    Math.abs(y - node.getYProperty().getValue()) < node.getRadius() / 2 )
+            if (Math.abs(x + (node.getRadius() / 2) - node.getXProperty().getValue()) < node.getRadius() * 2 &&
+                    Math.abs(y + (node.getRadius() / 2) - node.getYProperty().getValue()) < node.getRadius() * 2)
                 return node;
 
         // if no node was found at the position, return null
