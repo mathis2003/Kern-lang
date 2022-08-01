@@ -108,6 +108,7 @@ public class Lexer {
         keywords.put("else",   TokenType.TOK_ELSE);
         keywords.put("false",  TokenType.TOK_FALSE);
         keywords.put("if",     TokenType.TOK_IF);
+        keywords.put("then",   TokenType.TOK_THEN);
         keywords.put("or",     TokenType.TOK_OR);
         keywords.put("return", TokenType.TOK_RETURN);
         keywords.put("this",   TokenType.TOK_THIS);
@@ -121,7 +122,18 @@ public class Lexer {
         String text = source.substring(start, current);
         TokenType type = keywords.get(text);
         if (type == null) type = TokenType.TOK_IDENTIFIER;
-        addToken(type);
+        if (type == TokenType.TOK_UNIT) {
+            addToken(type);
+            //addToken(type, Void);
+        }
+        else if (type == TokenType.TOK_TRUE) {
+            addToken(type, true);
+        } else if (type == TokenType.TOK_FALSE) {
+            addToken(type, false);
+        } else {
+            addToken(type);
+        }
+
 
     }
 

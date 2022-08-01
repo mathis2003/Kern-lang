@@ -80,6 +80,9 @@ public class Parser {
                     Token operator = advance();
                     e = new UnaryExpr(operator, parseUnary());
             }
+            case TOK_IF -> {
+                return parseIfExpr();
+            }
             case TOK_IDENTIFIER -> {
                 e = new IdentifierExpr(peek().lexeme());
                 advance();
@@ -91,6 +94,26 @@ public class Parser {
         }
 
         return e;
+    }
+
+    private Expr parseIfExpr() {
+        advance(); // skip over "if" token
+
+        Expr condExpr = parseExpression();
+
+        if (!match(TokenType.TOK_THEN)) {
+            error(peek(), "keyword \"then\" expected after if with conditional expression");
+        }
+
+        Expr trueCase = parseExpression();
+
+        if (!match(TokenType.TOK_ELSE)) {
+            error(peek(), "keyword \"else\" expected after if [expression] then [expression] ");
+        }
+
+        Expr falseCase = parseExpression();
+
+        return new IfExpr(condExpr, trueCase, falseCase);
     }
 
     private LiteralExpr parseLiteral() {
