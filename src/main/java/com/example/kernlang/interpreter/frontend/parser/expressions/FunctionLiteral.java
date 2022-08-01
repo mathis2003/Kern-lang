@@ -1,10 +1,11 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
+import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.ArrayList;
 
-public class FunctionLiteral extends Expr {
+public class FunctionLiteral extends Expr implements Literal {
     private final ArrayList<Stmt> statements = new ArrayList<>();
     private final ArrayList<String> paramIdentifiers = new ArrayList<>();
 
@@ -25,12 +26,21 @@ public class FunctionLiteral extends Expr {
         return tabs + "function:\n" + tabs + "\tparameters:" + args + tabs + "\tstatements" + stmts;
     }
 
+    @Override
+    public Literal interpret(GraphNode context) {
+        return this;
+    }
+
     public void addParameter(String paramIdentifier) {
         paramIdentifiers.add(paramIdentifier);
     }
 
     public void addStmt(Stmt stmt) {
         statements.add(stmt);
+    }
+
+    public ArrayList<Stmt> getStatements() {
+        return statements;
     }
 
 }

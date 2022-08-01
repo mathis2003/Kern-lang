@@ -1,5 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
+import com.example.kernlang.codebase_viewer.graph.GraphNode;
+
 import java.util.ArrayList;
 
 public class RecordExpr extends Expr {
@@ -16,6 +18,11 @@ public class RecordExpr extends Expr {
         }
 
         return tabs + "record:" + fieldStrings + tabs + "\n";
+    }
+
+    @Override
+    public Literal interpret(GraphNode context) {
+        return null;
     }
 
     public void addRecordField(String identifier, Expr expr) {

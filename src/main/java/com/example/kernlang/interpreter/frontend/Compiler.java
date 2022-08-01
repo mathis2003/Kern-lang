@@ -5,15 +5,16 @@ import com.example.kernlang.interpreter.frontend.lexer.Lexer;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.parser.ASTNode;
 import com.example.kernlang.interpreter.frontend.parser.Parser;
+import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 
 import java.util.ArrayList;
 
 public class Compiler {
-    public static ASTNode compile(GraphNode node) {
+    public static Expr compile(GraphNode node) {
 
         ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode();
 
-        ASTNode astNode = new Parser(tokens).parseExpression();
+        Expr astExpr = new Parser(tokens).parseExpression();
 
 
         /*switch (node.getNodeType()) {
@@ -25,6 +26,6 @@ public class Compiler {
             }
         }*/
 
-        return astNode;
+        return astExpr;
     }
 }

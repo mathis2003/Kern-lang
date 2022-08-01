@@ -4,6 +4,7 @@ import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.*;
+import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
@@ -86,6 +87,7 @@ public class Parser {
             case TOK_OPEN_CURLY -> { return parseRecord(); }
             case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
             case TOK_PERCENT -> { return parseFunctionCall(); }
+            default -> { error(peek(), "unary expression or literal expected"); }
         }
 
         return e;
@@ -154,6 +156,16 @@ public class Parser {
             case TOK_RETURN -> {
                 advance(); // skip over "return" keyword
                 result = new ReturnStmt(parseExpression());
+                break;
+            }
+            case TOK_IDENTIFIER -> {
+                String ident = advance().lexeme();
+                if (match(TokenType.TOK_LEFT_ARROW)) {
+                    result = new Assignment(ident, parseExpression());
+                } else {
+                    error(peek(), "left arrow expected for assignment");
+                }
+
                 break;
             }
         }

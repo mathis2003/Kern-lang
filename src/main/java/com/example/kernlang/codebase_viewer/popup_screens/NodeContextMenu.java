@@ -32,8 +32,9 @@ public class NodeContextMenu extends ContextMenu {
 
         MenuItem runCode = new MenuItem("Run");
         runCode.setOnAction(e -> {
-            Interpreter interpreter = new Interpreter();
-            interpreter.runFunction(node);
+            //Interpreter interpreter = new Interpreter();
+            //interpreter.runFunction(node);
+            node.runNode();
         });
 
         getItems().addAll(move, importFreeMenuItem, viewCode, viewAST, runCode);

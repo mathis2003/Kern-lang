@@ -3,7 +3,11 @@ package com.example.kernlang.codebase_viewer.graph;
 import com.example.kernlang.codebase_viewer.CursorState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import com.example.kernlang.interpreter.frontend.Compiler;
-import com.example.kernlang.interpreter.frontend.parser.ASTNode;
+import com.example.kernlang.interpreter.frontend.parser.expressions.FunctionLiteral;
+import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
+import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
+import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
+import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -17,7 +21,7 @@ public class GraphNode extends Pane {
     private final Text nodeNameText;
     private final String name;
 
-    private ASTNode ast;
+    private Literal astLiteralExpr;
 
     private Types type;
     private String codeString = "";
@@ -172,10 +176,44 @@ public class GraphNode extends Pane {
     }
 
     public void compile() {
-        this.ast = Compiler.compile(this);
+        // cast because the node can only contain one Literal
+        this.astLiteralExpr = (Literal) Compiler.compile(this);
     }
 
-    public ASTNode getAST() {
-        return this.ast;
+    public String getName() {
+        return this.name;
+    }
+
+    public void setAstExpr(Literal astLiteralExpr) {
+        this.astLiteralExpr = astLiteralExpr;
+    }
+
+    public Literal getAST() {
+        return this.astLiteralExpr;
+    }
+
+    public void runNode() {
+        if (this.astLiteralExpr instanceof FunctionLiteral) {
+            for (Stmt stmt : ((FunctionLiteral)astLiteralExpr).getStatements()) {
+                if (stmt instanceof Assignment) {
+                    Assignment assignStmt = (Assignment) stmt;
+                    for (GraphEdge edge : imports) {
+                        if (edge.getEndNode().name.equals(assignStmt.getIdentifier())) {
+                            edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this));
+                        }
+                    }
+                }
+                else if (stmt instanceof ReturnStmt) {
+                    // since this function isn't called anywhere, but instead run by hand,
+                    // it doesn't have to return a value, but can just stop the program
+                    return;
+                }
+            }
+        } else {
+            // perhaps it is a composition of functions or something?
+            // since function composition, nor any other operations on functions are implemented yet,
+            // it would be an error if there was any expression other than a function literal
+            System.out.println("function literal expected as the contents of the node");
+        }
     }
 }

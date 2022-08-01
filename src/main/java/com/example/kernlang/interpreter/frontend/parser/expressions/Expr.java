@@ -1,5 +1,6 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
+import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.parser.ASTNode;
 
 public abstract class Expr implements ASTNode {
@@ -10,4 +11,6 @@ public abstract class Expr implements ASTNode {
 
         return tabs;
     }
+
+    public abstract Literal interpret(GraphNode context);
 }
