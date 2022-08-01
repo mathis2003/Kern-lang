@@ -110,8 +110,7 @@ public class CursorState implements Observable {
             importLine.setEndX(x);
             importLine.setEndY(y);
         } else if (state == State.DRAGGING_NODE) {
-            draggedNode.getXProperty().set(x);
-            draggedNode.getYProperty().set(y);
+            draggedNode.setCenter(x, y);
         }
     }
 

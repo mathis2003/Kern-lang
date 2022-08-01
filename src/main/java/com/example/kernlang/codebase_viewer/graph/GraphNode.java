@@ -9,7 +9,7 @@ import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
@@ -44,22 +44,21 @@ public class GraphNode extends Pane {
             }
             e.consume();
         });
+        setBorder(new Border(new BorderStroke(Color.BLACK,
+                BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        relocate(x, y);
         this.name = name;
         circle = new Circle();
-        circle.setCenterX(x);
-        circle.setCenterY(y);
+        circle.setCenterX(radius + 2);
+        circle.setCenterY(radius + 2);
         circle.setRadius(radius);
         circle.setFill(Color.GRAY);
         nodeNameText = new Text();
-        nodeNameText.setX(x);
-        nodeNameText.setY(y);
+        nodeNameText.setX(radius + 2);
+        nodeNameText.setY(radius + 2);
         this.getChildren().addAll(circle, nodeNameText);
         this.imports = new ArrayList<>();
         this.exports = new ArrayList<>();
-        this.x = new SimpleDoubleProperty(x);
-        this.y = new SimpleDoubleProperty(y);
-        this.x.addListener(e -> this.setCenterX(this.x.getValue()));
-        this.y.addListener(e -> this.setCenterY(this.y.getValue()));
         collapsed = false;
     }
 
@@ -84,14 +83,8 @@ public class GraphNode extends Pane {
         return radius;
     }
 
-    public void setCenterX(double x) {
-        circle.setCenterX(x);
-        nodeNameText.setX(x);
-    }
-
-    public void setCenterY(double y) {
-        circle.setCenterY(y);
-        nodeNameText.setY(y);
+    public void setCenter(double x, double y) {
+        relocate(x - radius, y - 40);
     }
 
     public SimpleDoubleProperty getXProperty() {
