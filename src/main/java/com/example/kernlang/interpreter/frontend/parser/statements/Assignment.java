@@ -14,7 +14,11 @@ public class Assignment extends Stmt {
 
     @Override
     public String toString(int indent) {
-        return null;
+        String tabs = getTabs(indent);
+        return tabs + "assignment:\n" +
+                tabs + "\tidentifier: " + identifier + "\n" +
+                tabs + "\tassigned expression:" + "\n" +
+                expr.toString(indent + 2);
     }
 
     public String getIdentifier() {
