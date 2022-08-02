@@ -12,7 +12,6 @@ import java.util.HashMap;
 public class FunctionCall extends Expr {
     private final Expr functionExpr;
     private final ArrayList<Expr> args;
-    private GraphNode callContext;
 
     public FunctionCall(Expr functionExpr) {
         this.functionExpr = functionExpr;
@@ -51,14 +50,8 @@ public class FunctionCall extends Expr {
         // evaluating the args given with the function call
         for (int i = 0; i < args.size(); i++) {
             String argName = fLit.getParamIdentifiers().get(i);
-            for (GraphEdge edge : fLit.getFunctionContext().getImports()) {
-                GraphNode importNode = edge.getEndNode();
-                if (importNode.getName().equals(argName)) {
-                    // note: the arguments given with the function call, are to be evaluated in the caller's context
-                    argumentsHm.put(argName, args.get(i).interpret(contextNode, additionalContext));
-                    //importNode.setAstExpr(args.get(i).interpret(context));
-                }
-            }
+            // note: the arguments given with the function call, are to be evaluated in the caller's context
+            argumentsHm.put(argName, args.get(i).interpret(contextNode, additionalContext));
         }
 
         // statements
@@ -68,7 +61,7 @@ public class FunctionCall extends Expr {
                 for (GraphEdge edge : contextNode.getImports()) {
                     GraphNode importNode = edge.getEndNode();
                     if (importNode.getName().equals(assignStmt.getIdentifier())) {
-                        // note: the expressions in the function literal, are to be evaluated in that function's context
+                        // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
                         importNode.setAstExpr(assignStmt.getExpr().interpret(fLit.getFunctionContext(), argumentsHm));
                     }
                 }
