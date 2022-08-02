@@ -2,6 +2,8 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 
+import java.util.HashMap;
+
 public class IfExpr extends Expr{
     private final Expr condition;
     private final Expr trueCaseExpr;
@@ -25,11 +27,11 @@ public class IfExpr extends Expr{
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
-        if ((Boolean)((LiteralExpr)condition.interpret(context)).getTok().literal()) {
-            return trueCaseExpr.interpret(context);
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
+        if ((Boolean)((LiteralExpr)condition.interpret(context, additionalContext)).getTok().literal()) {
+            return trueCaseExpr.interpret(context, additionalContext);
         } else {
-            return falseCaseExpr.interpret(context);
+            return falseCaseExpr.interpret(context, additionalContext);
         }
     }
 }

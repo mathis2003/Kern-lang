@@ -7,10 +7,12 @@ import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FunctionCall extends Expr {
     private final Expr functionExpr;
     private final ArrayList<Expr> args;
+    private GraphNode callContext;
 
     public FunctionCall(Expr functionExpr) {
         this.functionExpr = functionExpr;
@@ -36,15 +38,16 @@ public class FunctionCall extends Expr {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
+    public Literal interpret(GraphNode contextNode, HashMap<String, Literal> additionalContext) {
         // getting the actual function literal
         FunctionLiteral fLit = null;
         if (! (functionExpr instanceof FunctionLiteral)) {
-            fLit = (FunctionLiteral) functionExpr.interpret(context);
+            fLit = (FunctionLiteral) functionExpr.interpret(contextNode, additionalContext);
         } else {
             fLit = (FunctionLiteral) functionExpr;
         }
 
+        HashMap<String, Literal> argumentsHm = new HashMap<>();
         // evaluating the args given with the function call
         for (int i = 0; i < args.size(); i++) {
             String argName = fLit.getParamIdentifiers().get(i);
@@ -52,7 +55,8 @@ public class FunctionCall extends Expr {
                 GraphNode importNode = edge.getEndNode();
                 if (importNode.getName().equals(argName)) {
                     // note: the arguments given with the function call, are to be evaluated in the caller's context
-                    importNode.setAstExpr(args.get(i).interpret(context));
+                    argumentsHm.put(argName, args.get(i).interpret(contextNode, additionalContext));
+                    //importNode.setAstExpr(args.get(i).interpret(context));
                 }
             }
         }
@@ -61,17 +65,17 @@ public class FunctionCall extends Expr {
         for (Stmt stmt : fLit.getStatements()) {
             if (stmt instanceof Assignment) {
                 Assignment assignStmt = (Assignment) stmt;
-                for (GraphEdge edge : context.getImports()) {
+                for (GraphEdge edge : contextNode.getImports()) {
                     GraphNode importNode = edge.getEndNode();
                     if (importNode.getName().equals(assignStmt.getIdentifier())) {
                         // note: the expressions in the function literal, are to be evaluated in that function's context
-                        importNode.setAstExpr(assignStmt.getExpr().interpret(fLit.getFunctionContext()));
+                        importNode.setAstExpr(assignStmt.getExpr().interpret(fLit.getFunctionContext(), argumentsHm));
                     }
                 }
             }
             else if (stmt instanceof ReturnStmt) {
                 // note: the expressions in the function literal, are to be evaluated in that function's context
-                return ((ReturnStmt) stmt).getReturnExpr().interpret(fLit.getFunctionContext());
+                return ((ReturnStmt) stmt).getReturnExpr().interpret(fLit.getFunctionContext(), argumentsHm);
             }
         }
         return null;

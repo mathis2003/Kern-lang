@@ -3,6 +3,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecordExpr extends Expr {
 
@@ -21,7 +22,7 @@ public class RecordExpr extends Expr {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         return null;
     }
 

@@ -3,6 +3,8 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.parser.ASTNode;
 
+import java.util.HashMap;
+
 public abstract class Expr implements ASTNode {
     public abstract String toString(int indent);
     protected String getTabs(int indent) {
@@ -12,5 +14,5 @@ public abstract class Expr implements ASTNode {
         return tabs;
     }
 
-    public abstract Literal interpret(GraphNode context);
+    public abstract Literal interpret(GraphNode contextNode, HashMap<String, Literal> additionalContext);
 }

@@ -4,6 +4,8 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 
+import java.util.HashMap;
+
 public class BinaryExpr extends Expr {
 
     private final Expr leftExpr;
@@ -27,11 +29,11 @@ public class BinaryExpr extends Expr {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
-        Double left = ((Double)((LiteralExpr) leftExpr.interpret(context)).getTok().literal());
-        Double right = ((Double)((LiteralExpr) rightExpr.interpret(context)).getTok().literal());
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         switch (operator.tokenType()) {
             case TOK_PLUS -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
                 return new LiteralExpr(
                         new Token(
                                 TokenType.TOK_NUMBER, "", left + right, context, -1
@@ -39,12 +41,16 @@ public class BinaryExpr extends Expr {
                 );
             }
             case TOK_MINUS -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
                 return new LiteralExpr(
                     new Token(
                             TokenType.TOK_NUMBER, "", left - right, context, -1
                     )
             ); }
             case TOK_STAR -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
                 return new LiteralExpr(
                         new Token(
                             TokenType.TOK_NUMBER, "", left * right, context, -1
@@ -52,10 +58,30 @@ public class BinaryExpr extends Expr {
                 );
             }
             case TOK_SLASH -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
                 return new LiteralExpr(
                     new Token(
                             TokenType.TOK_NUMBER, "", left / right, context, -1
                     )
+                );
+            }
+            case TOK_GREATER -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
+                return new LiteralExpr(
+                        new Token(
+                                TokenType.TOK_BOOL, "", left > right, context, -1
+                        )
+                );
+            }
+            case TOK_LESS -> {
+                Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
+                Double right = ((Double)((LiteralExpr) rightExpr.interpret(context, additionalContext)).getTok().literal());
+                return new LiteralExpr(
+                        new Token(
+                                TokenType.TOK_BOOL, "", left < right, context, -1
+                        )
                 );
             }
             default -> { return null; }

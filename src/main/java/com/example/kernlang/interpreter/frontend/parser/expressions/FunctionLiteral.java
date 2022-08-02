@@ -4,6 +4,7 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FunctionLiteral extends Expr implements Literal {
     private final ArrayList<Stmt> statements = new ArrayList<>();
@@ -32,7 +33,7 @@ public class FunctionLiteral extends Expr implements Literal {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         return this;
     }
 

@@ -3,6 +3,8 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 
+import java.util.HashMap;
+
 public class LiteralExpr extends Expr implements Literal {
     private final Token tok;
 
@@ -23,7 +25,7 @@ public class LiteralExpr extends Expr implements Literal {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         return this;
     }
 }

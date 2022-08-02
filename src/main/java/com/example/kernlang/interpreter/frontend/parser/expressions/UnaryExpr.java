@@ -4,6 +4,8 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 
+import java.util.HashMap;
+
 public class UnaryExpr extends Expr {
     private final Token operator;
     private final Expr expr;
@@ -23,10 +25,11 @@ public class UnaryExpr extends Expr {
     }
 
     @Override
-    public Literal interpret(GraphNode context) {
+    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         switch (operator.tokenType()) {
             case TOK_MINUS -> {
-                Double negative = -1 * ((Double) ((LiteralExpr) expr.interpret(context)).getTok().literal());
+                Double negative =
+                        -1 * ((Double) ((LiteralExpr) expr.interpret(context, additionalContext)).getTok().literal());
                 return  new LiteralExpr(new Token(
                         TokenType.TOK_NUMBER, "", negative, context, -1
                 ));

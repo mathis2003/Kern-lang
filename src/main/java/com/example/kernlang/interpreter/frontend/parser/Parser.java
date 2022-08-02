@@ -28,13 +28,25 @@ public class Parser {
     }
 
     public Expr parseExpression() {
-        return parseEquality();
+        return parseBoolLogic();
+    }
+
+    private Expr parseBoolLogic() {
+        Expr expr = parseEquality();
+
+        while (match(TokenType.TOK_EQUAL_EQUAL, TokenType.TOK_BANG_EQUAL)) {
+            Token operator = previous();
+            Expr right = parseEquality();
+            expr = new BinaryExpr(expr, operator, right);
+        }
+
+        return expr;
     }
 
     private Expr parseEquality() {
         Expr expr = parseComparison();
 
-        while (match(TokenType.TOK_BANG_EQUAL, TokenType.TOK_EQUAL_EQUAL)) {
+        while (match(TokenType.TOK_LESS, TokenType.TOK_GREATER)) {
             Token operator = previous();
             Expr right = parseComparison();
             expr = new BinaryExpr(expr, operator, right);

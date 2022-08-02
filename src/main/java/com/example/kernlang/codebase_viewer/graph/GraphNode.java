@@ -15,6 +15,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GraphNode extends Pane {
     private final Circle circle;
@@ -199,6 +200,15 @@ public class GraphNode extends Pane {
         return this.astLiteralExpr;
     }
 
+    public HashMap<String, Literal> getContext() {
+        HashMap<String, Literal> result = new HashMap<>();
+        for (GraphEdge e : imports) {
+            GraphNode importNode = e.getEndNode();
+            result.put(importNode.getName(), importNode.getAST());
+        }
+        return result;
+    }
+
     public void runNode() {
         if (this.astLiteralExpr instanceof FunctionLiteral) {
             for (Stmt stmt : ((FunctionLiteral)astLiteralExpr).getStatements()) {
@@ -206,7 +216,7 @@ public class GraphNode extends Pane {
                     Assignment assignStmt = (Assignment) stmt;
                     for (GraphEdge edge : imports) {
                         if (edge.getEndNode().name.equals(assignStmt.getIdentifier())) {
-                            edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this));
+                            edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this, new HashMap<>()));
                         }
                     }
                 }

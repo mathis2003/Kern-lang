@@ -111,7 +111,6 @@ public class Lexer {
         keywords.put("then",   TokenType.TOK_THEN);
         keywords.put("or",     TokenType.TOK_OR);
         keywords.put("return", TokenType.TOK_RETURN);
-        keywords.put("this",   TokenType.TOK_THIS);
         keywords.put("true",   TokenType.TOK_TRUE);
         keywords.put("unit",   TokenType.TOK_UNIT);
     }
