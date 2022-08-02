@@ -7,7 +7,7 @@ import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 public class PrettyPrinter {
     public static String prettyPrint(ASTNode astNode) {
         if (astNode == null) {
-            return "no AST, possibly because of either syntax error or since this node isn't compiled yet";
+            return "No AST, possibly because of either syntax error or since this node isn't compiled yet.";
         } else {
             if (astNode instanceof Expr) {
                 return ((Expr)astNode).toString(1);
