@@ -203,7 +203,7 @@ public class Parser {
         // parse function parameters
         while (match(TokenType.TOK_IDENTIFIER)) result.addParameter(previous().lexeme());
 
-        // expect "<- {" after parameters
+        // expect "-> {" after parameters
         if (!match(TokenType.TOK_RIGHT_ARROW))
             error(peek(), "right arrow axpected after paramterlist of function literal");
 

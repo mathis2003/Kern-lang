@@ -70,13 +70,6 @@ public class FunctionCall extends Expr {
                         assignStmt.assign(edge.getEndNode(), fLit.getFunctionContext(), argumentsHm);
                     }
                 }
-                /*for (GraphEdge edge : contextNode.getImports()) {
-                    GraphNode importNode = edge.getEndNode();
-                    if (importNode.getName().equals(assignStmt.getIdentifier())) {
-                        // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
-                        importNode.setAstExpr(assignStmt.getExpr().interpret(fLit.getFunctionContext(), argumentsHm));
-                    }
-                }*/
             }
             else if (stmt instanceof ReturnStmt) {
                 // note: the expressions in the function literal, are to be evaluated in that function's context
