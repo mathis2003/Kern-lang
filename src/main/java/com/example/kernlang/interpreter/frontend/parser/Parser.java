@@ -1,5 +1,6 @@
 package com.example.kernlang.interpreter.frontend.parser;
 
+import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
@@ -15,16 +16,22 @@ import java.util.List;
 
 public class Parser {
     private final List<Token> tokens;
+    private final GraphNode graphNode;
     private int current = 0;
 
-    public Parser(List<Token> tokens) {
+    public Parser(List<Token> tokens, GraphNode graphNode) {
         this.tokens = tokens;
+        this.graphNode = graphNode;
     }
 
 
     /** Parse functions **/
 
     public Expr parseExpression() {
+        if (tokens.get(0).tokenType() == TokenType.TOK_EOF) {
+            error(peek(), "trying to compile empty node");
+            return null;
+        }
         return parseBoolLogic();
     }
 
@@ -275,7 +282,7 @@ public class Parser {
     }
 
     private ParseError error(Token token, String message) {
-        Interpreter.error(token.node(), token.line(), message);
+        Interpreter.error(this.graphNode, token.line(), message);
         return new ParseError();
     }
 

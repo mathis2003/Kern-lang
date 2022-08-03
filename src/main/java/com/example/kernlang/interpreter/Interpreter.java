@@ -21,12 +21,12 @@ public class Interpreter {
     }
 
     public static void error(GraphNode graphNode, int line, String message) {
-        report(line, "", message);
+        report(graphNode, line, "", message);
     }
 
-    static private void report(int line, String where, String message) {
+    static private void report(GraphNode node, int line, String where, String message) {
         System.err.println(
-                "[line " + line + "] Error" + where + ": " + message);
+                "node: " + node.getName() + " | " + "[line " + line + "] Error" + where + ": " + message);
         hadError = true;
     }
 }
