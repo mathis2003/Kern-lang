@@ -107,6 +107,13 @@ public class Parser {
             case TOK_OPEN_CURLY -> { return parseRecord(); }
             case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
             case TOK_PERCENT -> { return parseFunctionCall(); }
+            case TOK_OPEN_PAREN -> {
+                advance(); // skip over open paren (
+                e = parseExpression();
+                if (!match(TokenType.TOK_CLOSE_PAREN)) {
+                    error(peek(), "closing parenthesis expected");
+                }
+            }
             default -> { error(peek(), "unary expression or literal expected"); }
         }
 
