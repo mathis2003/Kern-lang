@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public abstract class Expr implements ASTNode {
     public abstract String toString(int indent);
-    protected String getTabs(int indent) {
+    protected static String getTabs(int indent) {
         String tabs = "";
         for (int i = 0; i < indent; i++) tabs += "\t";
 

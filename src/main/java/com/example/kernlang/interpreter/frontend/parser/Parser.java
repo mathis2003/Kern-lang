@@ -4,6 +4,9 @@ import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.*;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
 import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
@@ -21,12 +24,6 @@ public class Parser {
 
     /** Parse functions **/
 
-    private Stmt parseAssignment() {
-        Stmt result = null;
-
-        return result;
-    }
-
     public Expr parseExpression() {
         return parseBoolLogic();
     }
@@ -36,7 +33,7 @@ public class Parser {
 
         while (match(TokenType.TOK_EQUAL_EQUAL, TokenType.TOK_BANG_EQUAL)) {
             Token operator = previous();
-            Expr right = parseEquality();
+            Expr right = parseBoolLogic();
             expr = new BinaryExpr(expr, operator, right);
         }
 
@@ -48,7 +45,7 @@ public class Parser {
 
         while (match(TokenType.TOK_LESS, TokenType.TOK_GREATER)) {
             Token operator = previous();
-            Expr right = parseComparison();
+            Expr right = parseEquality();
             expr = new BinaryExpr(expr, operator, right);
         }
 
@@ -60,7 +57,7 @@ public class Parser {
 
         while (match(TokenType.TOK_PLUS, TokenType.TOK_MINUS)) {
             Token operator = previous();
-            Expr right = parseTerm();
+            Expr right = parseComparison();
             expr = new BinaryExpr(expr, operator, right);
         }
 
@@ -72,7 +69,7 @@ public class Parser {
 
         while (match(TokenType.TOK_STAR, TokenType.TOK_SLASH)) {
             Token operator = previous();
-            Expr right = parseFactor();
+            Expr right = parseTerm();
             expr = new BinaryExpr(expr, operator, right);
         }
 
@@ -80,14 +77,22 @@ public class Parser {
     }
 
     private Expr parseFactor() {
-        return parseUnary();
+        Expr expr = parseUnary();
+
+        while (match(TokenType.TOK_DOT)) {
+            Token operator = previous();
+            Expr right = parseFactor();
+            expr = new BinaryExpr(expr, operator, right);
+        }
+
+        return expr;
     }
 
     private Expr parseUnary() {
         Expr e = null;
 
         switch (peek().tokenType()) {
-            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return parseLiteral(); }
+            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return (Expr) parseLiteral(); }
             case TOK_BANG, TOK_AMPERSAND, TOK_DOLLAR_SIGN -> {
                     Token operator = advance();
                     e = new UnaryExpr(operator, parseUnary());
@@ -128,19 +133,30 @@ public class Parser {
         return new IfExpr(condExpr, trueCase, falseCase);
     }
 
-    private LiteralExpr parseLiteral() {
+    private Literal parseLiteral() {
+        switch (peek().tokenType()) {
+            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return parseLiteralExpr(); }
+            case TOK_OPEN_CURLY -> { return parseRecord(); }
+            case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
+            default -> { error(peek(), "unary expression or literal expected"); }
+        }
+
+        return null;
+    }
+
+    private LiteralExpr parseLiteralExpr() {
         return new LiteralExpr(advance());
     }
 
-    private RecordExpr parseRecord() {
+    private RecordLiteral parseRecord() {
         advance(); // skip over open curly {
 
-        RecordExpr result = new RecordExpr();
+        RecordLiteral result = new RecordLiteral();
 
         while (match(TokenType.TOK_IDENTIFIER)) {
             String identifier = previous().lexeme();
             if (match(TokenType.TOK_LEFT_ARROW)) {
-                result.addRecordField(identifier, parseExpression());
+                result.addRecordField(identifier, parseLiteral());
             } else {
                 error(peek(), "leftarrow expected after identifier in record definition");
             }
@@ -191,17 +207,14 @@ public class Parser {
             case TOK_RETURN -> {
                 advance(); // skip over "return" keyword
                 result = new ReturnStmt(parseExpression());
-                break;
             }
-            case TOK_IDENTIFIER -> {
-                String ident = advance().lexeme();
+            default -> {
+                Expr expr = parseExpression();
                 if (match(TokenType.TOK_LEFT_ARROW)) {
-                    result = new Assignment(ident, parseExpression());
+                    result = new Assignment(expr, parseExpression());
                 } else {
-                    error(peek(), "left arrow expected for assignment");
+                    error(peek(), "invalid statement");
                 }
-
-                break;
             }
         }
 

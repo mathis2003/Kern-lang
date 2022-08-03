@@ -21,4 +21,6 @@ module com.example.kernlang {
     opens com.example.kernlang.interpreter.frontend.parser.expressions to javafx.fxml;
     exports com.example.kernlang.interpreter.frontend.parser.statements;
     opens com.example.kernlang.interpreter.frontend.parser.statements to javafx.fxml;
+    exports com.example.kernlang.interpreter.frontend.parser.expressions.literals;
+    opens com.example.kernlang.interpreter.frontend.parser.expressions.literals to javafx.fxml;
 }

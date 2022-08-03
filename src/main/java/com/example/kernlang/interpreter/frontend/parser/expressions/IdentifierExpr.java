@@ -18,6 +18,10 @@ public class IdentifierExpr extends Expr {
         return tabs + "identifier: " + ident + "\n";
     }
 
+    public String getIdentifier() {
+        return ident;
+    }
+
     @Override
     public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         if (additionalContext.containsKey(ident)) {

@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
 
 import java.util.HashMap;
 

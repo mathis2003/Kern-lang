@@ -1,6 +1,8 @@
-package com.example.kernlang.interpreter.frontend.parser.expressions;
+package com.example.kernlang.interpreter.frontend.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
 import java.util.ArrayList;

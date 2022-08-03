@@ -2,6 +2,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
 import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
@@ -56,15 +57,26 @@ public class FunctionCall extends Expr {
 
         // statements
         for (Stmt stmt : fLit.getStatements()) {
-            if (stmt instanceof Assignment) {
-                Assignment assignStmt = (Assignment) stmt;
+            if (stmt instanceof Assignment assignStmt) {
+                String ident = null;
+                if (assignStmt.getAssignedObj() instanceof IdentifierExpr) {
+                    ident = ((IdentifierExpr)assignStmt.getAssignedObj()).getIdentifier();
+                } else if (assignStmt.getAssignedObj() instanceof BinaryExpr) {
+                    ident = ((IdentifierExpr)((BinaryExpr)assignStmt.getAssignedObj()).getLeftExpr()).getIdentifier();
+                }
                 for (GraphEdge edge : contextNode.getImports()) {
+                    if (edge.getEndNode().name.equals(ident)) {
+                        // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
+                        assignStmt.assign(edge.getEndNode(), fLit.getFunctionContext(), argumentsHm);
+                    }
+                }
+                /*for (GraphEdge edge : contextNode.getImports()) {
                     GraphNode importNode = edge.getEndNode();
                     if (importNode.getName().equals(assignStmt.getIdentifier())) {
                         // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
                         importNode.setAstExpr(assignStmt.getExpr().interpret(fLit.getFunctionContext(), argumentsHm));
                     }
-                }
+                }*/
             }
             else if (stmt instanceof ReturnStmt) {
                 // note: the expressions in the function literal, are to be evaluated in that function's context

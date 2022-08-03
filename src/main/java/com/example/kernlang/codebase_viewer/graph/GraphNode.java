@@ -3,8 +3,11 @@ package com.example.kernlang.codebase_viewer.graph;
 import com.example.kernlang.codebase_viewer.CursorState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import com.example.kernlang.interpreter.frontend.Compiler;
-import com.example.kernlang.interpreter.frontend.parser.expressions.FunctionLiteral;
+import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.IdentifierExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
 import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
@@ -20,7 +23,7 @@ import java.util.HashMap;
 public class GraphNode extends Pane {
     private final Circle circle;
     private final Text nodeNameText;
-    private final String name;
+    public final String name;
 
     private Literal astLiteralExpr;
 
@@ -214,11 +217,19 @@ public class GraphNode extends Pane {
             for (Stmt stmt : ((FunctionLiteral)astLiteralExpr).getStatements()) {
                 if (stmt instanceof Assignment) {
                     Assignment assignStmt = (Assignment) stmt;
+                    String ident = null;
+                    if (assignStmt.getAssignedObj() instanceof IdentifierExpr) {
+                        ident = ((IdentifierExpr)assignStmt.getAssignedObj()).getIdentifier();
+                    } else if (assignStmt.getAssignedObj() instanceof BinaryExpr) {
+                        ident = ((IdentifierExpr)((BinaryExpr)assignStmt.getAssignedObj()).getLeftExpr()).getIdentifier();
+                    }
                     for (GraphEdge edge : imports) {
-                        if (edge.getEndNode().name.equals(assignStmt.getIdentifier())) {
-                            edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this, new HashMap<>()));
+                        if (edge.getEndNode().name.equals(ident)) {
+                            assignStmt.assign(edge.getEndNode(), this, new HashMap<>());
+                            //edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this, new HashMap<>()));
                         }
                     }
+
                 }
                 else if (stmt instanceof ReturnStmt) {
                     // since this function isn't called anywhere, but instead run by hand,

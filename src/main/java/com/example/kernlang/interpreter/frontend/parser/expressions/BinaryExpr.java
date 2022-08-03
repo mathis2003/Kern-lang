@@ -3,6 +3,8 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
 
 import java.util.HashMap;
 
@@ -65,6 +67,23 @@ public class BinaryExpr extends Expr {
                             TokenType.TOK_NUMBER, "", left / right, context, -1
                     )
                 );
+            }
+            case TOK_DOT -> {
+                RecordLiteral left = (RecordLiteral) leftExpr.interpret(context, additionalContext);
+                String ident = "";
+                if (rightExpr instanceof BinaryExpr) {
+                    ident = ((IdentifierExpr) ((BinaryExpr) rightExpr).leftExpr).getIdentifier();
+                } else {
+                    ident = ((IdentifierExpr) rightExpr).getIdentifier();
+                }
+
+                for (RecordLiteral.RecordField field : left.getRecordFields()) {
+                    if (field.getIdentifier().equals(ident)) {
+                        return ((Expr)field.getL()).interpret(context, additionalContext);
+                    }
+                }
+
+                return null;
             }
             case TOK_GREATER -> {
                 Double left = ((Double)((LiteralExpr) leftExpr.interpret(context, additionalContext)).getTok().literal());
