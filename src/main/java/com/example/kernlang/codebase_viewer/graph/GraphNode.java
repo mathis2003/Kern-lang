@@ -7,7 +7,6 @@ import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.IdentifierExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
 import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
@@ -69,9 +68,11 @@ public class GraphNode extends Pane {
         circle.setCenterY(radius + 2);
         circle.setRadius(radius);
         circle.setFill(Color.GRAY);
+        circle.visibleProperty().bind(visibleProperty());
         nodeNameText = new Text();
         nodeNameText.setX(radius + 2);
         nodeNameText.setY(radius + 2);
+        nodeNameText.visibleProperty().bind(visibleProperty());
         this.getChildren().addAll(circle, nodeNameText);
         this.imports = new ArrayList<>();
         this.exports = new ArrayList<>();
@@ -138,24 +139,14 @@ public class GraphNode extends Pane {
         return this.imports;
     }
 
-    public void setInvisible() {
-        circle.setVisible(false);
-        nodeNameText.setVisible(false);
-    }
-
-    public void setVisible() {
-        circle.setVisible(true);
-        nodeNameText.setVisible(true);
-    }
-
     public void collapseSubClusters(GraphNode mainNode) {
         collapsed = true;
         mainNode.circle.setFill(Color.GREEN);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
             if (allExportsLandAtNode(childNode, mainNode)) {
-                childNode.setInvisible();
-                importEdge.setInvisible();
+                childNode.setVisible(false);
+                importEdge.setVisible(false);
                 childNode.collapseSubClusters(mainNode);
             }
         }
@@ -176,8 +167,8 @@ public class GraphNode extends Pane {
         mainNode.circle.setFill(Color.GRAY);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
-            childNode.setVisible();
-            importEdge.setVisible();
+            childNode.setVisible(true);
+            importEdge.setVisible(true);
             childNode.openSubClusters(mainNode);
         }
     }
@@ -215,8 +206,7 @@ public class GraphNode extends Pane {
     public void runNode() {
         if (this.astLiteralExpr instanceof FunctionLiteral) {
             for (Stmt stmt : ((FunctionLiteral)astLiteralExpr).getStatements()) {
-                if (stmt instanceof Assignment) {
-                    Assignment assignStmt = (Assignment) stmt;
+                if (stmt instanceof Assignment assignStmt) {
                     String ident = null;
                     if (assignStmt.getAssignedObj() instanceof IdentifierExpr) {
                         ident = ((IdentifierExpr)assignStmt.getAssignedObj()).getIdentifier();

@@ -1,6 +1,5 @@
 package com.example.kernlang.codebase_viewer.graph;
 
-import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -8,17 +7,11 @@ import javafx.scene.shape.Line;
  * A GraphEdge has a startNode and an endNode, to whose coordinates it is bound.
  * That means that when the startNode or endNode is dragged around, the edge will follow accordingly.
  */
-public class GraphEdge extends Pane {
+public class GraphEdge extends Line {
     private final GraphNode startNode;
     private GraphNode endNode;
 
-    private final Line line;
-
-    private final ArrowHead arrowHead;
-
-    private final int arrowHeadRadius = 5;
-
-    private final boolean isBound;
+    private final static int ARROW_HEAD_RADIUS = 5;
 
     /**
      * Perhaps this strikes you as somewhat unusual,
@@ -29,55 +22,18 @@ public class GraphEdge extends Pane {
      * as a form of visual feedback to the user.
      */
     public GraphEdge(GraphNode startNode, boolean isBound) {
-        this.isBound = isBound;
-        this.line = new Line();
-
         this.startNode = startNode;
-        line.startXProperty().bind(this.startNode.getXProperty());
-        line.startYProperty().bind(this.startNode.getYProperty());
+        startXProperty().bind(startNode.getXProperty());
+        startYProperty().bind(startNode.getYProperty());
 
-        this.arrowHead = new ArrowHead(line.getStartX(), line.getStartY(), line.getEndX(), line.getEndY(), arrowHeadRadius);
+        ArrowHead arrowHead = new ArrowHead(startXProperty(), startYProperty(), endXProperty(), endYProperty(), ARROW_HEAD_RADIUS);
         arrowHead.setFill(Color.RED);
-        arrowHead.setRadius(arrowHeadRadius);
-        this.getChildren().addAll(line, arrowHead);
+        arrowHead.setRadius(ARROW_HEAD_RADIUS);
+        arrowHead.visibleProperty().bind(visibleProperty());
 
-        if (isBound) { line.setStroke(Color.GREEN); }
-    }
-
-    public void setEndX(double x) {
-        line.setEndX(x);
-        arrowHead.setNewEndX(x);
-    }
-
-    public void setEndY(double y) {
-        line.setEndY(y);
-        arrowHead.setNewEndY(y);
-    }
-
-    public double getStartX() {
-        return line.getStartX();
-    }
-
-    public double getStartY() {
-        return line.getStartY();
-    }
-
-    public double getEndX() {
-        return line.getEndX();
-    }
-
-    public double getEndY() {
-        return line.getEndY();
-    }
-
-    public void setInvisible() {
-        line.setVisible(false);
-        arrowHead.setVisible(false);
-    }
-
-    public void setVisible() {
-        line.setVisible(true);
-        arrowHead.setVisible(true);
+        if (isBound) {
+            setStroke(Color.GREEN);
+        }
     }
 
     public void setEndNode(GraphNode endNode) {
@@ -85,12 +41,8 @@ public class GraphEdge extends Pane {
         this.endNode.addExport(this);
         this.setEndX(endNode.getXProperty().getValue());
         this.setEndY(endNode.getYProperty().getValue());
-        line.endXProperty().bind(this.endNode.getXProperty());
-        line.endYProperty().bind(this.endNode.getYProperty());
-        startNode.getXProperty().addListener(e -> arrowHead.setNewStartX(line.getStartX()));
-        startNode.getYProperty().addListener(e -> arrowHead.setNewStartY(line.getStartY()));
-        endNode.getXProperty().addListener(e -> arrowHead.setNewEndX(line.getEndX()));
-        endNode.getYProperty().addListener(e -> arrowHead.setNewEndY(line.getEndY()));
+        endXProperty().bind(endNode.getXProperty());
+        endYProperty().bind(endNode.getYProperty());
     }
 
     public GraphNode getEndNode() {
