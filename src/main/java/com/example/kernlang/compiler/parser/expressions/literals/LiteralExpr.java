@@ -1,10 +1,10 @@
-package com.example.kernlang.interpreter.frontend.parser.expressions.literals;
+package com.example.kernlang.compiler.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
-import com.example.kernlang.interpreter.frontend.lexer.Token;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
+import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
+import com.example.kernlang.compiler.lexer.Token;
+import com.example.kernlang.compiler.parser.expressions.Expr;
+import com.example.kernlang.compiler.parser.expressions.Literal;
 
 import java.util.HashMap;
 

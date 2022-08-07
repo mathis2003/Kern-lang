@@ -4,6 +4,7 @@ import com.example.kernlang.TextEditor;
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
+import com.example.kernlang.compiler.Compiler;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 
@@ -35,9 +36,7 @@ public class CursorState implements Observable {
     }
 
     public void compileNodes() {
-        for (GraphNode node : graphNodes) {
-            node.compile();
-        }
+        Compiler.compile(graphNodes);
     }
 
     private enum State {

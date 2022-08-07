@@ -1,12 +1,12 @@
-package com.example.kernlang.interpreter.frontend.parser.statements;
+package com.example.kernlang.compiler.parser.statements;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.IdentifierExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
+import com.example.kernlang.compiler.parser.expressions.BinaryExpr;
+import com.example.kernlang.compiler.parser.expressions.Expr;
+import com.example.kernlang.compiler.parser.expressions.Literal;
+import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
 
 import java.util.HashMap;
 

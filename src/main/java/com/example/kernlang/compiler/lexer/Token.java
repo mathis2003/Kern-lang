@@ -1,4 +1,4 @@
-package com.example.kernlang.interpreter.frontend.lexer;
+package com.example.kernlang.compiler.lexer;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 

@@ -1,7 +1,7 @@
-package com.example.kernlang.interpreter.frontend.parser.statements;
+package com.example.kernlang.compiler.parser.statements;
 
-import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
+import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
+import com.example.kernlang.compiler.parser.expressions.Expr;
 
 public class ReturnStmt extends Stmt {
     private final Expr returnExpr;

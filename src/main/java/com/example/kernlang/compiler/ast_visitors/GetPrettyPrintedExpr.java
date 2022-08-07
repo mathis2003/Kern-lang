@@ -1,10 +1,10 @@
-package com.example.kernlang.interpreter.frontend.ast_visitors;
+package com.example.kernlang.compiler.ast_visitors;
 
-import com.example.kernlang.interpreter.frontend.parser.expressions.*;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
-import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
+import com.example.kernlang.compiler.parser.expressions.*;
+import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.parser.statements.Stmt;
+import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 
 public class GetPrettyPrintedExpr implements ExprVisitor<String>{
 

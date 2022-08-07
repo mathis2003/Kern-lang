@@ -1,15 +1,16 @@
-package com.example.kernlang.interpreter.frontend.parser;
+package com.example.kernlang.compiler.parser;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.frontend.lexer.Token;
-import com.example.kernlang.interpreter.frontend.lexer.TokenType;
-import com.example.kernlang.interpreter.frontend.parser.expressions.*;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.RecordLiteral;
-import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
-import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
-import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
+import com.example.kernlang.compiler.Compiler;
+import com.example.kernlang.compiler.parser.expressions.*;
+import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.parser.statements.ReturnStmt;
+import com.example.kernlang.compiler.lexer.Token;
+import com.example.kernlang.compiler.lexer.TokenType;
+import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
+import com.example.kernlang.compiler.parser.statements.Assignment;
+import com.example.kernlang.compiler.parser.statements.Stmt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,7 @@ public class Parser {
 
     public Expr parseExpression() {
         if (tokens.get(0).tokenType() == TokenType.TOK_EOF) {
-            error(peek(), "trying to compile empty node");
-            return null;
+            throw Compiler.error(graphNode, peek().line(), "trying to compile empty node");
         }
         return parseBoolLogic();
     }
@@ -120,10 +120,10 @@ public class Parser {
                 advance(); // skip over open paren (
                 e = parseExpression();
                 if (!match(TokenType.TOK_CLOSE_PAREN)) {
-                    error(peek(), "closing parenthesis expected");
+                    throw Compiler.error(graphNode, peek().line(), "closing parenthesis expected");
                 }
             }
-            default -> { error(peek(), "unary expression or literal expected"); }
+            default -> { throw Compiler.error(peek().node(), peek().line(), "unary expression or literal expected"); }
         }
 
         return e;
@@ -135,13 +135,13 @@ public class Parser {
         Expr condExpr = parseExpression();
 
         if (!match(TokenType.TOK_THEN)) {
-            error(peek(), "keyword \"then\" expected after if with conditional expression");
+            throw Compiler.error(graphNode, peek().line(), "keyword \"then\" expected after if with conditional expression");
         }
 
         Expr trueCase = parseExpression();
 
         if (!match(TokenType.TOK_ELSE)) {
-            error(peek(), "keyword \"else\" expected after if [expression] then [expression] ");
+            throw Compiler.error(graphNode, peek().line(), "keyword \"else\" expected after if [expression] then [expression] ");
         }
 
         Expr falseCase = parseExpression();
@@ -149,15 +149,13 @@ public class Parser {
         return new IfExpr(condExpr, trueCase, falseCase);
     }
 
-    private Literal parseLiteral() {
+    public Literal parseLiteral() {
         switch (peek().tokenType()) {
             case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return parseLiteralExpr(); }
             case TOK_OPEN_CURLY -> { return parseRecord(); }
             case TOK_BACKSLASH -> { return parseFunctionLiteral(); }
-            default -> { error(peek(), "unary expression or literal expected"); }
+            default -> { throw Compiler.error(graphNode, peek().line(), "unary expression or literal expected"); }
         }
-
-        return null;
     }
 
     private LiteralExpr parseLiteralExpr() {
@@ -174,12 +172,12 @@ public class Parser {
             if (match(TokenType.TOK_LEFT_ARROW)) {
                 result.addRecordField(identifier, parseLiteral());
             } else {
-                error(peek(), "leftarrow expected after identifier in record definition");
+                throw Compiler.error(graphNode, peek().line(), "leftarrow expected after identifier in record definition");
             }
         }
 
         if (!match(TokenType.TOK_CLOSE_CURLY))
-            error(peek(), "no closing curly bracket at end of record definition");
+            throw Compiler.error(graphNode, peek().line(), "no closing curly bracket at end of record definition");
 
         return result;
     }
@@ -189,7 +187,7 @@ public class Parser {
 
         FunctionCall functionCall = new FunctionCall(parseExpression());
 
-        if (!match(TokenType.TOK_OPEN_PAREN))  error(peek(), "open parenthesis expected");
+        if (!match(TokenType.TOK_OPEN_PAREN))  throw Compiler.error(graphNode, peek().line(), "open parenthesis expected");
 
         // parse arguments, when a closing paren is found, it skips over that and stops parsing arguments
         while (!match(TokenType.TOK_CLOSE_PAREN)) functionCall.addArgument(parseExpression());
@@ -207,9 +205,9 @@ public class Parser {
 
         // expect "-> {" after parameters
         if (!match(TokenType.TOK_RIGHT_ARROW))
-            error(peek(), "right arrow axpected after paramterlist of function literal");
+            throw Compiler.error(graphNode, peek().line(), "right arrow axpected after paramterlist of function literal");
 
-        if (!match(TokenType.TOK_OPEN_CURLY))  error(peek(), "open curly bracket expected");
+        if (!match(TokenType.TOK_OPEN_CURLY))  throw Compiler.error(graphNode, peek().line(), "open curly bracket expected");
 
         // parse statements, when it finds a "}", it skips that token and stops parsing statements
         while (!match(TokenType.TOK_CLOSE_CURLY)) result.addStmt(parseStmt());
@@ -229,7 +227,7 @@ public class Parser {
                 if (match(TokenType.TOK_LEFT_ARROW)) {
                     result = new Assignment(expr, parseExpression());
                 } else {
-                    error(peek(), "invalid statement");
+                    throw Compiler.error(graphNode, peek().line(), "invalid statement");
                 }
             }
         }
@@ -280,15 +278,6 @@ public class Parser {
     private Token consume(TokenType type, String message) {
         if (check(type)) return advance();
 
-        throw error(peek(), message);
+        throw Compiler.error(graphNode, peek().line(), message);
     }
-
-    private ParseError error(Token token, String message) {
-        parseErrors.add("node: " + this.graphNode.getName() + " | " +
-                "[line " + token.line() + "] Error" + ": " + message);
-        //Interpreter.error(this.graphNode, token.line(), message);
-        return new ParseError();
-    }
-
-    private static class ParseError extends RuntimeException {}
 }

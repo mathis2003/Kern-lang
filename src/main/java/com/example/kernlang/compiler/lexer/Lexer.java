@@ -1,7 +1,7 @@
-package com.example.kernlang.interpreter.frontend.lexer;
+package com.example.kernlang.compiler.lexer;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.Interpreter;
+import com.example.kernlang.compiler.Compiler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ public class Lexer {
         this.graphNode = graphNode;
     }
 
-    public ArrayList<Token> lexCode() {
+    public ArrayList<Token> lexCode(ArrayList<String> errors) {
         while (!isAtEnd()) {
             start = current;
             lexToken();
@@ -55,7 +55,7 @@ public class Lexer {
                 if (match('\'')) {
                     addToken(TokenType.TOK_CHAR, charLiteral);
                 } else {
-                    Interpreter.error(graphNode, line, "char literal not closed by a quote");
+                    throw Compiler.error(graphNode, line, "char literal not closed by a quote");
                 }
                 break;
             }
@@ -94,7 +94,7 @@ public class Lexer {
                 } else if (isAlpha(c)) {
                     identifier();
                 } else {
-                    Interpreter.error(graphNode, line, "Unexpected character.");
+                    Compiler.error(graphNode, line, "Unexpected character.");
                 }
                 break;
         }

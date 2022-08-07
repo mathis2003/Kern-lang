@@ -2,14 +2,13 @@ package com.example.kernlang.codebase_viewer.graph;
 
 import com.example.kernlang.codebase_viewer.CursorState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
-import com.example.kernlang.interpreter.frontend.Compiler;
-import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.IdentifierExpr;
-import com.example.kernlang.interpreter.frontend.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
-import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
-import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
-import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
+import com.example.kernlang.compiler.parser.expressions.BinaryExpr;
+import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
+import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.expressions.Literal;
+import com.example.kernlang.compiler.parser.statements.Assignment;
+import com.example.kernlang.compiler.parser.statements.ReturnStmt;
+import com.example.kernlang.compiler.parser.statements.Stmt;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -175,11 +174,6 @@ public class GraphNode extends Pane {
 
     public boolean isCollapsed() {
         return collapsed;
-    }
-
-    public void compile() {
-        // cast because the node can only contain one Literal
-        this.astLiteralExpr = (Literal) Compiler.compile(this);
     }
 
     public String getName() {

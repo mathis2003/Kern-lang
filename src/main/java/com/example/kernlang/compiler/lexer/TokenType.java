@@ -1,4 +1,4 @@
-package com.example.kernlang.interpreter.frontend.lexer;
+package com.example.kernlang.compiler.lexer;
 
 public enum TokenType {
     TOK_UNIT, TOK_BOOL, TOK_CHAR, TOK_NUMBER, TOK_IDENTIFIER, TOK_OPEN_PAREN, TOK_CLOSE_PAREN, TOK_OPEN_CURLY,
