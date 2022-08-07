@@ -8,7 +8,7 @@ import com.example.kernlang.compiler.parser.expressions.Literal;
 
 import java.util.HashMap;
 
-public class LiteralExpr extends Expr implements Literal {
+public class LiteralExpr implements Expr, Literal {
     private final Token tok;
 
     public LiteralExpr(Token tok) {

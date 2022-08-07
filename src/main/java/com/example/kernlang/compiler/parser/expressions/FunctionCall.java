@@ -11,7 +11,7 @@ import com.example.kernlang.compiler.parser.statements.Stmt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FunctionCall extends Expr {
+public class FunctionCall implements Expr {
     private final Expr functionExpr;
     private final ArrayList<Expr> args;
 

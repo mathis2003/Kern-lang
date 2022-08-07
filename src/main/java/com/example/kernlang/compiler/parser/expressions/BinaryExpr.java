@@ -9,7 +9,7 @@ import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 
 import java.util.HashMap;
 
-public class BinaryExpr extends Expr {
+public class BinaryExpr implements Expr {
 
     private final Expr leftExpr;
     private final Token operator;

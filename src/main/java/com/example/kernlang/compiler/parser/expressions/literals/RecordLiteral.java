@@ -9,7 +9,7 @@ import com.example.kernlang.compiler.parser.expressions.Expr;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RecordLiteral extends Expr implements Literal {
+public class RecordLiteral implements Expr, Literal {
 
     private final ArrayList<RecordField> recordFields = new ArrayList<>();
 
@@ -65,7 +65,8 @@ public class RecordLiteral extends Expr implements Literal {
         }
 
         public String toString(int indent) {
-            String tabs = Expr.getTabs(indent);
+            String tabs = "";
+            for (int i = 0; i < indent; i++) tabs += "\t";
 
             return tabs + identifier + ":\n" + tabs + "\tvalue:\n" + l.toString(indent + 2);
         }

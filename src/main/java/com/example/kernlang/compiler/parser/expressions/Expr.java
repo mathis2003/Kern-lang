@@ -6,9 +6,9 @@ import com.example.kernlang.compiler.parser.ASTNode;
 
 import java.util.HashMap;
 
-public abstract class Expr implements ASTNode {
+public interface Expr extends ASTNode {
     public abstract String toString(int indent);
-    protected static String getTabs(int indent) {
+    public default String getTabs(int indent) {
         String tabs = "";
         for (int i = 0; i < indent; i++) tabs += "\t";
 

@@ -9,7 +9,7 @@ import com.example.kernlang.compiler.parser.statements.Stmt;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FunctionLiteral extends Expr implements Literal {
+public class FunctionLiteral implements Expr, Literal {
     private final ArrayList<Stmt> statements = new ArrayList<>();
     private final ArrayList<String> paramIdentifiers = new ArrayList<>();
     private final GraphNode functionContext;

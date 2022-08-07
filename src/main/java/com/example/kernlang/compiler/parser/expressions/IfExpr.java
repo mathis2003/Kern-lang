@@ -6,7 +6,7 @@ import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 
 import java.util.HashMap;
 
-public class IfExpr extends Expr{
+public class IfExpr implements Expr{
     public final Expr condition;
     public final Expr trueCaseExpr;
     public final Expr falseCaseExpr;

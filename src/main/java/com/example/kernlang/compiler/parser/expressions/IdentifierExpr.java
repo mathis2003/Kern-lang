@@ -6,7 +6,7 @@ import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 
 import java.util.HashMap;
 
-public class IdentifierExpr extends Expr {
+public class IdentifierExpr implements Expr {
     private final String ident;
 
     public IdentifierExpr(String ident) {
@@ -32,14 +32,14 @@ public class IdentifierExpr extends Expr {
     public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
         if (additionalContext.containsKey(ident)) {
             // here, context and additionalContext will never be used since the expression is a Literal anyways
-            return ((Expr) additionalContext.get(ident)).interpret(context, additionalContext);
+            return (additionalContext.get(ident)).interpret(context, additionalContext);
         } else {
             for (GraphEdge edge : context.getImports()) {
                 GraphNode importNode = edge.getEndNode();
                 if (importNode.getName().equals(ident)) {
                     // we give an empty hashmap, as the identifier's expression is to be evaluated in another context,
                     // but obviously we don't give arguments to an identifier expression
-                    return ((Expr)importNode.getAST()).interpret(importNode, new HashMap<>());
+                    return (importNode.getAST()).interpret(importNode, new HashMap<>());
                 }
             }
         }

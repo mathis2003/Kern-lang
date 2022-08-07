@@ -8,7 +8,7 @@ import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 
 import java.util.HashMap;
 
-public class UnaryExpr extends Expr {
+public class UnaryExpr implements Expr {
     private final Token operator;
     private final Expr expr;
 
