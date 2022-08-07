@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
@@ -28,6 +29,11 @@ public class BinaryExpr extends Expr {
                 tabs + "\t\t" + operator.lexeme() + "\n" +
                 tabs + "\tleft:\n" + leftExpr.toString(indent + 2) + "\n" +
                 tabs + "\tright:\n" + rightExpr.toString(indent + 2) + "\n";
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitBinaryExpr(this);
     }
 
     @Override

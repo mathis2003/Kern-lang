@@ -1,7 +1,6 @@
 package com.example.kernlang.interpreter.frontend.parser;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.Interpreter;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.*;
@@ -12,16 +11,19 @@ import com.example.kernlang.interpreter.frontend.parser.statements.Assignment;
 import com.example.kernlang.interpreter.frontend.parser.statements.ReturnStmt;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
     private final List<Token> tokens;
     private final GraphNode graphNode;
+    private final ArrayList<String> parseErrors;
     private int current = 0;
 
     public Parser(List<Token> tokens, GraphNode graphNode) {
         this.tokens = tokens;
         this.graphNode = graphNode;
+        this.parseErrors = new ArrayList<>();
     }
 
 
@@ -282,7 +284,9 @@ public class Parser {
     }
 
     private ParseError error(Token token, String message) {
-        Interpreter.error(this.graphNode, token.line(), message);
+        parseErrors.add("node: " + this.graphNode.getName() + " | " +
+                "[line " + token.line() + "] Error" + ": " + message);
+        //Interpreter.error(this.graphNode, token.line(), message);
         return new ParseError();
     }
 

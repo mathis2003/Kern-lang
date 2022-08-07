@@ -1,6 +1,8 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
+import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
 
@@ -21,6 +23,11 @@ public class RecordLiteral extends Expr implements Literal {
         }
 
         return tabs + "record:" + fieldStrings + tabs + "\n";
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitRecordLiteral(this);
     }
 
     @Override
@@ -61,6 +68,10 @@ public class RecordLiteral extends Expr implements Literal {
             String tabs = Expr.getTabs(indent);
 
             return tabs + identifier + ":\n" + tabs + "\tvalue:\n" + l.toString(indent + 2);
+        }
+
+        public String toString() {
+            return "(" + identifier + ":\n" + "\tvalue:\n" + GetPrettyPrintedExpr.of((Expr)l);
         }
     }
 }

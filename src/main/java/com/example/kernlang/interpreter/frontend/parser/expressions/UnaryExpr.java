@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.lexer.TokenType;
 import com.example.kernlang.interpreter.frontend.parser.expressions.literals.LiteralExpr;
@@ -23,6 +24,11 @@ public class UnaryExpr extends Expr {
                 tabs + "\toperator: " + operator.lexeme() + "\n" +
                 tabs + "\toperand: " + "\n" +
                 expr.toString(indent + 2) + "\n";
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitUnaryExpr(this);
     }
 
     @Override

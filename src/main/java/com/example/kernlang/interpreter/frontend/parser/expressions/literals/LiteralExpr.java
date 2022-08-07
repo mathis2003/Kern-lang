@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
 import com.example.kernlang.interpreter.frontend.lexer.Token;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
@@ -24,6 +25,11 @@ public class LiteralExpr extends Expr implements Literal {
         return tabs + "expression (literal):\n" +
                 tabs + "\ttype: " + tok.tokenType() + "\n" +
                 tabs + "\tvalue: " + tok.literal() + "\n";
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitLiteralExpr(this);
     }
 
     @Override

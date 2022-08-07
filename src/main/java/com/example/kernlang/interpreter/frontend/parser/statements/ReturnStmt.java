@@ -1,5 +1,6 @@
 package com.example.kernlang.interpreter.frontend.parser.statements;
 
+import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 
 public class ReturnStmt extends Stmt {
@@ -17,5 +18,9 @@ public class ReturnStmt extends Stmt {
     public String toString(int indent) {
         String tabs = getTabs(indent);
         return tabs + "return:\n" + returnExpr.toString(indent + 1);
+    }
+
+    public String toString() {
+        return "(return:\n" + GetPrettyPrintedExpr.of(returnExpr) + ")";
     }
 }

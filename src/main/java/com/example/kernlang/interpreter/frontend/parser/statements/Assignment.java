@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.statements;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.BinaryExpr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.IdentifierExpr;
@@ -26,6 +27,13 @@ public class Assignment extends Stmt {
                 tabs + "\tidentifier: " + assignedObj.toString(indent + 2) + "\n" +
                 tabs + "\tassigned expression:" + "\n" +
                 expr.toString(indent + 2);
+    }
+
+    public String toString() {
+        return "(assignment:\n" +
+                "\tidentifier: " + GetPrettyPrintedExpr.of(assignedObj) + "\n" +
+                "\tassigned expression:" + "\n" +
+                GetPrettyPrintedExpr.of(expr) + ")";
     }
 
     public Expr getAssignedObj() {

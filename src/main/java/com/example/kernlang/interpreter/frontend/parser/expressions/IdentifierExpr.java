@@ -2,6 +2,7 @@ package com.example.kernlang.interpreter.frontend.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
 
 import java.util.HashMap;
 
@@ -16,6 +17,11 @@ public class IdentifierExpr extends Expr {
     public String toString(int indent) {
         String tabs = getTabs(indent);
         return tabs + "identifier: " + ident + "\n";
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitIdentifierExpr(this);
     }
 
     public String getIdentifier() {

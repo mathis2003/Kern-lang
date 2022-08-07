@@ -2,8 +2,8 @@ package com.example.kernlang.codebase_viewer.popup_screens;
 
 import com.example.kernlang.codebase_viewer.CursorState;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.interpreter.Interpreter;
-import com.example.kernlang.interpreter.frontend.PrettyPrinter;
+import com.example.kernlang.interpreter.frontend.ast_visitors.GetPrettyPrintedExpr;
+import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -25,7 +25,8 @@ public class NodeContextMenu extends ContextMenu {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Abstract Syntax Tree");
             alert.setHeaderText(null);
-            alert.setContentText(PrettyPrinter.prettyPrint(node.getAST()));
+            alert.setContentText(GetPrettyPrintedExpr.of((Expr)node.getAST()));
+            //alert.setContentText(PrettyPrinter.prettyPrint(node.getAST()));
 
             alert.showAndWait();
         });

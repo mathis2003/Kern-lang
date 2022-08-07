@@ -1,6 +1,7 @@
 package com.example.kernlang.interpreter.frontend.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.interpreter.frontend.ast_visitors.ExprVisitor;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Expr;
 import com.example.kernlang.interpreter.frontend.parser.expressions.Literal;
 import com.example.kernlang.interpreter.frontend.parser.statements.Stmt;
@@ -32,6 +33,11 @@ public class FunctionLiteral extends Expr implements Literal {
         }
 
         return tabs + "function:\n" + tabs + "\tparameters:" + args + tabs + "\tstatements" + stmts;
+    }
+
+    @Override
+    public <R> R accept(ExprVisitor<R> visitor) {
+        return visitor.visitFunctionLiteral(this);
     }
 
     @Override
