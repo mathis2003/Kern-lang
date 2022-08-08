@@ -76,6 +76,7 @@ public class FunctionCall implements Expr {
                 if (assignStmt.getAssignedObj() instanceof IdentifierExpr) {
                     ident = ((IdentifierExpr)assignStmt.getAssignedObj()).getIdentifier();
                 } else if (assignStmt.getAssignedObj() instanceof BinaryExpr) {
+                    // this means that we assign to a record field
                     ident = ((IdentifierExpr)((BinaryExpr)assignStmt.getAssignedObj()).getLeftExpr()).getIdentifier();
                 }
                 for (GraphEdge edge : contextNode.getImports()) {

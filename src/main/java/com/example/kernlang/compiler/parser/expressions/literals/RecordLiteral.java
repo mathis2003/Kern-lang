@@ -72,7 +72,7 @@ public class RecordLiteral implements Expr, Literal {
         }
 
         public String toString() {
-            return "(" + identifier + ":\n" + "\tvalue:\n" + GetPrettyPrintedExpr.of((Expr)l);
+            return "(" + identifier + ":\n" + "\tvalue:\n" + GetPrettyPrintedExpr.of(l);
         }
     }
 }
