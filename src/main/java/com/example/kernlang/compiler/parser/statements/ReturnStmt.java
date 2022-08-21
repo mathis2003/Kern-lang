@@ -14,12 +14,6 @@ public class ReturnStmt extends Stmt {
         return returnExpr;
     }
 
-    @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-        return tabs + "return:\n" + returnExpr.toString(indent + 1);
-    }
-
     public String toString() {
         return "(return:\n" + GetPrettyPrintedExpr.of(returnExpr) + ")";
     }

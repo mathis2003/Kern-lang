@@ -33,20 +33,6 @@ public class FunctionCall implements Expr {
     }
 
     @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        String argsString = "\n";
-        for (Expr expr : args) {
-            argsString += expr.toString(indent + 2) + "\n";
-        }
-
-        return tabs + "function call:\n" +
-                tabs + "\tfunction literal:\n" + functionExpr.toString(indent + 2) +
-                tabs + "\targuments:\n" + argsString;
-    }
-
-    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitFunctionCall(this);
     }

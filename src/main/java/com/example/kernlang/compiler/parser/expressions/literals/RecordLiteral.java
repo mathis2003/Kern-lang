@@ -14,18 +14,6 @@ public class RecordLiteral implements Expr, Literal {
     private final ArrayList<RecordField> recordFields = new ArrayList<>();
 
     @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        String fieldStrings = "";
-        for (RecordField recordField : recordFields) {
-            fieldStrings += "\n" + recordField.toString(indent + 1);
-        }
-
-        return tabs + "record:" + fieldStrings + tabs + "\n";
-    }
-
-    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitRecordLiteral(this);
     }
@@ -62,13 +50,6 @@ public class RecordLiteral implements Expr, Literal {
 
         public String getIdentifier() {
             return this.identifier;
-        }
-
-        public String toString(int indent) {
-            String tabs = "";
-            for (int i = 0; i < indent; i++) tabs += "\t";
-
-            return tabs + identifier + ":\n" + tabs + "\tvalue:\n" + l.toString(indent + 2);
         }
 
         public String toString() {

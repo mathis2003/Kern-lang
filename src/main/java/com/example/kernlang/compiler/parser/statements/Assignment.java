@@ -20,15 +20,6 @@ public class Assignment extends Stmt {
         this.expr = expr;
     }
 
-    @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-        return tabs + "assignment:\n" +
-                tabs + "\tidentifier: " + assignedObj.toString(indent + 2) + "\n" +
-                tabs + "\tassigned expression:" + "\n" +
-                expr.toString(indent + 2);
-    }
-
     public String toString() {
         return "(assignment:\n" +
                 "\tidentifier: " + GetPrettyPrintedExpr.of(assignedObj) + "\n" +

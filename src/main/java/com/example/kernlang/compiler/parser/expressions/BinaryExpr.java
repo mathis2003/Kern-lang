@@ -21,16 +21,6 @@ public class BinaryExpr implements Expr {
         this.rightExpr = rightExpr;
     }
 
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        return tabs + "expression (binary):\n" +
-                tabs + "\toperator:" + "\n" +
-                tabs + "\t\t" + operator.lexeme() + "\n" +
-                tabs + "\tleft:\n" + leftExpr.toString(indent + 2) + "\n" +
-                tabs + "\tright:\n" + rightExpr.toString(indent + 2) + "\n";
-    }
-
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitBinaryExpr(this);

@@ -19,14 +19,6 @@ public class LiteralExpr implements Expr, Literal {
         return tok;
     }
 
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        return tabs + "expression (literal):\n" +
-                tabs + "\ttype: " + tok.tokenType() + "\n" +
-                tabs + "\tvalue: " + tok.literal() + "\n";
-    }
-
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitLiteralExpr(this);

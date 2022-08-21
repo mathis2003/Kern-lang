@@ -9,12 +9,42 @@ import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 public class GetPrettyPrintedExpr implements ExprVisitor<String>{
 
     public static String of(Expr expr) {
-        return expr.accept(new GetPrettyPrintedExpr());
+        return indentSExpression(expr.accept(new GetPrettyPrintedExpr()));
     }
 
     public String print(Expr expr) {
-        return expr.accept(this);
+        return indentSExpression(expr.accept(this));
     }
+
+    private static String indentSExpression(String s) {
+        String result = "";
+        int indent = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                indent++;
+                result += "\n";
+                result += indentToTabs(indent);
+            } else if (s.charAt(i) == ')') {
+                indent--;
+            }
+            result += s.charAt(i);
+
+            if (s.charAt(i) == '\n') {
+                result += indentToTabs(indent);
+            }
+        }
+
+        return result;
+    }
+
+    private static String indentToTabs(int amount) {
+        String tabs = "";
+        for (int i = 0; i < amount; i++) tabs += "\t";
+        return tabs;
+    }
+
+
 
     @Override
     public String visitFunctionLiteral(FunctionLiteral functionLiteral) {

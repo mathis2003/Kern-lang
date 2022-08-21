@@ -14,12 +14,6 @@ public class IdentifierExpr implements Expr {
     }
 
     @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-        return tabs + "identifier: " + ident + "\n";
-    }
-
-    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitIdentifierExpr(this);
     }

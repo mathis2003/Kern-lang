@@ -17,15 +17,6 @@ public class UnaryExpr implements Expr {
         this.expr = expr;
     }
 
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        return tabs + "expression (unary):\n" +
-                tabs + "\toperator: " + operator.lexeme() + "\n" +
-                tabs + "\toperand: " + "\n" +
-                expr.toString(indent + 2) + "\n";
-    }
-
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitUnaryExpr(this);

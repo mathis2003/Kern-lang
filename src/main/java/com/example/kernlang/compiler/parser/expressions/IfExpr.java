@@ -17,17 +17,6 @@ public class IfExpr implements Expr{
         this.falseCaseExpr = falseCaseExpr;
     }
 
-
-    @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        return tabs + "if expression:\n" +
-                tabs + "\tcondition:\n" + condition.toString(indent + 2) +
-                tabs + "\ttrue case expression:\n" + trueCaseExpr.toString(indent + 2) +
-                tabs + "\tfalse case expression:\n" + falseCaseExpr.toString(indent + 2);
-    }
-
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitIfExpr(this);

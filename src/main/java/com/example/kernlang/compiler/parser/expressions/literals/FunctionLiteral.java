@@ -19,23 +19,6 @@ public class FunctionLiteral implements Expr, Literal {
     }
 
     @Override
-    public String toString(int indent) {
-        String tabs = getTabs(indent);
-
-        String args = "\n";
-        for (String ident : paramIdentifiers) {
-            args += tabs + "\t\tidentifier: " + ident + "\n";
-        }
-
-        String stmts = "\n";
-        for (Stmt stmt : statements) {
-            stmts += tabs + "\t\tstatement:\n" + stmt.toString(indent + 3) + "\n";
-        }
-
-        return tabs + "function:\n" + tabs + "\tparameters:" + args + tabs + "\tstatements" + stmts;
-    }
-
-    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitFunctionLiteral(this);
     }
