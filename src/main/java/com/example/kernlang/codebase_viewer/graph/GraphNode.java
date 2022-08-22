@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class GraphNode extends Pane {
@@ -143,7 +144,7 @@ public class GraphNode extends Pane {
         mainNode.circle.setFill(Color.GREEN);
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
-            if (allExportsLandAtNode(childNode, mainNode)) {
+            if (allExportsLandAtNode(childNode, mainNode, new ArrayList<>())) {
                 childNode.setVisible(false);
                 importEdge.setVisible(false);
                 childNode.collapseSubClusters(mainNode);
@@ -151,11 +152,17 @@ public class GraphNode extends Pane {
         }
     }
 
-    public boolean allExportsLandAtNode(GraphNode startNode, GraphNode endNode) {
+    public boolean allExportsLandAtNode(GraphNode startNode, GraphNode endNode, ArrayList<GraphNode> visitedNodes) {
+        // without this condition, which MUST come before the loop,
+        // this function would take recurse infinitely when it finds a cycle
+        if (Collections.frequency(visitedNodes, startNode) > 1) return true;
+
         for (GraphEdge exportEdge : startNode.exports) {
             GraphNode nextNode = exportEdge.getStartNode();
+            visitedNodes.add(nextNode);
             if (nextNode.exports.size() == 0 && nextNode != endNode && startNode != endNode) return false;
-            else if (!allExportsLandAtNode(nextNode, endNode)) return false;
+            else if (!allExportsLandAtNode(nextNode, endNode, visitedNodes)) return false;
+            visitedNodes.remove(nextNode);
         }
 
         return true;
