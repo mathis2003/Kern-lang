@@ -1,6 +1,7 @@
 package com.example.kernlang.codebase_viewer;
 
 import com.example.kernlang.TextEditor;
+import com.example.kernlang.codebase_viewer.graph.ArrowHead;
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
@@ -80,6 +81,9 @@ public class CursorState implements Observable {
         importLine.setEndX(clickedX);
         importLine.setEndY(clickedY);
         this.cbv.getChildren().add(importLine);
+
+        ArrowHead arrowHead = new ArrowHead(importLine);
+        this.cbv.getChildren().add(arrowHead);
     }
 
     public void addEdge() {

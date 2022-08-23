@@ -26,10 +26,9 @@ public class GraphEdge extends Line {
         startXProperty().bind(startNode.getXProperty());
         startYProperty().bind(startNode.getYProperty());
 
-        ArrowHead arrowHead = new ArrowHead(startXProperty(), startYProperty(), endXProperty(), endYProperty(), ARROW_HEAD_RADIUS);
-        arrowHead.setFill(Color.RED);
+        /*arrowHead.setFill(Color.RED);
         arrowHead.setRadius(ARROW_HEAD_RADIUS);
-        arrowHead.visibleProperty().bind(visibleProperty());
+        arrowHead.visibleProperty().bind(visibleProperty());*/
 
         if (isBound) {
             setStroke(Color.GREEN);
