@@ -44,16 +44,13 @@ public class GraphNode extends Pane {
         setOnMouseClicked(e -> {
             if (cs.isDraggingNode()) {
                 cs.setStateFree();
-            } /*else if (cs.isDraggingEdge()) {
+            } else if (cs.isDraggingEdge()) {
                 GraphNode startNode = cs.getImportLine().getStartNode();
                 GraphNode endNode = this;
                 cs.getImportLine().setEndNode(endNode);
                 startNode.addImport(cs.getImportLine());
                 cs.setStateFree();
-                // TODO: For some reason, a click on this pane never registers when the user is dragging
-                // TODO: an import edge, look for a fix for this
-                // TODO: after a bit of testing, it seems like it can also happen when dragging a node
-            } */else {
+            } else {
                 cs.updateClickedPosition(e.getSceneX(), e.getSceneY());
                 new NodeContextMenu(cs, this).show(this, e.getScreenX(), e.getScreenY());
             }

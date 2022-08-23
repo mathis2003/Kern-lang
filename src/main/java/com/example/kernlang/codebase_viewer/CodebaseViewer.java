@@ -27,12 +27,15 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
                 cursorState.setStateFree();
             } else {
                 cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
+                new FieldContextMenu(cursorState).show(this, e.getScreenX(), e.getScreenY());
+                /* this code should not be necessary, but is left in in case we have to revert back in the future
+                cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
                 GraphNode n = cursorState.getNodeAtPosition(e.getSceneX(), e.getSceneY());
                 if (n == null) {
                     new FieldContextMenu(cursorState).show(this, e.getScreenX(), e.getScreenY());
                 } else {
                     new NodeContextMenu(cursorState, n).show(n, e.getScreenX(), e.getScreenY());
-                }
+                }*/
             }
         });
     }
