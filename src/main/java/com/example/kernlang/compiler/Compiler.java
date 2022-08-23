@@ -27,6 +27,7 @@ public class Compiler {
             // show popup saying the compilation was successful
         } else {
             // show popup with errors
+            new CompileErrorPopup(errors);
         }
 
     }
