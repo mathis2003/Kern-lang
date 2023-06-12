@@ -141,4 +141,10 @@ public class CursorState implements Observable {
         cbv.getChildren().add(node);
         graphNodes.add(node);
     }
+
+    public void translateAllGraphNodes(double x, double y) {
+        for (GraphNode n : this.graphNodes) {
+            n.setCenter(n.getXProperty().get() + x,n.getYProperty().get() + y);
+        }
+    }
 }
