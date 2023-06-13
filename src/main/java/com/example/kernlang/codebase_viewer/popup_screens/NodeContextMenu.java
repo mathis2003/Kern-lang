@@ -1,6 +1,6 @@
 package com.example.kernlang.codebase_viewer.popup_screens;
 
-import com.example.kernlang.codebase_viewer.CursorState;
+import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.compiler.parser.expressions.Expr;
@@ -10,15 +10,15 @@ import javafx.scene.control.MenuItem;
 
 public class NodeContextMenu extends ContextMenu {
 
-    public NodeContextMenu(CursorState cs, GraphNode node) {
+    public NodeContextMenu(GraphWindowState gws, GraphNode node) {
         MenuItem move = new MenuItem("Move");
-        move.setOnAction(e -> cs.setStateDraggingNode(node));
+        move.setOnAction(e -> gws.setStateDraggingNode(node));
 
         MenuItem importFreeMenuItem = new MenuItem("Import");
-        importFreeMenuItem.setOnAction(e -> new EdgeCreationPopup(cs, node));
+        importFreeMenuItem.setOnAction(e -> new EdgeCreationPopup(gws, node));
 
         MenuItem viewCode = new MenuItem("View Code");
-        viewCode.setOnAction(e -> cs.setTextEditorNode(node));
+        viewCode.setOnAction(e -> gws.setTextEditorNode(node));
 
         MenuItem viewAST = new MenuItem("View AST");
         viewAST.setOnAction(e -> {

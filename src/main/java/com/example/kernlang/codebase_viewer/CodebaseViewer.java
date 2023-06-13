@@ -1,9 +1,7 @@
 package com.example.kernlang.codebase_viewer;
 
 import com.example.kernlang.TextEditor;
-import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.popup_screens.FieldContextMenu;
-import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.scene.control.Button;
@@ -13,26 +11,33 @@ import javafx.scene.layout.Pane;
 public class CodebaseViewer extends Pane implements InvalidationListener {
 
 
-    private static CursorState cursorState;
+    private static GraphWindowState graphWindowState;
 
     private double currentDraggedMouseX = 0;
     private double currentDraggedMouseY = 0;
+    private boolean isNavigatingScreen = false;
 
     public CodebaseViewer(TextEditor textEditor) {
-        cursorState = new CursorState(this, textEditor);
-        cursorState.addListener(this);
+        graphWindowState = new GraphWindowState(this, textEditor);
+        graphWindowState.addListener(this);
         this.setPrefSize(200, 200);
 
         // the functions below are controllers for the cursorState model
-        this.setOnMouseMoved(e -> cursorState.updatePosition(e.getSceneX(), e.getSceneY()));
+        this.setOnMouseMoved(e -> graphWindowState.updatePosition(e.getSceneX(), e.getSceneY()));
         this.setOnMouseClicked(e -> {
-            if (cursorState.isDraggingEdge()) {
-                cursorState.addEdge();
-            } else if (cursorState.isDraggingNode()) {
-                cursorState.setStateFree();
+            if (graphWindowState.isDraggingEdge()) {
+                graphWindowState.addEdge();
+            } else if (graphWindowState.isDraggingNode()) {
+                graphWindowState.setStateFree();
             } else {
-                cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
-                new FieldContextMenu(cursorState).show(this, e.getScreenX(), e.getScreenY());
+                if (isNavigatingScreen) {
+                    // this means the user was dragging the screen to navigate, and now released the drag.
+                    // so instead of creating a popup for a new node, we set the isNavigatingScreen field to false.
+                    isNavigatingScreen = false;
+                    return;
+                }
+                graphWindowState.updateClickedPosition(e.getSceneX(), e.getSceneY());
+                new FieldContextMenu(graphWindowState).show(this, e.getScreenX(), e.getScreenY());
                 /* this code should not be necessary, but is left in in case we have to revert back in the future
                 cursorState.updateClickedPosition(e.getSceneX(), e.getSceneY());
                 GraphNode n = cursorState.getNodeAtPosition(e.getSceneX(), e.getSceneY());
@@ -45,9 +50,10 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
         });
         this.setOnMouseDragged(e -> {
             //get drag vector, subtract this from the position of the objects
-            if (currentDraggedMouseX < 0.01 && currentDraggedMouseX > -0.01) {
+            if (!isNavigatingScreen) {
                 currentDraggedMouseX = e.getX();
                 currentDraggedMouseY = e.getY();
+                isNavigatingScreen = true;
                 return;
             }
             double newX = e.getX();
@@ -56,12 +62,8 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
             double dy = newY - currentDraggedMouseY;
             currentDraggedMouseX = newX;
             currentDraggedMouseY = newY;
-            cursorState.translateAllGraphNodes(dx, dy);
+            graphWindowState.translateAllGraphNodes(dx, dy);
 
-        });
-        this.setOnMouseReleased(e -> {
-            currentDraggedMouseX = 0;
-            currentDraggedMouseY = 0;
         });
         Button zoomInButton = new Button("zoom in");
         Button zoomOutButton = new Button("zoom out");
@@ -69,7 +71,7 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
     }
 
     public void compileNodes() {
-        cursorState.compileNodes();
+        graphWindowState.compileNodes();
     }
 
     @Override

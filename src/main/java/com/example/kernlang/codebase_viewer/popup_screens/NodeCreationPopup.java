@@ -1,6 +1,6 @@
 package com.example.kernlang.codebase_viewer.popup_screens;
 
-import com.example.kernlang.codebase_viewer.CursorState;
+import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.graph.Types;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,14 +10,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class NodeCreationPopup extends Stage {
-    public NodeCreationPopup(CursorState cursorState) {
+    public NodeCreationPopup(GraphWindowState graphWindowState) {
         super();
 
 
         final TextField nameField = new TextField();
         nameField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                cursorState.drawCircle(nameField.getText(), Types.UNIT);
+                graphWindowState.drawCircle(nameField.getText(), Types.UNIT);
                 this.close();
             }
         });
@@ -25,7 +25,7 @@ public class NodeCreationPopup extends Stage {
 
         Button createButton = new Button("create node");
         createButton.setOnAction(e -> {
-            cursorState.drawCircle(nameField.getText(), Types.UNIT);
+            graphWindowState.drawCircle(nameField.getText(), Types.UNIT);
             this.close();
         });
 

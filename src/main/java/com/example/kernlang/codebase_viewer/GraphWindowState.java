@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * This class contains some data about the state of the cursor in the window of the application.
  * It acts as the model of the MVC, the CodebaseViewer on the other hand is the viewer and controller.
  */
-public class CursorState implements Observable {
+public class GraphWindowState implements Observable {
 
     private final ArrayList<InvalidationListener> listeners;
     private final ArrayList<GraphNode> graphNodes;
@@ -59,7 +59,7 @@ public class CursorState implements Observable {
     public final CodebaseViewer cbv;
     private final TextEditor textEditor;
 
-    public CursorState(CodebaseViewer cbv, TextEditor textEditor) {
+    public GraphWindowState(CodebaseViewer cbv, TextEditor textEditor) {
         this.listeners = new ArrayList<>();
         this.graphNodes = new ArrayList<>();
         this.cbv = cbv;

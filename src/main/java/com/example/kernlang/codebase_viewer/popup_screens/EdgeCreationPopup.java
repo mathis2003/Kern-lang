@@ -1,22 +1,21 @@
 package com.example.kernlang.codebase_viewer.popup_screens;
 
-import com.example.kernlang.codebase_viewer.CursorState;
+import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class EdgeCreationPopup extends Stage {
-    public EdgeCreationPopup(CursorState cursorState, GraphNode node) {
+    public EdgeCreationPopup(GraphWindowState graphWindowState, GraphNode node) {
         super();
 
         CheckBox isBoundCheckBox = new CheckBox("is bound");
         Button createButton = new Button("create edge");
         createButton.setOnAction(e -> {
-            cursorState.setStateDraggingEdge(node, isBoundCheckBox.isSelected());
+            graphWindowState.setStateDraggingEdge(node, isBoundCheckBox.isSelected());
             this.close();
         });
 

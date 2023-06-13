@@ -1,6 +1,6 @@
 package com.example.kernlang.codebase_viewer.graph;
 
-import com.example.kernlang.codebase_viewer.CursorState;
+import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
 import com.example.kernlang.compiler.parser.expressions.BinaryExpr;
 import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
@@ -37,22 +37,22 @@ public class GraphNode extends Pane {
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
 
-    public GraphNode(String name, double x, double y, CursorState cs) {
+    public GraphNode(String name, double x, double y, GraphWindowState gws) {
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         requestFocus();
         setOnMouseClicked(e -> {
-            if (cs.isDraggingNode()) {
-                cs.setStateFree();
-            } else if (cs.isDraggingEdge()) {
-                GraphNode startNode = cs.getImportLine().getStartNode();
+            if (gws.isDraggingNode()) {
+                gws.setStateFree();
+            } else if (gws.isDraggingEdge()) {
+                GraphNode startNode = gws.getImportLine().getStartNode();
                 GraphNode endNode = this;
-                cs.getImportLine().setEndNode(endNode);
-                startNode.addImport(cs.getImportLine());
-                cs.setStateFree();
+                gws.getImportLine().setEndNode(endNode);
+                startNode.addImport(gws.getImportLine());
+                gws.setStateFree();
             } else {
-                cs.updateClickedPosition(e.getSceneX(), e.getSceneY());
-                new NodeContextMenu(cs, this).show(this, e.getScreenX(), e.getScreenY());
+                gws.updateClickedPosition(e.getSceneX(), e.getSceneY());
+                new NodeContextMenu(gws, this).show(this, e.getScreenX(), e.getScreenY());
             }
             e.consume();
         });
