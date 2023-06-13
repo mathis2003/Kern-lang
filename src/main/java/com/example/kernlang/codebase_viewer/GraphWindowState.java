@@ -7,34 +7,17 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
 import com.example.kernlang.compiler.Compiler;
 import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 
 import java.util.ArrayList;
 
 /**
- * This class contains some data about the state of the cursor in the window of the application.
+ * This class contains some data about the state of the graph-window.
  * It acts as the model of the MVC, the CodebaseViewer on the other hand is the viewer and controller.
  */
-public class GraphWindowState implements Observable {
+public class GraphWindowState {
 
     private final ArrayList<InvalidationListener> listeners;
     private final ArrayList<GraphNode> graphNodes;
-
-    @Override
-    public void addListener(InvalidationListener invalidationListener) {
-        listeners.add(invalidationListener);
-    }
-
-    @Override
-    public void removeListener(InvalidationListener invalidationListener) {
-        listeners.remove(invalidationListener);
-    }
-
-    private void fireInvalidationEvent() {
-        for (InvalidationListener l : listeners) {
-            l.invalidated(this);
-        }
-    }
 
     public void compileNodes() {
         Compiler.compile(graphNodes);
@@ -100,7 +83,6 @@ public class GraphWindowState implements Observable {
 
     public void setStateFree() {
         state = State.FREE;
-        fireInvalidationEvent();
     }
 
     public boolean isDraggingEdge() {

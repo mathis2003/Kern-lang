@@ -2,13 +2,11 @@ package com.example.kernlang.codebase_viewer;
 
 import com.example.kernlang.TextEditor;
 import com.example.kernlang.codebase_viewer.popup_screens.FieldContextMenu;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-public class CodebaseViewer extends Pane implements InvalidationListener {
+public class CodebaseViewer extends Pane {
 
 
     private static GraphWindowState graphWindowState;
@@ -19,7 +17,7 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
 
     public CodebaseViewer(TextEditor textEditor) {
         graphWindowState = new GraphWindowState(this, textEditor);
-        graphWindowState.addListener(this);
+        //graphWindowState.addListener(this);
         this.setPrefSize(200, 200);
 
         // the functions below are controllers for the cursorState model
@@ -74,9 +72,5 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
 
     public void compileNodes() {
         graphWindowState.compileNodes();
-    }
-
-    @Override
-    public void invalidated(Observable observable) {
     }
 }
