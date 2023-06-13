@@ -147,4 +147,16 @@ public class GraphWindowState implements Observable {
             n.setCenter(n.getXProperty().get() + x,n.getYProperty().get() + y);
         }
     }
+
+    public void zoomOnGraph(double scale) {
+        for (GraphNode n : this.graphNodes) {
+            // (0, 0) is the top left of the screen,
+            // so we do some tricks in order to make the zoom-center the middle of the screen
+            double centerX = cbv.getWidth() / 2;
+            double centerY = cbv.getHeight() / 2;
+            double oldX = n.getXProperty().get(), oldY = n.getYProperty().get();
+            double dx = scale * (oldX -centerX), dy = scale * (oldY - centerY);
+            n.setCenter(centerX + dx, centerY + dy);
+        }
+    }
 }

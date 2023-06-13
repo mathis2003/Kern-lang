@@ -66,7 +66,9 @@ public class CodebaseViewer extends Pane implements InvalidationListener {
 
         });
         Button zoomInButton = new Button("zoom in");
+        zoomInButton.setOnAction(e -> graphWindowState.zoomOnGraph(1.1));
         Button zoomOutButton = new Button("zoom out");
+        zoomOutButton.setOnAction(e -> graphWindowState.zoomOnGraph(0.9));
         this.getChildren().add(new HBox(zoomInButton, zoomOutButton));
     }
 
