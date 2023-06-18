@@ -70,6 +70,10 @@ public class CodebaseViewer extends Pane {
         this.getChildren().add(new HBox(zoomInButton, zoomOutButton));
     }
 
+    public GraphWindowState getGraphWindowState() {
+        return graphWindowState;
+    }
+
     public void compileNodes() {
         graphWindowState.compileNodes();
     }

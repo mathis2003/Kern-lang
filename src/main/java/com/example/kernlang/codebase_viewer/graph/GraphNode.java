@@ -37,7 +37,10 @@ public class GraphNode extends Pane {
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
 
-    public GraphNode(String name, double x, double y, GraphWindowState gws) {
+    private final int dbId;
+
+    public GraphNode(String name, double x, double y, GraphWindowState gws, int dbId) {
+        this.dbId = dbId;
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         requestFocus();
@@ -82,6 +85,10 @@ public class GraphNode extends Pane {
 
     public String getCodeString() {
         return this.codeString;
+    }
+
+    public int getDatabaseID() {
+        return this.dbId;
     }
 
     public void setNodeType(Types t) {

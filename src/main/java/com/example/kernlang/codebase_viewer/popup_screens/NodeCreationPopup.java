@@ -17,7 +17,7 @@ public class NodeCreationPopup extends Stage {
         final TextField nameField = new TextField();
         nameField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
-                graphWindowState.drawCircle(nameField.getText(), Types.UNIT);
+                graphWindowState.addNode(nameField.getText(), Types.UNIT);
                 this.close();
             }
         });
@@ -25,7 +25,7 @@ public class NodeCreationPopup extends Stage {
 
         Button createButton = new Button("create node");
         createButton.setOnAction(e -> {
-            graphWindowState.drawCircle(nameField.getText(), Types.UNIT);
+            graphWindowState.addNode(nameField.getText(), Types.UNIT);
             this.close();
         });
 

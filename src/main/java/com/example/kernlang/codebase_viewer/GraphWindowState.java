@@ -16,6 +16,8 @@ import java.util.ArrayList;
  */
 public class GraphWindowState {
 
+    private int currentNodeCount = 0;
+
     private final ArrayList<InvalidationListener> listeners;
     private final ArrayList<GraphNode> graphNodes;
 
@@ -117,8 +119,15 @@ public class GraphWindowState {
         return null;
     }
 
-    public void drawCircle(String name, Types t) {
-        GraphNode node = new GraphNode(name, clickedX, clickedY, this);
+    public void addNodeFromDB(GraphNode node) {
+        currentNodeCount++;
+        cbv.getChildren().add(node);
+        graphNodes.add(node);
+    }
+
+    public void addNode(String name, Types t) {
+        currentNodeCount++;
+        GraphNode node = new GraphNode(name, clickedX, clickedY, this, currentNodeCount);
         node.setNodeType(t);
         cbv.getChildren().add(node);
         graphNodes.add(node);
@@ -140,5 +149,9 @@ public class GraphWindowState {
             double dx = scale * (oldX -centerX), dy = scale * (oldY - centerY);
             n.setCenter(centerX + dx, centerY + dy);
         }
+    }
+
+    public ArrayList<GraphNode> getGraphNodes() {
+        return graphNodes;
     }
 }
