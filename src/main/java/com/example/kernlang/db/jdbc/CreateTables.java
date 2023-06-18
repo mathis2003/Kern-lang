@@ -24,7 +24,7 @@ public final class CreateTables extends AbstractCreateTables {
 
     public void createImportTable(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            /*statement.execute("""
+            statement.execute("""
                     CREATE TABLE import (
                         startnode INTEGER,
                         endnode INTEGER,
@@ -33,7 +33,7 @@ public final class CreateTables extends AbstractCreateTables {
                         FOREIGN KEY (endnode) REFERENCES graphnode (id)
                     );
                     """
-            );*/
+            );
         }
     }
 }

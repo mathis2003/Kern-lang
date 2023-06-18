@@ -6,6 +6,7 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.db.DAOAbstraction.GraphNodeDAO;
 import com.example.kernlang.db.DataAccessException;
 import com.example.kernlang.db.ImportData;
+import com.example.kernlang.db.NodeData;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,25 +24,25 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public ArrayList<GraphNode> getAllGraphNodes(GraphWindowState gws) throws DataAccessException {
-        ArrayList<GraphNode> out = new ArrayList<>();
+    public ArrayList<NodeData> getAllGraphNodes() throws DataAccessException {
+        ArrayList<NodeData> out = new ArrayList<>();
         for (int id : getIDOfGraphNodes()) {
-            out.add(getGraphNodeByID(id, gws));
+            out.add(getGraphNodeByID(id));
         }
         return out;
     }
 
     @Override
-    public GraphNode getGraphNodeByID(int id, GraphWindowState gws) throws DataAccessException {
+    public NodeData getGraphNodeByID(int id) throws DataAccessException {
         try (PreparedStatement ps = prepare("SELECT * FROM graphnode WHERE id = ?")) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 rs.next();
-                return new GraphNode(
-                        rs.getString("name"),
+                return new NodeData(
+                        id,
                         rs.getDouble("xpos"),
                         rs.getDouble("ypos"),
-                        gws, id
+                        rs.getString("name")
                 );
             }
         } catch (SQLException ex) {

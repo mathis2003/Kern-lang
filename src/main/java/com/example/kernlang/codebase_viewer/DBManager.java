@@ -6,6 +6,7 @@ import com.example.kernlang.db.DAOAbstraction.DataAccessContext;
 import com.example.kernlang.db.DAOAbstraction.DataAccessProvider;
 import com.example.kernlang.db.DAOAbstraction.GraphNodeDAO;
 import com.example.kernlang.db.DataAccessException;
+import com.example.kernlang.db.NodeData;
 import com.example.kernlang.db.jdbc.JDBCDataAccessProvider;
 
 import java.io.File;
@@ -25,8 +26,8 @@ public class DBManager {
         //for node in resultset:
         //    codeViewerModel.add(new Graphnode...)
         //gws.clearImage();
-        for (GraphNode gn : dap.getDataAccessContent().getGraphNodeDAO().getAllGraphNodes(gws)) {
-            gws.addNodeFromDB(gn);
+        for (NodeData nodeData : dap.getDataAccessContent().getGraphNodeDAO().getAllGraphNodes()) {
+            gws.addNodeFromDB(nodeData);
         }
     }
 

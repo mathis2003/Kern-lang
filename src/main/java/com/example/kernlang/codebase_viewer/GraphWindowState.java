@@ -6,6 +6,7 @@ import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
 import com.example.kernlang.compiler.Compiler;
+import com.example.kernlang.db.NodeData;
 import javafx.beans.InvalidationListener;
 
 import java.util.ArrayList;
@@ -119,8 +120,10 @@ public class GraphWindowState {
         return null;
     }
 
-    public void addNodeFromDB(GraphNode node) {
+    public void addNodeFromDB(NodeData nodeData) {
         currentNodeCount++;
+        GraphNode node = new GraphNode(nodeData.name(), nodeData.xpos(), nodeData.ypos(), this, nodeData.id());
+        node.setNodeType(Types.UNIT);
         cbv.getChildren().add(node);
         graphNodes.add(node);
     }
