@@ -151,6 +151,7 @@ public class GraphWindowState {
         currentNodeCount++;
         GraphNode node = new GraphNode(nodeData.name(), nodeData.xpos(), nodeData.ypos(), this, nodeData.id());
         node.setNodeType(Types.UNIT);
+        node.setCodeString(nodeData.code());
         cbv.getChildren().add(node);
         graphNodes.add(node);
     }

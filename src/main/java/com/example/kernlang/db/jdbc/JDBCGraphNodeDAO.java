@@ -41,7 +41,8 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
                         id,
                         rs.getDouble("xpos"),
                         rs.getDouble("ypos"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("code")
                 );
             }
         } catch (SQLException ex) {
@@ -114,11 +115,12 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     @Override
     public void addNewGraphNode(GraphNode graphNode) throws DataAccessException {
         if (graphNode != null) {
-            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO graphnode (id, xpos, ypos, name) VALUES (?, ?, ?, ?)")) {
+            try (PreparedStatement ps = connection.prepareStatement("INSERT INTO graphnode (id, xpos, ypos, name, code) VALUES (?, ?, ?, ?, ?)")) {
                 ps.setInt(1, graphNode.getDatabaseID());
                 ps.setDouble(2, graphNode.getXProperty().get());
                 ps.setDouble(3, graphNode.getYProperty().get());
                 ps.setString(4, graphNode.getName());
+                ps.setString(5, graphNode.getCodeString());
                 ps.execute();
             } catch (SQLException ex) {
                 System.out.println("nooooo");

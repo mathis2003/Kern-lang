@@ -15,7 +15,8 @@ public final class CreateTables extends AbstractCreateTables {
                         id INTEGER PRIMARY KEY,
                         xpos DOUBLE PRECISION NOT NULL,
                         ypos DOUBLE PRECISION NOT NULL,
-                        name TEXT
+                        name TEXT,
+                        code TEXT
                     );
                     """
             );
