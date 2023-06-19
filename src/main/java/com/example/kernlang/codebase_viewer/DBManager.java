@@ -4,8 +4,10 @@ import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.db.DAOAbstraction.DataAccessContext;
 import com.example.kernlang.db.DAOAbstraction.DataAccessProvider;
+import com.example.kernlang.db.DAOAbstraction.GraphEdgeDAO;
 import com.example.kernlang.db.DAOAbstraction.GraphNodeDAO;
 import com.example.kernlang.db.DataAccessException;
+import com.example.kernlang.db.EdgeData;
 import com.example.kernlang.db.NodeData;
 import com.example.kernlang.db.jdbc.JDBCDataAccessProvider;
 
@@ -29,6 +31,10 @@ public class DBManager {
         for (NodeData nodeData : dap.getDataAccessContent().getGraphNodeDAO().getAllGraphNodes()) {
             gws.addNodeFromDB(nodeData);
         }
+
+        for (EdgeData edgeData : dap.getDataAccessContent().getGraphEdgeDAO().getAllEdges()) {
+            gws.addEdgeFromDB(edgeData);
+        }
     }
 
     public void newDB(File file) throws DataAccessException {
@@ -46,20 +52,23 @@ public class DBManager {
             DataAccessContext dac = dap.getDataAccessContent();
             dac.createDB();
             GraphNodeDAO gnDAO = dac.getGraphNodeDAO();
+            GraphEdgeDAO geDAO = dac.getGraphEdgeDAO();
             // NOTE: all graphnodes must be in the database before we start adding edges to the database
 
             for (GraphNode gn : gws.getGraphNodes()) {
                 System.out.println(gnDAO);
                 gnDAO.addNewGraphNode(gn);
             }
+
+            for (GraphNode gn: gws.getGraphNodes()) {
+                for (GraphEdge ge: gn.getImports()) {
+                    geDAO.addNewEdge(ge);
+                }
+            }
         } catch (SQLException | DataAccessException ex) {
             throw new DataAccessException("couldn't make db at path" + file.getPath(), ex);
         }
 
-        /*for (GraphNode gn: cvm.getGraphNodes()) {
-            for (GraphEdge ge: gn.getImports()) {
-                gnDAO.addNewImport(ge);
-            }
-        }*/
+
     }
 }

@@ -11,9 +11,9 @@ public abstract class AbstractCreateTables {
      */
     public void createAllTables(Connection connection) throws SQLException {
         createGraphNodeTable(connection);
-        createImportTable(connection);
+        createGraphEdgeTable(connection);
     }
 
     public abstract void createGraphNodeTable(Connection connection) throws SQLException;
-    public abstract void createImportTable(Connection connection) throws SQLException;
+    public abstract void createGraphEdgeTable(Connection connection) throws SQLException;
 }

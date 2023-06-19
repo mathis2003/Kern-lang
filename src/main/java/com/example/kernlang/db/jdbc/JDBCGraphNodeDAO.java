@@ -1,11 +1,10 @@
 package com.example.kernlang.db.jdbc;
 
-import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.db.DAOAbstraction.GraphNodeDAO;
 import com.example.kernlang.db.DataAccessException;
-import com.example.kernlang.db.ImportData;
+import com.example.kernlang.db.EdgeData;
 import com.example.kernlang.db.NodeData;
 
 import java.sql.Connection;
@@ -66,12 +65,12 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public ArrayList<ImportData> getAllImports() throws DataAccessException {
+    public ArrayList<EdgeData> getAllImports() throws DataAccessException {
         try (PreparedStatement ps = prepare("SELECT * FROM import")) {
             try (ResultSet rs = ps.executeQuery()) {
-                ArrayList<ImportData> out = new ArrayList<>();
+                ArrayList<EdgeData> out = new ArrayList<>();
                 while (rs.next()) {
-                    out.add(new ImportData(
+                    out.add(new EdgeData(
                             rs.getInt("startnode"),
                             rs.getInt("endnode")
                     ));
@@ -84,18 +83,18 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public ArrayList<ImportData> getImportsFromGraphNode(int id) throws DataAccessException {
+    public ArrayList<EdgeData> getImportsFromGraphNode(int id) throws DataAccessException {
         return getImportExportFromGraphNode(id, "startnode");
     }
 
-    private ArrayList<ImportData> getImportExportFromGraphNode(int id, String xxxnode) throws DataAccessException {
+    private ArrayList<EdgeData> getImportExportFromGraphNode(int id, String xxxnode) throws DataAccessException {
         try (PreparedStatement ps = prepare("SELECT * FROM imports WHERE ? = ?")) {
             ps.setString(1, xxxnode);
             ps.setInt(2, id);
             try (ResultSet rs = ps.executeQuery()) {
-                ArrayList<ImportData> out = new ArrayList<>();
+                ArrayList<EdgeData> out = new ArrayList<>();
                 while (rs.next()) {
-                    out.add(new ImportData(
+                    out.add(new EdgeData(
                             rs.getInt("startnode"),
                             rs.getInt("endnode")
                     ));
@@ -108,7 +107,7 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public ArrayList<ImportData> getExportsFromGraphNode(int id) throws DataAccessException {
+    public ArrayList<EdgeData> getExportsFromGraphNode(int id) throws DataAccessException {
         return getImportExportFromGraphNode(id, "endnode");
     }
 
@@ -142,11 +141,11 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public void addNewImport(ImportData importData) throws DataAccessException {
-        if (importData != null) {
+    public void addNewImport(EdgeData edgeData) throws DataAccessException {
+        if (edgeData != null) {
             try (PreparedStatement ps = prepare("INSERT INTO import (startnode, endnode) VALUES (?, ?)")) {
-                ps.setInt(1, importData.startID());
-                ps.setInt(2, importData.endID());
+                ps.setInt(1, edgeData.startID());
+                ps.setInt(2, edgeData.endID());
                 ps.execute();
             } catch (SQLException ex) {
                 throw new DataAccessException("couldn't make new import in db", ex);
@@ -170,11 +169,11 @@ public class JDBCGraphNodeDAO extends JDBCAbstractDAO implements GraphNodeDAO {
     }
 
     @Override
-    public void deleteImport(ImportData importData) throws DataAccessException {
-        if (importData != null) {
+    public void deleteImport(EdgeData edgeData) throws DataAccessException {
+        if (edgeData != null) {
             try (PreparedStatement ps = prepare("DELETE FROM import WHERE startnode = ? AND endnode = ?")) {
-                ps.setInt(1, importData.startID());
-                ps.setInt(2, importData.endID());
+                ps.setInt(1, edgeData.startID());
+                ps.setInt(2, edgeData.endID());
                 ps.execute();
             } catch (SQLException ex) {
                 throw new DataAccessException("couldn't remove import", ex);

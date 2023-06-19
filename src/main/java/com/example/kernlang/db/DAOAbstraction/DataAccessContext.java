@@ -10,6 +10,8 @@ public interface DataAccessContext extends AutoCloseable {
 
     GraphNodeDAO getGraphNodeDAO();
 
+    GraphEdgeDAO getGraphEdgeDAO();
+
     void createDB() throws SQLException;
 
     @Override

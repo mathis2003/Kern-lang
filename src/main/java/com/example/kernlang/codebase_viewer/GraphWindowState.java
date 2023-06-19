@@ -6,6 +6,7 @@ import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.codebase_viewer.graph.Types;
 import com.example.kernlang.compiler.Compiler;
+import com.example.kernlang.db.EdgeData;
 import com.example.kernlang.db.NodeData;
 import javafx.beans.InvalidationListener;
 
@@ -118,6 +119,32 @@ public class GraphWindowState {
 
         // if no node was found at the position, return null
         return null;
+    }
+
+    public void addEdgeFromDB(EdgeData edgeData) {
+        GraphNode startNode = null;
+        GraphNode endNode = null;
+
+        //TODO: refactor this so there's a hashmap from databaseID to graphnode
+        for (GraphNode n : this.graphNodes) {
+            if (n.getDatabaseID() == edgeData.startID()) {
+                startNode = n;
+                if (endNode != null) break;
+            }
+            if (n.getDatabaseID() == edgeData.endID()) {
+                endNode = n;
+                if (startNode != null) break;
+            }
+        }
+
+        if (startNode == null || endNode == null) return;
+        GraphEdge e = new GraphEdge(startNode, false);
+        e.setEndNode(endNode);
+        startNode.addImport(e);
+
+        this.cbv.getChildren().add(e);
+        ArrowHead arrowHead = new ArrowHead(e);
+        this.cbv.getChildren().add(arrowHead);
     }
 
     public void addNodeFromDB(NodeData nodeData) {

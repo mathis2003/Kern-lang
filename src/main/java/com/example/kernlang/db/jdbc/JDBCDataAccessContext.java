@@ -2,6 +2,7 @@ package com.example.kernlang.db.jdbc;
 
 import com.example.kernlang.db.DAOAbstraction.AbstractCreateTables;
 import com.example.kernlang.db.DAOAbstraction.DataAccessContext;
+import com.example.kernlang.db.DAOAbstraction.GraphEdgeDAO;
 import com.example.kernlang.db.DAOAbstraction.GraphNodeDAO;
 import com.example.kernlang.db.DataAccessException;
 
@@ -21,6 +22,11 @@ public class JDBCDataAccessContext implements DataAccessContext {
     @Override
     public GraphNodeDAO getGraphNodeDAO() {
         return new JDBCGraphNodeDAO(connection);
+    }
+
+    @Override
+    public GraphEdgeDAO getGraphEdgeDAO() {
+        return new JDBCGraphEdgeDAO(connection);
     }
 
     @Override

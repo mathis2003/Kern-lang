@@ -22,10 +22,10 @@ public final class CreateTables extends AbstractCreateTables {
         }
     }
 
-    public void createImportTable(Connection connection) throws SQLException {
+    public void createGraphEdgeTable(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
             statement.execute("""
-                    CREATE TABLE import (
+                    CREATE TABLE graphedge (
                         startnode INTEGER,
                         endnode INTEGER,
                         PRIMARY KEY (startnode, endnode),
