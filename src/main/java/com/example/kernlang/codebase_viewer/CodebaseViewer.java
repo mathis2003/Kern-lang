@@ -63,9 +63,9 @@ public class CodebaseViewer extends Pane {
             graphWindowState.translateAllGraphNodes(dx, dy);
 
         });
-        Button zoomInButton = new Button("zoom in");
+        Button zoomInButton = new Button("+");
         zoomInButton.setOnAction(e -> graphWindowState.zoomOnGraph(1.1));
-        Button zoomOutButton = new Button("zoom out");
+        Button zoomOutButton = new Button("-");
         zoomOutButton.setOnAction(e -> graphWindowState.zoomOnGraph(0.9));
         this.getChildren().add(new HBox(zoomInButton, zoomOutButton));
     }

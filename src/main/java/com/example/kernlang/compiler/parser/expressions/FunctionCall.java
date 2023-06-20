@@ -73,7 +73,7 @@ public class FunctionCall implements Expr {
                     // this means that we assign to a record field
                     ident = ((IdentifierExpr)((BinaryExpr)assignStmt.getAssignedObj()).getLeftExpr()).getIdentifier();
                 }
-                for (GraphEdge edge : contextNode.getImports()) {
+                for (GraphEdge edge : fLit.getFunctionContext().getImports()) {
                     if (edge.getEndNode().name.equals(ident)) {
                         // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
                         assignStmt.assign(edge.getEndNode(), fLit.getFunctionContext(), argumentsHm);
