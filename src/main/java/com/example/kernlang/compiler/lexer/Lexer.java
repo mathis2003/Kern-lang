@@ -63,6 +63,7 @@ public class Lexer {
             case '+': addToken(TokenType.TOK_PLUS); break;
             case ';': addToken(TokenType.TOK_SEMI_COLON); break;
             case '*': addToken(TokenType.TOK_STAR); break;
+            case '/': addToken(TokenType.TOK_SLASH); break;
             case '%': addToken(TokenType.TOK_PERCENT); break;
             case '<':
                 addToken(match('-') ? TokenType.TOK_LEFT_ARROW : TokenType.TOK_LESS);
