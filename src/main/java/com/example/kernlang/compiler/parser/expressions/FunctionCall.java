@@ -37,11 +37,18 @@ public class FunctionCall implements Expr {
         return visitor.visitFunctionCall(this);
     }
 
+    /**
+     *
+     * @param contextNode: the function literal as a node
+     * @param additionalContext: the arguments passed for the function call
+     * @return
+     */
     @Override
     public Literal interpret(GraphNode contextNode, HashMap<String, Literal> additionalContext) {
         // getting the actual function literal
         FunctionLiteral fLit = null;
         if (! (functionExpr instanceof FunctionLiteral)) {
+            // for instance, the functionExpr is actually a composition of functions, or an identifier of a function
             fLit = (FunctionLiteral) functionExpr.interpret(contextNode, additionalContext);
         } else {
             fLit = (FunctionLiteral) functionExpr;
@@ -52,6 +59,7 @@ public class FunctionCall implements Expr {
         for (int i = 0; i < args.size(); i++) {
             String argName = fLit.getParamIdentifiers().get(i);
             // note: the arguments given with the function call, are to be evaluated in the caller's context
+            // no clue what additionalContext is doing here, might have to replace that with null
             argumentsHm.put(argName, args.get(i).interpret(contextNode, additionalContext));
         }
 
