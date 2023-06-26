@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class GraphNode extends Pane {
     private final Circle circle;
@@ -31,7 +32,10 @@ public class GraphNode extends Pane {
     private SimpleDoubleProperty x, y;
 
     private final int radius = 20;
-    private boolean collapsed;
+    public boolean collapsed;
+
+    public boolean collapsable;
+    public GraphNode collapser;
 
     // These fields contain the edges of the imports, and the edges of the exports
     private final ArrayList<GraphEdge> imports;
@@ -77,6 +81,9 @@ public class GraphNode extends Pane {
         this.imports = new ArrayList<>();
         this.exports = new ArrayList<>();
         collapsed = false;
+
+        collapsable = false;
+        collapser = null;
     }
 
     public void setCodeString(String codeString) {
@@ -144,35 +151,91 @@ public class GraphNode extends Pane {
     }
 
     public void collapseSubClusters(GraphNode mainNode) {
-        collapsed = true;
-        mainNode.circle.setFill(Color.GREEN);
-        for (GraphEdge importEdge : imports) {
-            GraphNode childNode = importEdge.getEndNode();
-            if (allExportsLandAtNode(childNode, mainNode, new ArrayList<>())) {
-                childNode.setVisible(false);
-                importEdge.setVisible(false);
-                childNode.collapseSubClusters(mainNode);
+
+        if (isCollapsable(mainNode, new HashSet<>())) {
+            collapsed = true;
+            mainNode.circle.setFill(Color.GREEN);
+            for (GraphEdge importEdge : imports) {
+                GraphNode childNode = importEdge.getEndNode();
+                if (childNode.isCollapsable(mainNode, new HashSet<>()) && !childNode.collapsed) {
+                    childNode.collapsed = true;
+                    childNode.setVisible(false);
+                    for (GraphEdge impEdg : childNode.imports) {
+                        impEdg.setVisible(false);
+                    }
+                    for (GraphEdge expEdg : childNode.exports) {
+                        expEdg.setVisible(false);
+                    }
+
+                    childNode.collapseSubClusters(mainNode);
+                }
             }
         }
+
     }
 
-    public boolean allExportsLandAtNode(GraphNode startNode, GraphNode endNode, ArrayList<GraphNode> visitedNodes) {
+    public boolean isCollapsable(GraphNode collapseNode, HashSet<GraphNode> visitedNodes) {
+        // rule 1 is obsolete since we wouldn't get here if the
+        // collapseNode didn't have this as some sort of child
+        boolean result = false;
+
+        if (collapseNode == collapser) {
+            return collapsable;
+        }
+
+
+        if (visitedNodes.contains(this)) {
+            visitedNodes.remove(this);
+            collapsable = true;
+            collapser = collapseNode;
+            return true;
+        }
+        visitedNodes.add(this);
+
+
+
+        // rule 2
+        if (!allExportsLandAtNode(this, collapseNode, new HashSet<>())) {
+            visitedNodes.remove(this);
+            return false;
+        }
+
+        // rule 3
+        for (GraphEdge importEdge : imports) {
+            GraphNode childNode = importEdge.getEndNode();
+            if (!childNode.isCollapsable(collapseNode, visitedNodes)) {
+                visitedNodes.remove(this);
+                return false;
+            }
+        }
+
+        visitedNodes.remove(this);
+        collapsable = true;
+        collapser = collapseNode;
+        return true;
+    }
+
+    public boolean allExportsLandAtNode(GraphNode startNode, GraphNode endNode, HashSet<GraphNode> visitedNodes) {
         // without this condition, which MUST come before the loop,
         // this function would take recurse infinitely when it finds a cycle
         if (Collections.frequency(visitedNodes, startNode) > 1) return true;
 
         for (GraphEdge exportEdge : startNode.exports) {
+            boolean result = true;
             GraphNode nextNode = exportEdge.getStartNode();
+            if (visitedNodes.contains(nextNode)) continue;
             visitedNodes.add(nextNode);
-            if (nextNode.exports.size() == 0 && nextNode != endNode && startNode != endNode) return false;
-            else if (!allExportsLandAtNode(nextNode, endNode, visitedNodes)) return false;
+            if (nextNode.exports.size() == 0 && nextNode != endNode && startNode != endNode) result = false;
+            else if (!allExportsLandAtNode(nextNode, endNode, visitedNodes)) result = false;
             visitedNodes.remove(nextNode);
+            if (!result) return false;
         }
 
         return true;
     }
 
     public void openSubClusters(GraphNode mainNode) {
+        if (!collapsed) return;
         collapsed = false;
         mainNode.circle.setFill(Color.GRAY);
         for (GraphEdge importEdge : imports) {
@@ -180,6 +243,7 @@ public class GraphNode extends Pane {
             childNode.setVisible(true);
             importEdge.setVisible(true);
             childNode.openSubClusters(mainNode);
+            childNode.collapsed = false;
         }
     }
 
