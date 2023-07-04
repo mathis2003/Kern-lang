@@ -151,13 +151,31 @@ public class GraphNode extends Pane {
     }
 
     public void collapseSubClusters(GraphNode mainNode) {
-
-        if (isCollapsable(mainNode, new HashSet<>())) {
+        if (this == mainNode) {
             collapsed = true;
             mainNode.circle.setFill(Color.GREEN);
             for (GraphEdge importEdge : imports) {
                 GraphNode childNode = importEdge.getEndNode();
                 if (childNode.isCollapsable(mainNode, new HashSet<>()) && !childNode.collapsed) {
+                    childNode.collapsed = true;
+                    childNode.setVisible(false);
+                    for (GraphEdge impEdg : childNode.imports) {
+                        impEdg.setVisible(false);
+                    }
+                    for (GraphEdge expEdg : childNode.exports) {
+                        expEdg.setVisible(false);
+                    }
+
+                    childNode.collapseSubClusters(mainNode);
+                }
+            }
+        } else if (isCollapsable(mainNode, new HashSet<>())) {
+            collapsed = true;
+            mainNode.circle.setFill(Color.GREEN);
+            for (GraphEdge importEdge : imports) {
+                GraphNode childNode = importEdge.getEndNode();
+                // if childnode isn't collapsed already, do so now
+                if (!childNode.collapsed) {
                     childNode.collapsed = true;
                     childNode.setVisible(false);
                     for (GraphEdge impEdg : childNode.imports) {
@@ -203,6 +221,7 @@ public class GraphNode extends Pane {
         // rule 3
         for (GraphEdge importEdge : imports) {
             GraphNode childNode = importEdge.getEndNode();
+            if (childNode == collapseNode) continue;
             if (!childNode.isCollapsable(collapseNode, visitedNodes)) {
                 visitedNodes.remove(this);
                 return false;
@@ -223,6 +242,7 @@ public class GraphNode extends Pane {
         for (GraphEdge exportEdge : startNode.exports) {
             boolean result = true;
             GraphNode nextNode = exportEdge.getStartNode();
+            if (nextNode == endNode) continue;
             if (visitedNodes.contains(nextNode)) continue;
             visitedNodes.add(nextNode);
             if (nextNode.exports.size() == 0 && nextNode != endNode && startNode != endNode) result = false;
