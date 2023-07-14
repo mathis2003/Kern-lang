@@ -22,41 +22,50 @@ public class IDE extends BorderPane {
         {
             // Project menu
             Menu projectMenu = new Menu("Project");
+            {
 
-            MenuItem compileItem = new MenuItem("Compile");
-            compileItem.setOnAction(e -> codebaseViewer.compileNodes());
+                MenuItem compileItem = new MenuItem("Compile");
+                compileItem.setOnAction(e -> codebaseViewer.compileNodes());
 
-            MenuItem openItem = new MenuItem("Open");
-            openItem.setOnAction(e -> {
-                File file = new FileChooser().showOpenDialog(getScene().getWindow());
-                if (file != null) {
-                    try {
-                        dbManager.openDB(file);
-                    } catch (DataAccessException ex) {
-                        ex.printStackTrace();
+                MenuItem openItem = new MenuItem("Open");
+                openItem.setOnAction(e -> {
+                    File file = new FileChooser().showOpenDialog(getScene().getWindow());
+                    if (file != null) {
+                        try {
+                            dbManager.openDB(file);
+                        } catch (DataAccessException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
 
-            MenuItem exportItem = new MenuItem("Export");
-            exportItem.setOnAction(e -> {
-                File file = new FileChooser().showSaveDialog(getScene().getWindow());
-                //File file = new FileChooser().showOpenDialog(getScene().getWindow());
-                if (file != null) {
-                    try {
-                        dbManager.exportToDB(file);
-                    } catch (DataAccessException ex) {
-                        ex.printStackTrace();
+                MenuItem exportItem = new MenuItem("Export");
+                exportItem.setOnAction(e -> {
+                    File file = new FileChooser().showSaveDialog(getScene().getWindow());
+                    //File file = new FileChooser().showOpenDialog(getScene().getWindow());
+                    if (file != null) {
+                        try {
+                            dbManager.exportToDB(file);
+                        } catch (DataAccessException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
 
-            projectMenu.getItems().addAll(compileItem, openItem, exportItem);
+                projectMenu.getItems().addAll(compileItem, openItem, exportItem);
+            }
 
+            // statistics menu
+            Menu statisticsMenu = new Menu("Statistics");
+            {}
+
+            // language extensions menu
+            Menu langExtMenu = new Menu("Language Extensions");
+            {}
 
             // Menu bar
             MenuBar menuBar = new MenuBar();
-            menuBar.getMenus().addAll(projectMenu);
+            menuBar.getMenus().addAll(projectMenu, statisticsMenu, langExtMenu);
             this.setTop(menuBar);
         }
 
