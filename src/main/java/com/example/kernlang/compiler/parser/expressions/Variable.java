@@ -9,12 +9,11 @@ import com.example.kernlang.compiler.parser.ParseResult;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class IdentifierExpr implements ASTNode {
-    private String ident;
-
+public class Variable implements ASTNode {
+    String ident;
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitIdentifierExpr(this);
+        return visitor.visitVariable(this);
     }
 
     @Override
@@ -32,26 +31,21 @@ public class IdentifierExpr implements ASTNode {
         return new ParseResult(Optional.of(this), input2.substring(i), "");
     }
 
-    public String getIdentifier() {
-        return ident;
-    }
-
     @Override
-    public Literal interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
+    public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         if (additionalContext.containsKey(ident)) {
             // here, context and additionalContext will never be used since the expression is a Literal anyways
-            return (Literal) (additionalContext.get(ident)).interpret(context, additionalContext);
+            return (additionalContext.get(ident)).interpret(contextNode, additionalContext);
         } else {
-            for (GraphEdge edge : context.getImports()) {
+            for (GraphEdge edge : contextNode.getImports()) {
                 GraphNode importNode = edge.getEndNode();
                 if (importNode.getName().equals(ident)) {
                     // we give an empty hashmap, as the identifier's expression is to be evaluated in another context,
                     // but obviously we don't give arguments to an identifier expression
-                    return (Literal) (importNode.getAST()).interpret(importNode, new HashMap<>());
+                    return importNode.getAST().interpret(importNode, new HashMap<>());
                 }
             }
         }
-
         return null;
     }
 

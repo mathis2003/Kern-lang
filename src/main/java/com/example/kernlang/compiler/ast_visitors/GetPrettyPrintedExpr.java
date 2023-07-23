@@ -1,18 +1,19 @@
 package com.example.kernlang.compiler.ast_visitors;
 
+import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.expressions.*;
-import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
-import com.example.kernlang.compiler.parser.statements.Stmt;
-import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
+import com.example.kernlang.compiler.parser.expressions.literals.*;
+import com.example.kernlang.compiler.parser.statements.Assignment;
+import com.example.kernlang.compiler.parser.statements.ReturnStmt;
+import com.example.kernlang.compiler.parser.statements.Statement;
 
 public class GetPrettyPrintedExpr implements ExprVisitor<String>{
 
-    public static String of(Expr expr) {
+    public static String of(ASTNode expr) {
         return indentSExpression(expr.accept(new GetPrettyPrintedExpr()));
     }
 
-    public String print(Expr expr) {
+    public String print(ASTNode expr) {
         return indentSExpression(expr.accept(this));
     }
 
@@ -54,18 +55,11 @@ public class GetPrettyPrintedExpr implements ExprVisitor<String>{
         }
 
         String stmts = "\n";
-        for (Stmt stmt : functionLiteral.getStatements()) {
+        for (Statement stmt : functionLiteral.getStatements()) {
             stmts += "\t\tstatement:\n" + stmt.toString() + "\n";
         }
 
         return "(" + "function:\n" + "\tparameters:" + args + "\tstatements" + stmts + ")";
-    }
-
-    @Override
-    public String visitLiteralExpr(LiteralExpr literalExpr) {
-        return "(literal:\n" +
-                "\ttype: " + literalExpr.getTok().tokenType() + "\n" +
-                "\tvalue: " + literalExpr.getTok().literal() + ")";
     }
 
     @Override
@@ -79,15 +73,70 @@ public class GetPrettyPrintedExpr implements ExprVisitor<String>{
     }
 
     @Override
-    public String visitBinaryExpr(BinaryExpr binaryExpr) {
-        return parenthesize(binaryExpr.getOperator().lexeme(),
-                binaryExpr.getLeftExpr(), binaryExpr.getRightExpr());
+    public String visitBoolLiteral(BoolLiteral boolLiteral) {
+        return boolLiteral.getLiteral().toString();
+    }
+
+    @Override
+    public String visitCharLiteral(CharLiteral charLiteral) {
+        return charLiteral.getLiteral().toString();
+    }
+
+    @Override
+    public String visitNumberLiteral(NumberLiteral numberLiteral) {
+        return numberLiteral.getNumber().toString();
+    }
+
+    @Override
+    public String visitUnitLiteral(UnitLiteral unitLiteral) {
+        return "Unit";
+    }
+
+    @Override
+    public String visitAddSub(AddSub addSub) {
+        return parenthesize("" + addSub.getOperator(),
+                    addSub.getLeft(), addSub.getRight());
+    }
+
+    @Override
+    public String visitBoolExpr(BoolExpr boolExpr) {
+        return boolExpr.accept(this);
+    }
+
+    @Override
+    public String visitBoolTerm(BoolTerm boolTerm) {
+        return boolTerm.accept(this);
+    }
+
+    @Override
+    public String visitComparison(Comparison comparison) {
+        return null;
+    }
+
+    @Override
+    public String visitComparisonTerm(ComparisonTerm comparisonTerm) {
+        return null;
+    }
+
+    @Override
+    public String visitEqualityExpr(EqualityExpr equalityExpr) {
+        return null;
+    }
+
+    @Override
+    public String visitExpr(Expr expr) {
+        return null;
+    }
+
+    @Override
+    public String visitFactor(Factor factor) {
+        return null;
     }
 
     @Override
     public String visitFunctionCall(FunctionCall functionCall) {
         String argsString = "\n";
-        for (Expr expr : functionCall.getArgs()) {
+        for (ASTNode expr : functionCall.getArgs()) {
             argsString += print(expr);
         }
 
@@ -109,16 +158,61 @@ public class GetPrettyPrintedExpr implements ExprVisitor<String>{
     }
 
     @Override
+    public String visitLiteral(Literal literal) {
+        return null;
+    }
+
+    @Override
+    public String visitMulDiv(MulDiv mulDiv) {
+        return null;
+    }
+
+    @Override
+    public String visitParenExpr(ParenExpr parenExpr) {
+        return null;
+    }
+
+    @Override
+    public String visitRecordAccess(RecordAccess recordAccess) {
+        return null;
+    }
+
+    @Override
+    public String visitTerm(Term term) {
+        return null;
+    }
+
+    @Override
     public String visitUnaryExpr(UnaryExpr unaryExpr) {
-        return parenthesize(unaryExpr.getOperator().lexeme(),
+        return parenthesize("" + unaryExpr.getOperator(),
                 unaryExpr.getExpr());
     }
 
-    private String parenthesize(String name, Expr... exprs) {
+    @Override
+    public String visitVariable(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public String visitAssignment(Assignment assignment) {
+        return null;
+    }
+
+    @Override
+    public String visitReturnStmt(ReturnStmt returnStmt) {
+        return null;
+    }
+
+    @Override
+    public String visitStatement(Statement statement) {
+        return null;
+    }
+
+    private String parenthesize(String name, ASTNode... exprs) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("(").append(name);
-        for (Expr expr : exprs) {
+        for (ASTNode expr : exprs) {
             builder.append(" ");
             builder.append(expr.accept(this));
         }

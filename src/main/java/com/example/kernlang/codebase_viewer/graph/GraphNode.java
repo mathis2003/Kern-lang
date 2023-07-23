@@ -2,13 +2,12 @@ package com.example.kernlang.codebase_viewer.graph;
 
 import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.popup_screens.NodeContextMenu;
-import com.example.kernlang.compiler.parser.expressions.BinaryExpr;
-import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
-import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.expressions.Literal;
-import com.example.kernlang.compiler.parser.statements.Assignment;
+import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.UnitLiteral;
 import com.example.kernlang.compiler.parser.statements.ReturnStmt;
-import com.example.kernlang.compiler.parser.statements.Stmt;
+import com.example.kernlang.compiler.parser.statements.Statement;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -25,7 +24,7 @@ public class GraphNode extends Pane {
     private final Text nodeNameText;
     public final String name;
 
-    private Literal astLiteralExpr;
+    private ASTNode astLiteralExpr;
 
     private Types type;
     private String codeString = "";
@@ -275,16 +274,16 @@ public class GraphNode extends Pane {
         return this.name;
     }
 
-    public void setAstExpr(Literal astLiteralExpr) {
+    public void setAstExpr(ASTNode astLiteralExpr) {
         this.astLiteralExpr = astLiteralExpr;
     }
 
-    public Literal getAST() {
+    public ASTNode getAST() {
         return this.astLiteralExpr;
     }
 
-    public HashMap<String, Literal> getContext() {
-        HashMap<String, Literal> result = new HashMap<>();
+    public HashMap<String, ASTNode> getContext() {
+        HashMap<String, ASTNode> result = new HashMap<>();
         for (GraphEdge e : imports) {
             GraphNode importNode = e.getEndNode();
             result.put(importNode.getName(), importNode.getAST());
@@ -294,27 +293,13 @@ public class GraphNode extends Pane {
 
     public void runNode() {
         if (this.astLiteralExpr instanceof FunctionLiteral) {
-            for (Stmt stmt : ((FunctionLiteral)astLiteralExpr).getStatements()) {
-                if (stmt instanceof Assignment assignStmt) {
-                    String ident = null;
-                    if (assignStmt.getAssignedObj() instanceof IdentifierExpr) {
-                        ident = ((IdentifierExpr)assignStmt.getAssignedObj()).getIdentifier();
-                    } else if (assignStmt.getAssignedObj() instanceof BinaryExpr) {
-                        ident = ((IdentifierExpr)((BinaryExpr)assignStmt.getAssignedObj()).getLeftExpr()).getIdentifier();
-                    }
-                    for (GraphEdge edge : imports) {
-                        if (edge.getEndNode().name.equals(ident)) {
-                            assignStmt.assign(edge.getEndNode(), this, new HashMap<>());
-                            //edge.getEndNode().setAstExpr(assignStmt.getExpr().interpret(this, new HashMap<>()));
-                        }
-                    }
+            this.astLiteralExpr.interpret(this, new HashMap<>());
+            // getting the actual function literal
+            FunctionLiteral fLit = (FunctionLiteral) this.astLiteralExpr;
 
-                }
-                else if (stmt instanceof ReturnStmt) {
-                    // since this function isn't called anywhere, but instead run by hand,
-                    // it doesn't have to return a value, but can just stop the program
-                    return;
-                }
+            // statements
+            for (Statement stmt : fLit.getStatements()) {
+                stmt.interpret(fLit.getFunctionContext(), new HashMap<>());
             }
         } else {
             // perhaps it is a composition of functions or something?

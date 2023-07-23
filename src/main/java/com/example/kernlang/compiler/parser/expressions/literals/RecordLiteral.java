@@ -1,15 +1,17 @@
 package com.example.kernlang.compiler.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.compiler.parser.ASTNode;
+import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.Literal;
 import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
-import com.example.kernlang.compiler.parser.expressions.Expr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
-public class RecordLiteral implements Expr, Literal {
+public class RecordLiteral implements ASTNode {
 
     private final ArrayList<RecordField> recordFields = new ArrayList<>();
 
@@ -19,7 +21,12 @@ public class RecordLiteral implements Expr, Literal {
     }
 
     @Override
-    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
+    public ParseResult parse(String input) {
+        return new ParseResult(Optional.empty(), input, "");
+    }
+
+    @Override
+    public ASTNode interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
         return this;
     }
 
@@ -40,7 +47,7 @@ public class RecordLiteral implements Expr, Literal {
             this.l = l;
         }
 
-        public Literal getL() {
+        public ASTNode getL() {
             return l;
         }
 

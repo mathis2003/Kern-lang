@@ -1,9 +1,11 @@
 package com.example.kernlang.compiler.ast_visitors;
 
+import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.expressions.*;
-import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
-import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.*;
+import com.example.kernlang.compiler.parser.statements.Assignment;
+import com.example.kernlang.compiler.parser.statements.ReturnStmt;
+import com.example.kernlang.compiler.parser.statements.Statement;
 
 /**
  * For now, the pattern used to interpret the ast is the "interpreter pattern" shown by the Gang of Four.
@@ -17,10 +19,10 @@ public class Interpreter implements ExprVisitor<Object> {
         return functionLiteral;
     }
 
-    @Override
+    /*@Override
     public Object visitLiteralExpr(LiteralExpr literalExpr) {
         return literalExpr.getTok().literal();
-    }
+    }*/
 
     @Override
     public Object visitRecordLiteral(RecordLiteral recordLiteral) {
@@ -28,9 +30,69 @@ public class Interpreter implements ExprVisitor<Object> {
     }
 
     @Override
-    public Object visitBinaryExpr(BinaryExpr binaryExpr) {
+    public Object visitBoolLiteral(BoolLiteral boolLiteral) {
         return null;
     }
+
+    @Override
+    public Object visitCharLiteral(CharLiteral charLiteral) {
+        return null;
+    }
+
+    @Override
+    public Object visitNumberLiteral(NumberLiteral numberLiteral) {
+        return null;
+    }
+
+    @Override
+    public Object visitUnitLiteral(UnitLiteral unitLiteral) {
+        return null;
+    }
+
+    @Override
+    public Object visitAddSub(AddSub addSub) {
+        return null;
+    }
+
+    @Override
+    public Object visitBoolExpr(BoolExpr boolExpr) {
+        return null;
+    }
+
+    @Override
+    public Object visitBoolTerm(BoolTerm boolTerm) {
+        return null;
+    }
+
+    @Override
+    public Object visitComparison(Comparison comparison) {
+        return null;
+    }
+
+    @Override
+    public Object visitComparisonTerm(ComparisonTerm comparisonTerm) {
+        return null;
+    }
+
+    @Override
+    public Object visitEqualityExpr(EqualityExpr equalityExpr) {
+        return null;
+    }
+
+    @Override
+    public Object visitExpr(Expr expr) {
+        return null;
+    }
+
+    @Override
+    public Object visitFactor(Factor factor) {
+        return null;
+    }
+
+    /*@Override
+    public Object visitBinaryExpr(BinaryExpr binaryExpr) {
+        return null;
+    }*/
 
     @Override
     public Object visitFunctionCall(FunctionCall functionCall) {
@@ -48,11 +110,56 @@ public class Interpreter implements ExprVisitor<Object> {
     }
 
     @Override
+    public Object visitLiteral(Literal literal) {
+        return null;
+    }
+
+    @Override
+    public Object visitMulDiv(MulDiv mulDiv) {
+        return null;
+    }
+
+    @Override
+    public Object visitParenExpr(ParenExpr parenExpr) {
+        return null;
+    }
+
+    @Override
+    public Object visitRecordAccess(RecordAccess recordAccess) {
+        return null;
+    }
+
+    @Override
+    public Object visitTerm(Term term) {
+        return null;
+    }
+
+    @Override
     public Object visitUnaryExpr(UnaryExpr unaryExpr) {
         return null;
     }
 
-    private Object evaluate(Expr expr) {
+    @Override
+    public Object visitVariable(Variable variable) {
+        return null;
+    }
+
+    @Override
+    public Object visitAssignment(Assignment assignment) {
+        return null;
+    }
+
+    @Override
+    public Object visitReturnStmt(ReturnStmt returnStmt) {
+        return null;
+    }
+
+    @Override
+    public Object visitStatement(Statement statement) {
+        return null;
+    }
+
+    private Object evaluate(ASTNode expr) {
         return expr.accept(this);
     }
 }

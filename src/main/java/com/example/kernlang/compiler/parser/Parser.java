@@ -8,9 +8,7 @@ import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
 import com.example.kernlang.compiler.parser.statements.ReturnStmt;
 import com.example.kernlang.compiler.lexer.Token;
 import com.example.kernlang.compiler.lexer.TokenType;
-import com.example.kernlang.compiler.parser.expressions.literals.LiteralExpr;
 import com.example.kernlang.compiler.parser.statements.Assignment;
-import com.example.kernlang.compiler.parser.statements.Stmt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,79 +27,79 @@ public class Parser {
 
 
     /** Parse functions **/
-
-    public Expr parseExpression() {
+    /*
+    public ASTNode parseExpression() {
         if (tokens.get(0).tokenType() == TokenType.TOK_EOF) {
             throw Compiler.error(graphNode, peek().line(), "trying to compile empty node");
         }
         return parseBoolLogic();
     }
 
-    private Expr parseBoolLogic() {
-        Expr expr = parseEquality();
+    private ASTNode parseBoolLogic() {
+        ASTNode expr = parseEquality();
 
         while (match(TokenType.TOK_EQUAL_EQUAL, TokenType.TOK_BANG_EQUAL)) {
             Token operator = previous();
-            Expr right = parseBoolLogic();
+            ASTNode right = parseBoolLogic();
             expr = new BinaryExpr(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr parseEquality() {
-        Expr expr = parseComparison();
+    private ASTNode parseEquality() {
+        ASTNode expr = parseComparison();
 
         while (match(TokenType.TOK_LESS, TokenType.TOK_GREATER)) {
             Token operator = previous();
-            Expr right = parseEquality();
+            ASTNode right = parseEquality();
             expr = new BinaryExpr(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr parseComparison() {
-        Expr expr = parseTerm();
+    private ASTNode parseComparison() {
+        ASTNode expr = parseTerm();
 
         while (match(TokenType.TOK_PLUS, TokenType.TOK_MINUS)) {
             Token operator = previous();
-            Expr right = parseComparison();
+            ASTNode right = parseComparison();
             expr = new BinaryExpr(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr parseTerm() {
-        Expr expr = parseFactor();
+    private ASTNode parseTerm() {
+        ASTNode expr = parseFactor();
 
         while (match(TokenType.TOK_STAR, TokenType.TOK_SLASH)) {
             Token operator = previous();
-            Expr right = parseTerm();
+            ASTNode right = parseTerm();
             expr = new BinaryExpr(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr parseFactor() {
-        Expr expr = parseUnary();
+    private ASTNode parseFactor() {
+        ASTNode expr = parseUnary();
 
         while (match(TokenType.TOK_DOT)) {
             Token operator = previous();
-            Expr right = parseFactor();
+            ASTNode right = parseFactor();
             expr = new BinaryExpr(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr parseUnary() {
-        Expr e = null;
+    private ASTNode parseUnary() {
+        ASTNode e = null;
 
         switch (peek().tokenType()) {
-            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return (Expr) parseLiteral(); }
+            case TOK_UNIT, TOK_TRUE, TOK_FALSE, TOK_CHAR, TOK_NUMBER -> { return parseLiteral(); }
             case TOK_BANG, TOK_AMPERSAND, TOK_DOLLAR_SIGN -> {
                     Token operator = advance();
                     e = new UnaryExpr(operator, parseUnary());
@@ -129,22 +127,22 @@ public class Parser {
         return e;
     }
 
-    private Expr parseIfExpr() {
+    private ASTNode parseIfExpr() {
         advance(); // skip over "if" token
 
-        Expr condExpr = parseExpression();
+        ASTNode condExpr = parseExpression();
 
         if (!match(TokenType.TOK_THEN)) {
             throw Compiler.error(graphNode, peek().line(), "keyword \"then\" expected after if with conditional expression");
         }
 
-        Expr trueCase = parseExpression();
+        ASTNode trueCase = parseExpression();
 
         if (!match(TokenType.TOK_ELSE)) {
             throw Compiler.error(graphNode, peek().line(), "keyword \"else\" expected after if [expression] then [expression] ");
         }
 
-        Expr falseCase = parseExpression();
+        ASTNode falseCase = parseExpression();
 
         return new IfExpr(condExpr, trueCase, falseCase);
     }
@@ -223,7 +221,7 @@ public class Parser {
                 result = new ReturnStmt(parseExpression());
             }
             default -> {
-                Expr expr = parseExpression();
+                ASTNode expr = parseExpression();
                 if (match(TokenType.TOK_LEFT_ARROW)) {
                     result = new Assignment(expr, parseExpression());
                 } else {
@@ -234,10 +232,11 @@ public class Parser {
 
         return result;
     }
-
+    */
 
 
     /** HELPER FUNCTIONS **/
+    /*
 
     private boolean check(TokenType type) {
         if (isAtEnd()) return false;
@@ -280,4 +279,7 @@ public class Parser {
 
         throw Compiler.error(graphNode, peek().line(), message);
     }
+    */
+
+
 }
