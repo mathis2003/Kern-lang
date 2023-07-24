@@ -105,7 +105,7 @@ public class FunctionCall implements ASTNode {
             String argName = fLit.getParamIdentifiers().get(i);
             // note: the arguments given with the function call, are to be evaluated in the caller's context
             // no clue what additionalContext is doing here, might have to replace that with null
-            argumentsHm.put(argName, (Literal) args.get(i).interpret(contextNode, additionalContext));
+            argumentsHm.put(argName, args.get(i).interpret(contextNode, additionalContext));
         }
 
         // statements

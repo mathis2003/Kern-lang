@@ -33,7 +33,7 @@ public class IfExpr implements ASTNode {
         String input2 = input.stripLeading();
         if (input2.startsWith("if")) {
             input2 = input2.substring(2).stripLeading();
-            ParseResult parseConditionResult = new BoolLiteral().parse(input2);
+            ParseResult parseConditionResult = new BoolExpr().parse(input2);
             if (parseConditionResult.syntaxNode().isPresent()) {
                 condition = parseConditionResult.syntaxNode().get();
                 input2 = parseConditionResult.leftOverString().stripLeading();

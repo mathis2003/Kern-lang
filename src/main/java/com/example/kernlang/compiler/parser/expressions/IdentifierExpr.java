@@ -5,6 +5,7 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -30,7 +31,10 @@ public class IdentifierExpr implements ASTNode {
         else return new ParseResult(Optional.empty(), input, "failed to parse variable expression");
 
         int i = 1;
-        while (isAlpha(input2.charAt(i)) || isDigit(input2.charAt(i))) varName += input2.charAt(i);
+        while (isAlpha(input2.charAt(i)) || isDigit(input2.charAt(i))) {
+            varName += input2.charAt(i);
+            i++;
+        }
 
         this.ident = varName;
 
@@ -42,17 +46,17 @@ public class IdentifierExpr implements ASTNode {
     }
 
     @Override
-    public Literal interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
+    public ASTNode interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
         if (additionalContext.containsKey(ident)) {
             // here, context and additionalContext will never be used since the expression is a Literal anyways
-            return (Literal) (additionalContext.get(ident)).interpret(context, additionalContext);
+            return (additionalContext.get(ident)).interpret(context, additionalContext);
         } else {
             for (GraphEdge edge : context.getImports()) {
                 GraphNode importNode = edge.getEndNode();
                 if (importNode.getName().equals(ident)) {
                     // we give an empty hashmap, as the identifier's expression is to be evaluated in another context,
                     // but obviously we don't give arguments to an identifier expression
-                    return (Literal) (importNode.getAST()).interpret(importNode, new HashMap<>());
+                    return (importNode.getAST()).interpret(importNode, new HashMap<>());
                 }
             }
         }
