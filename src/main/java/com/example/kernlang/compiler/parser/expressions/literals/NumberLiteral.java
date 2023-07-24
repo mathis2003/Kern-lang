@@ -35,13 +35,13 @@ public class NumberLiteral implements ASTNode {
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         number = 0.0;
-        if (isDigit(input2.charAt(0))) {
-            while (isDigit(input2.charAt(0))) {
+        if (!input2.equals("") && isDigit(input2.charAt(0))) {
+            while (!input2.equals("") && isDigit(input2.charAt(0))) {
                 number *= 10;
                 number += input2.charAt(0) - '0';
                 input2 = input2.substring(1);
             }
-            if (input2.charAt(0) == '.'){
+            if (!input2.equals("") && input2.charAt(0) == '.'){
                 input2 = input2.substring(1);
                 int divider = 10;
                 double decimal;
