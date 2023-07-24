@@ -28,7 +28,7 @@ public class NumberLiteral implements ASTNode {
 
     @Override
     public String toString(String indent) {
-        return "\n" + indent + number.intValue();
+        return "\n" + indent + number;
     }
 
     @Override
