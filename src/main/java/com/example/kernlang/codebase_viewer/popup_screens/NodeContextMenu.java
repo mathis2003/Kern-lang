@@ -2,7 +2,6 @@ package com.example.kernlang.codebase_viewer.popup_screens;
 
 import com.example.kernlang.codebase_viewer.GraphWindowState;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;

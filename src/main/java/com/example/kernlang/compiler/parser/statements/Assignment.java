@@ -3,7 +3,6 @@ package com.example.kernlang.compiler.parser.statements;
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
-import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.Expr;
@@ -19,14 +18,6 @@ public class Assignment implements ASTNode {
 
     private ASTNode assignedObj;
     private ASTNode expr;
-
-
-    public String toString() {
-        return "(assignment:\n" +
-                "\tidentifier: " + GetPrettyPrintedExpr.of(assignedObj) + "\n" +
-                "\tassigned expression:" + "\n" +
-                GetPrettyPrintedExpr.of(expr) + ")";
-    }
 
     public ASTNode getAssignedObj() {
         return assignedObj;

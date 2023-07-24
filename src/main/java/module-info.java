@@ -12,8 +12,6 @@ module com.example.kernlang {
     opens com.example.kernlang.codebase_viewer to javafx.fxml;
     exports com.example.kernlang.codebase_viewer.popup_screens;
     opens com.example.kernlang.codebase_viewer.popup_screens to javafx.fxml;
-    exports com.example.kernlang.compiler.lexer;
-    opens com.example.kernlang.compiler.lexer to javafx.fxml;
     exports com.example.kernlang.compiler.parser;
     opens com.example.kernlang.compiler.parser to javafx.fxml;
     exports com.example.kernlang.compiler.parser.expressions;

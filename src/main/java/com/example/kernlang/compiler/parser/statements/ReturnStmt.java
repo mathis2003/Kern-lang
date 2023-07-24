@@ -2,11 +2,9 @@ package com.example.kernlang.compiler.parser.statements;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
-import com.example.kernlang.compiler.ast_visitors.GetPrettyPrintedExpr;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.Expr;
-import com.example.kernlang.compiler.parser.expressions.Literal;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -17,10 +15,6 @@ public class ReturnStmt implements ASTNode {
 
     public ASTNode getReturnExpr() {
         return returnExpr;
-    }
-
-    public String toString() {
-        return "(return:\n" + GetPrettyPrintedExpr.of(returnExpr) + ")";
     }
 
     @Override
