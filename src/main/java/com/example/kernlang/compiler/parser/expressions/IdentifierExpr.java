@@ -18,6 +18,11 @@ public class IdentifierExpr implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "identifierexpr: " + ident;
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         String varName = "";

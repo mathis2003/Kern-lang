@@ -15,6 +15,11 @@ public class RecordAccess implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "recordaccess:";
+    }
+
+    @Override
     public ParseResult parse(String input) {
         return new ParseResult(Optional.empty(), input, "failed to parse record access");
     }

@@ -13,6 +13,11 @@ import java.util.function.Supplier;
 public abstract class ExtendibleASTNode implements ASTNode {
     protected ASTNode expr;
 
+    @Override
+    public String toString(String indent) {
+        return "\n" + expr.toString(indent);
+    }
+
     private final ArrayList<Supplier<ASTNode>> clauses;
 
     private final String parseErrorString;

@@ -11,11 +11,20 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class Comparison implements ASTNode {
+
     ASTNode left, right;
     char operator;
     @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitComparison(this);
+    }
+
+    @Override
+    public String toString(String indent) {
+        return "\n" + indent + "comparison" +
+                "\n\t" + "operator: " + operator +
+                "\n" + left.toString(indent + "\t") +
+                "\n" + right.toString(indent + "\t") ;
     }
 
     @Override

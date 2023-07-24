@@ -15,6 +15,11 @@ public class UnitLiteral implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n" + indent + "unit";
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         if (input2.startsWith("unit")) return new ParseResult(Optional.of(this), input2.substring(4).stripLeading(), "");

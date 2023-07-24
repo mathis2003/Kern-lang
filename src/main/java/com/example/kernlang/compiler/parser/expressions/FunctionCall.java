@@ -16,6 +16,15 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class FunctionCall implements ASTNode {
+
+    @Override
+    public String toString(String indent) {
+        String result = "\n" + indent + "functioncall" +
+                "\n\t" + indent + "functionexpr: " + functionExpr.toString(indent + "\t") +
+                "\n\t" + indent + "args:";
+        for (ASTNode arg : args) result += arg.toString(indent+"\t");
+        return result;
+    }
     private ASTNode functionExpr;
     private final ArrayList<ASTNode> args = new ArrayList<>();
 

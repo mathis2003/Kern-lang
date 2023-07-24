@@ -24,7 +24,7 @@ public class NodeContextMenu extends ContextMenu {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Abstract Syntax Tree");
             alert.setHeaderText(null);
-            alert.setContentText(GetPrettyPrintedExpr.of(node.getAST()));
+            alert.setContentText(node.getAST().toString(""));
 
             alert.showAndWait();
         });

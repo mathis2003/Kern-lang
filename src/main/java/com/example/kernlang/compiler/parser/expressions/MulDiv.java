@@ -13,6 +13,14 @@ public class MulDiv implements ASTNode {
     ASTNode left, right;
     char operator;
 
+    @Override
+    public String toString(String indent) {
+        return "\n" + indent + "muldiv:" +
+                "\n" + indent + "\toperator: " + operator +
+                "\n" + left.toString(indent + "\t") +
+                "\n" + right.toString(indent + "\t");
+    }
+
 
     public char getOperator() {
         return operator;

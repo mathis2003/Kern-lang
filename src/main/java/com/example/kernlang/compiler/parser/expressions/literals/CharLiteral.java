@@ -13,6 +13,11 @@ public class CharLiteral implements ASTNode {
     Character literal;
 
     @Override
+    public String toString(String indent) {
+        return "\n" + indent + "'" + literal + "'";
+    }
+
+    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return null;
     }

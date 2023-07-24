@@ -17,6 +17,14 @@ public class AddSub implements ASTNode {
         return visitor.visitAddSub(this);
     }
 
+    @Override
+    public String toString(String indent) {
+        return "\n" + indent + "addsub:" +
+                "\n" + indent + "\toperator: " + operator +
+                "\n" + left.toString(indent + "\t") +
+                "\n" + right.toString(indent + "\t");
+    }
+
     public char getOperator() {
         return operator;
     }

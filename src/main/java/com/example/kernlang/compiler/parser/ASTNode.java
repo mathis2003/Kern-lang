@@ -9,6 +9,9 @@ import java.util.HashMap;
 public interface ASTNode {
 
     public abstract <R> R accept(ExprVisitor<R> visitor);
+
+    public String toString(String indent);
+
     ParseResult parse(String input);
 
     ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext);

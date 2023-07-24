@@ -69,6 +69,13 @@ public class Assignment implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "assignment statement:" +
+                "\n\t" + indent + "assigned object: " + assignedObj.toString(indent + "\t") +
+                "\n\t" + indent + "assigned expr: " + expr.toString(indent + "\t") ;
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         ParseResult identParseRes = new IdentifierExpr().parse(input2);

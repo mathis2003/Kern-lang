@@ -27,6 +27,11 @@ public class NumberLiteral implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n" + indent + number.intValue();
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         number = 0.0;

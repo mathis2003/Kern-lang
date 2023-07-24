@@ -21,6 +21,11 @@ public class RecordLiteral implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n" + indent + "record:";
+    }
+
+    @Override
     public ParseResult parse(String input) {
         return new ParseResult(Optional.empty(), input, "");
     }

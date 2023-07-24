@@ -21,6 +21,14 @@ public class IfExpr implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "ifexpr:" +
+                "\n\t" + indent + "condition:" + condition.toString(indent + "\t") +
+                "\n\t" + indent + "true case:" + trueCaseExpr.toString(indent + "\t") +
+                "\n\t" + indent + "false case:" + falseCaseExpr.toString(indent + "\t");
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         if (input2.startsWith("if")) {

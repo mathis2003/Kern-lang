@@ -18,6 +18,21 @@ public class FunctionLiteral implements ASTNode {
     private final ArrayList<String> paramIdentifiers = new ArrayList<>();
     private GraphNode functionContext = null;
 
+    @Override
+    public String toString(String indent) {
+        String result = "\n" + indent + "function:\n" +
+                indent + "\t" + "parameters:";
+
+        for (String param : paramIdentifiers) result += indent + "\n\t" + param;
+
+        result += indent + "\n\t" + "statements:";
+
+        for (Statement statement : statements) result += statement.toString(indent + "\t");
+
+        return result;
+
+    }
+
     public FunctionLiteral() {}
 
     @Override

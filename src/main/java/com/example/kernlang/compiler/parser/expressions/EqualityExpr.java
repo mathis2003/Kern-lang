@@ -14,6 +14,14 @@ public class EqualityExpr implements ASTNode {
     String operator;
 
     @Override
+    public String toString(String indent) {
+        return "\n" + indent + "equalityexpr:" +
+                "\n\t" + "operator: " + operator +
+                "\n" + left.toString(indent + "\t") +
+                "\n" + right.toString(indent + "\t") ;
+    }
+
+    @Override
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitEqualityExpr(this);
     }

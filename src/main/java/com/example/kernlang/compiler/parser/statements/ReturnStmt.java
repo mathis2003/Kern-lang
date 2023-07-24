@@ -29,6 +29,11 @@ public class ReturnStmt implements ASTNode {
     }
 
     @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "return statement: " + returnExpr.toString(indent + "\t");
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         if (input2.startsWith("return")) {

@@ -57,4 +57,9 @@ public class Statement implements ASTNode {
     public <R> R accept(ExprVisitor<R> visitor) {
         return visitor.visitStatement(this);
     }
+
+    @Override
+    public String toString(String indent) {
+        return "\n\t" + indent + "statement" + expr.toString(indent + "\t");
+    }
 }

@@ -7,6 +7,8 @@ import java.util.Arrays;
 
 public class BoolExpr extends ExtendibleASTNode {
 
+
+
     public BoolExpr() {
         super(
                 new ArrayList<>(Arrays.asList(

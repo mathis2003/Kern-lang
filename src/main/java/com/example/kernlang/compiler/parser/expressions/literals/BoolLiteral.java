@@ -11,6 +11,11 @@ import java.util.Optional;
 public class BoolLiteral implements ASTNode {
     Boolean literal;
 
+    @Override
+    public String toString(String indent) {
+        return "\n" + indent + literal;
+    }
+
     public BoolLiteral() {}
 
     public BoolLiteral(Boolean literal) {
