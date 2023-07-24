@@ -46,16 +46,23 @@ public class FunctionLiteral implements ASTNode {
         if (input2.startsWith("\\")) {
             input2 = input2.substring(1).stripLeading();
             if (!input2.startsWith("->")) {
-                do {
-                    ParseResult parseArgResult = new IdentifierExpr().parse(input2);
+                ParseResult parseArgResult = new IdentifierExpr().parse(input2);
+                if (parseArgResult.syntaxNode().isPresent()) {
+                    paramIdentifiers.add(((IdentifierExpr)parseArgResult.syntaxNode().get()).getIdentifier());
+                    input2 = parseArgResult.leftOverString().stripLeading();
+                } else {
+                    return new ParseResult(Optional.empty(), input, "failed to parse function literal");
+                }
+                while(input2.startsWith(",")) {
+                    input2 = input2.substring(1).stripLeading();
+                    parseArgResult = new IdentifierExpr().parse(input2);
                     if (parseArgResult.syntaxNode().isPresent()) {
                         paramIdentifiers.add(((IdentifierExpr)parseArgResult.syntaxNode().get()).getIdentifier());
                         input2 = parseArgResult.leftOverString().stripLeading();
                     } else {
                         return new ParseResult(Optional.empty(), input, "failed to parse function literal");
                     }
-
-                } while(input2.startsWith(","));
+                }
             }
             if (input2.startsWith("->")) {
                 input2 = input2.substring(2).stripLeading();

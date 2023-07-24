@@ -60,16 +60,23 @@ public class FunctionCall implements ASTNode {
                     if (input2.startsWith(")")) {
                         return new ParseResult(Optional.of(this), input2.substring(1).stripLeading(), "");
                     }
-                    do {
-                        ParseResult parseArgResult = new Expr().parse(input2);
+                    ParseResult parseArgResult = new Expr().parse(input2);
+                    if (parseArgResult.syntaxNode().isPresent()) {
+                        addArgument(parseArgResult.syntaxNode().get());
+                        input2 = parseArgResult.leftOverString().stripLeading();
+                    } else {
+                        return new ParseResult(Optional.empty(), input, "failed to parse function call");
+                    }
+                    while(input2.startsWith(",")) {
+                        input2 = input2.substring(1).stripLeading();
+                        parseArgResult = new Expr().parse(input2);
                         if (parseArgResult.syntaxNode().isPresent()) {
                             addArgument(parseArgResult.syntaxNode().get());
                             input2 = parseArgResult.leftOverString().stripLeading();
                         } else {
                             return new ParseResult(Optional.empty(), input, "failed to parse function call");
                         }
-
-                    } while(input2.startsWith(","));
+                    }
                     if (input2.startsWith(")")) {
                         return new ParseResult(Optional.of(this), input2.substring(1).stripLeading(), "");
                     }
