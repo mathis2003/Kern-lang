@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.literals.BoolLiteral;
@@ -14,10 +13,6 @@ public class Comparison implements ASTNode {
 
     ASTNode left, right;
     char operator;
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitComparison(this);
-    }
 
     @Override
     public String toString(String indent) {

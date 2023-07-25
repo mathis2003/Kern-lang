@@ -5,7 +5,6 @@ import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.Supplier;

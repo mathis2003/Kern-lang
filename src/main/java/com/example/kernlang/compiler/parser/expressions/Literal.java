@@ -1,6 +1,5 @@
 package com.example.kernlang.compiler.parser.expressions;
 
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.expressions.literals.CharLiteral;
 import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
@@ -29,8 +28,4 @@ public class Literal extends ExtendibleASTNode {
         );
     }
 
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitLiteral(this);
-    }
 }

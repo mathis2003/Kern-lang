@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.literals.BoolLiteral;
@@ -19,11 +18,6 @@ public class EqualityExpr implements ASTNode {
                 "\n\t" + "operator: " + operator +
                 "\n" + left.toString(indent + "\t") +
                 "\n" + right.toString(indent + "\t") ;
-    }
-
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitEqualityExpr(this);
     }
 
     @Override

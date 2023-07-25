@@ -20,6 +20,4 @@ module com.example.kernlang {
     opens com.example.kernlang.compiler.parser.statements to javafx.fxml;
     exports com.example.kernlang.compiler.parser.expressions.literals;
     opens com.example.kernlang.compiler.parser.expressions.literals to javafx.fxml;
-    exports com.example.kernlang.compiler.ast_visitors;
-    opens com.example.kernlang.compiler.ast_visitors to javafx.fxml;
 }

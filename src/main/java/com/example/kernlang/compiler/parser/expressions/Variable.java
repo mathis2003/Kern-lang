@@ -2,7 +2,6 @@ package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 
@@ -11,10 +10,6 @@ import java.util.Optional;
 
 public class Variable implements ASTNode {
     String ident;
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitVariable(this);
-    }
 
     @Override
     public String toString(String indent) {

@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 
@@ -10,11 +9,6 @@ import java.util.Optional;
 
 public class ParenExpr implements ASTNode {
     ASTNode expr;
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitParenExpr(this);
-    }
-
     @Override
     public String toString(String indent) {
         return "\n\t" + indent + "parenexpr:" + expr.toString(indent + "\t");

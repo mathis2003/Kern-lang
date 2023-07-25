@@ -1,14 +1,11 @@
 package com.example.kernlang.compiler.parser.expressions;
 
-import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.literals.UnitLiteral;
 import com.example.kernlang.compiler.parser.statements.ReturnStmt;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.compiler.parser.statements.Assignment;
 import com.example.kernlang.compiler.parser.statements.Statement;
 
 import java.util.ArrayList;
@@ -38,11 +35,6 @@ public class FunctionCall implements ASTNode {
 
     public ASTNode getFunctionExpr() {
         return functionExpr;
-    }
-
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitFunctionCall(this);
     }
 
     @Override

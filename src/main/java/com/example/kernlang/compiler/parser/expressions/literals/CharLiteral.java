@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 
@@ -17,10 +16,6 @@ public class CharLiteral implements ASTNode {
         return "\n" + indent + "'" + literal + "'";
     }
 
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return null;
-    }
 
     public Character getLiteral() {
         return literal;

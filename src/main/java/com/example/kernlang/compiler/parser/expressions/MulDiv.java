@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.literals.NumberLiteral;
@@ -34,10 +33,6 @@ public class MulDiv implements ASTNode {
         return right;
     }
 
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitMulDiv(this);
-    }
 
     @Override
     public ParseResult parse(String input) {

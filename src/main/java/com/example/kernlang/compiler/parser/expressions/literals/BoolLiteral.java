@@ -1,7 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 
@@ -26,10 +25,6 @@ public class BoolLiteral implements ASTNode {
         return literal;
     }
 
-    @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return null;
-    }
 
     @Override
     public ParseResult parse(String input) {
