@@ -16,7 +16,7 @@ public class Quote implements ASTNode {
     ASTNode quotedExpr;
     @Override
     public String toString(String indent) {
-        return "\n\tQuote: " + quotedExpr.toString(indent + "\t\t");
+        return "\n\t" + indent + "Quote: " + quotedExpr.toString(indent + "\t\t");
     }
 
     @Override

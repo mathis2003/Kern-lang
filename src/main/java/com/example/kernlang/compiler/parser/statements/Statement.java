@@ -3,6 +3,7 @@ package com.example.kernlang.compiler.parser.statements;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.language_extensions.ForLoop;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,8 @@ public class Statement implements ASTNode {
     public Statement() {
         clauses = new ArrayList<>(Arrays.asList(
                 Assignment::new,
-                ReturnStmt::new
+                ReturnStmt::new,
+                ForLoop::new
         ));
     }
 
