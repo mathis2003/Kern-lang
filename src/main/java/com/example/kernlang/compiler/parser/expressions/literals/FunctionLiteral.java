@@ -77,7 +77,7 @@ public class FunctionLiteral implements ASTNode {
 
     @Override
     public ASTNode interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
-        functionContext = context;
+        if (functionContext == null) functionContext = context;
         return this;
     }
 
