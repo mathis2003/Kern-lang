@@ -24,7 +24,7 @@ public class IdentifierExpr implements ASTNode {
         else return new ParseResult(Optional.empty(), input, "failed to parse variable expression");
 
         int i = 1;
-        while (isAlpha(input2.charAt(i)) || isDigit(input2.charAt(i))) {
+        while (i < input.length() && (isAlpha(input2.charAt(i)) || isDigit(input2.charAt(i)))) {
             varName += input2.charAt(i);
             i++;
         }
