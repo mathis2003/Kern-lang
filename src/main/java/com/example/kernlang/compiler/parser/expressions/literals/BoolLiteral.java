@@ -45,4 +45,17 @@ public class BoolLiteral implements ASTNode {
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         return this;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+
+        return this.literal.equals(((BoolLiteral) obj).literal);
+    }
 }

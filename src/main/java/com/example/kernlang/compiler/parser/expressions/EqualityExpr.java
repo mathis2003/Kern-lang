@@ -42,11 +42,12 @@ public class EqualityExpr implements ASTNode {
 
     @Override
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
+
         if (operator.equals("=="))
             return new BoolLiteral(left.interpret(contextNode, additionalContext)
                 .equals(right.interpret(contextNode, additionalContext)));
 
-        return new BoolLiteral(left.interpret(contextNode, additionalContext)
+        return new BoolLiteral(!left.interpret(contextNode, additionalContext)
                 .equals(right.interpret(contextNode, additionalContext)));
     }
 }
