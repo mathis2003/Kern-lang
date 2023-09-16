@@ -1,5 +1,6 @@
 package com.example.kernlang.compiler.parser.expressions;
 
+import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
  */
 public class RecordAccess implements ASTNode {
 
-    ASTNode rootRecord;
+    public ASTNode rootRecord;
     ArrayList<String> fieldnames = new ArrayList<>();
 
 
@@ -100,7 +101,36 @@ public class RecordAccess implements ASTNode {
 
     @Override
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
-        return null;
+        RecordLiteral currentRecord = (RecordLiteral) rootRecord.interpret(contextNode, additionalContext);
+        // all fieldnames up until the last one indicate a recordliteral
+        for (int i = 0; i < fieldnames.size() - 1;i++) {
+            currentRecord = (RecordLiteral) currentRecord.getField(fieldnames.get(i));
+            if (currentRecord == null) return null;
+        }
+        return currentRecord.getField(fieldnames.get(fieldnames.size()-1));
+    }
+
+    public void assignValue(ASTNode value, GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
+        /*if (rootRecord instanceof IdentifierExpr) {
+            String ident = ((IdentifierExpr) rootRecord).getIdentifier();
+            for (GraphEdge edge : contextNode.getImports()) {
+                if (edge.getEndNode().name.equals(ident)) {
+                    // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
+                    rootRecord = edge.getEndNode().getAST();
+                }
+            }
+        }*/
+
+
+        RecordLiteral currentRecord = (RecordLiteral) rootRecord.interpret(contextNode, additionalContext);
+        /*if (rootRecord instanceof IdentifierExpr) currentRecord = (RecordLiteral) rootRecord.interpret(contextNode, additionalContext);
+        else currentRecord = (RecordLiteral) rootRecord;*/
+        // all fieldnames up until the last one indicate a recordliteral
+        for (int i = 0; i < fieldnames.size() - 1;i++) {
+            currentRecord = (RecordLiteral) currentRecord.getField(fieldnames.get(i));
+            if (currentRecord == null) return;
+        }
+        currentRecord.setField(fieldnames.get(fieldnames.size()-1), value);
     }
 
     private boolean isAlpha(char c) {

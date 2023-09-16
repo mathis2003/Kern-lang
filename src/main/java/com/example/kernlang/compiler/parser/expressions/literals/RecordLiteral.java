@@ -64,6 +64,22 @@ public class RecordLiteral implements ASTNode {
         return this;
     }
 
+    public ASTNode getField(String fieldName) {
+        for (RecordField field : this.recordFields) {
+            if (field.identifier.equals(fieldName)) return field.expr;
+        }
+        return null;
+    }
+
+    public void setField(String fieldName, ASTNode value) {
+        for (RecordField field : this.recordFields) {
+            if (field.identifier.equals(fieldName)) {
+                field.expr = value;
+                break;
+            }
+        }
+    }
+
     public void addRecordField(String identifier, Literal expr) {
         this.recordFields.add(new RecordField(identifier, expr));
     }
