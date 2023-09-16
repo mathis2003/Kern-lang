@@ -1,44 +1,89 @@
 package com.example.kernlang.compiler.parser.expressions.literals;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.parser.expressions.Literal;
-import com.example.kernlang.compiler.ast_visitors.ExprVisitor;
-import com.example.kernlang.compiler.parser.expressions.Expr;
-import com.example.kernlang.compiler.parser.statements.Stmt;
+import com.example.kernlang.compiler.parser.ASTNode;
+import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
+import com.example.kernlang.compiler.parser.statements.Statement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
-public class FunctionLiteral implements Expr, Literal {
-    private final ArrayList<Stmt> statements = new ArrayList<>();
+public class FunctionLiteral implements ASTNode {
+    private final ArrayList<Statement> statements = new ArrayList<>();
     private final ArrayList<String> paramIdentifiers = new ArrayList<>();
-    private final GraphNode functionContext;
+    private GraphNode functionContext = null;
 
-    public FunctionLiteral(GraphNode functionContext) {
-        this.functionContext = functionContext;
+    @Override
+    public String toString(String indent) {
+        String result = "\n" + indent + "function:\n" +
+                indent + "\t" + "parameters:";
+
+        for (String param : paramIdentifiers) result += indent + "\n\t" + param;
+
+        result += indent + "\n\t" + "statements:";
+
+        for (Statement statement : statements) result += statement.toString(indent + "\t");
+
+        return result;
+
+    }
+
+    public FunctionLiteral() {}
+
+    @Override
+    public ParseResult parse(String input) {
+        String input2 = input.stripLeading();
+        if (input2.startsWith("\\")) {
+            input2 = input2.substring(1).stripLeading();
+            if (!input2.startsWith("->")) {
+                ParseResult parseArgResult = new IdentifierExpr().parse(input2);
+                if (parseArgResult.syntaxNode().isPresent()) {
+                    paramIdentifiers.add(((IdentifierExpr)parseArgResult.syntaxNode().get()).getIdentifier());
+                    input2 = parseArgResult.leftOverString().stripLeading();
+                } else {
+                    return new ParseResult(Optional.empty(), input, "failed to parse function literal");
+                }
+                while(input2.startsWith(",")) {
+                    input2 = input2.substring(1).stripLeading();
+                    parseArgResult = new IdentifierExpr().parse(input2);
+                    if (parseArgResult.syntaxNode().isPresent()) {
+                        paramIdentifiers.add(((IdentifierExpr)parseArgResult.syntaxNode().get()).getIdentifier());
+                        input2 = parseArgResult.leftOverString().stripLeading();
+                    } else {
+                        return new ParseResult(Optional.empty(), input, "failed to parse function literal");
+                    }
+                }
+            }
+            if (input2.startsWith("->")) {
+                input2 = input2.substring(2).stripLeading();
+                if (input2.startsWith("{")) {
+                    input2 = input2.substring(1);
+                    while (!input2.startsWith("}")) {
+                        ParseResult parseStmtRes = new Statement().parse(input2);
+                        if (parseStmtRes.syntaxNode().isPresent()) {
+                            statements.add((Statement)parseStmtRes.syntaxNode().get());
+                            input2 = parseStmtRes.leftOverString().stripLeading();
+                        } else return new ParseResult(Optional.empty(), input, "failed to parse function literal");
+                    }
+                    input2 = input2.substring(1).stripLeading();
+                    return new ParseResult(Optional.of(this), input2, "");
+                }
+            }
+        }
+        return new ParseResult(Optional.empty(), input, "failed to parse function literal");
     }
 
     @Override
-    public <R> R accept(ExprVisitor<R> visitor) {
-        return visitor.visitFunctionLiteral(this);
-    }
-
-    @Override
-    public Literal interpret(GraphNode context, HashMap<String, Literal> additionalContext) {
+    public ASTNode interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
+        if (functionContext == null) functionContext = context;
         return this;
-    }
-
-    public void addParameter(String paramIdentifier) {
-        paramIdentifiers.add(paramIdentifier);
     }
 
     public ArrayList<String> getParamIdentifiers() { return paramIdentifiers; }
 
-    public void addStmt(Stmt stmt) {
-        statements.add(stmt);
-    }
-
-    public ArrayList<Stmt> getStatements() {
+    public ArrayList<Statement> getStatements() {
         return statements;
     }
 

@@ -1,10 +1,9 @@
 package com.example.kernlang.compiler;
 
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
-import com.example.kernlang.compiler.parser.expressions.Literal;
-import com.example.kernlang.compiler.lexer.Lexer;
-import com.example.kernlang.compiler.lexer.Token;
-import com.example.kernlang.compiler.parser.Parser;
+import com.example.kernlang.compiler.parser.ASTNode;
+import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.expressions.Expr;
 
 import java.util.ArrayList;
 
@@ -14,10 +13,18 @@ public class Compiler {
 
         for (GraphNode node : nodes) {
             try {
-                ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode(errors);
+                //ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode(errors);
 
-                Literal astExpr = new Parser(tokens, node).parseLiteral();
-                node.setAstExpr(astExpr);
+                if (node.getCodeString().strip().equals("")) continue;
+
+                ParseResult res = new Expr().parse(node.getCodeString());// = //new Parser(tokens, node).parseLiteral();
+                if (res.syntaxNode().isPresent()) {
+                    ASTNode astExpr = res.syntaxNode().get();
+                    node.setAstExpr(astExpr);
+                } else {
+                    errors.add(res.optionalErrMsg());
+                }
+
             } catch (ParseError parseError) {
                 errors.add(parseError.toString());
             }
