@@ -1,10 +1,7 @@
 package com.example.kernlang.compiler.parser.expressions;
 
 import com.example.kernlang.compiler.parser.ASTNode;
-import com.example.kernlang.compiler.parser.expressions.literals.CharLiteral;
-import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
-import com.example.kernlang.compiler.parser.expressions.literals.NumberLiteral;
-import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +19,8 @@ public class Literal extends ExtendibleASTNode {
                         CharLiteral::new,
                         FunctionLiteral::new,
                         NumberLiteral::new,
-                        RecordLiteral::new
+                        RecordLiteral::new,
+                        ArrayLiteral::new
                 )),
                 "failed to parse Factor"
         );

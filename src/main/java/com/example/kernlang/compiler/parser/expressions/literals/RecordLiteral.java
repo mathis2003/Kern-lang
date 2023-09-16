@@ -55,7 +55,7 @@ public class RecordLiteral implements ASTNode {
 
             }
             input = input.substring(1).stripLeading();
-        }
+        } else return new ParseResult(Optional.empty(), originalInput, "failed to parse record literal");
         return new ParseResult(Optional.of(this), input, "");
     }
 
