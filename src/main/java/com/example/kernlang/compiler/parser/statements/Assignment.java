@@ -4,9 +4,9 @@ import com.example.kernlang.codebase_viewer.graph.GraphEdge;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.expressions.ArrayAccess;
 import com.example.kernlang.compiler.parser.expressions.Expr;
 import com.example.kernlang.compiler.parser.expressions.RecordAccess;
-import com.example.kernlang.compiler.parser.expressions.literals.RecordLiteral;
 import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
 import com.example.kernlang.compiler.parser.expressions.literals.UnitLiteral;
 
@@ -50,10 +50,10 @@ public class Assignment implements ASTNode {
                 }
             }
         } else {
-            ParseResult identParseRes = new IdentifierExpr().parse(input2);
-            if (identParseRes.syntaxNode().isPresent()) {
-                assignedObj = identParseRes.syntaxNode().get();
-                input2 = identParseRes.leftOverString().stripLeading();
+            ParseResult arrayParseRes = new ArrayAccess().parse(input2);
+            if (arrayParseRes.syntaxNode().isPresent()) {
+                assignedObj = arrayParseRes.syntaxNode().get();
+                input2 = arrayParseRes.leftOverString().stripLeading();
                 if (input2.startsWith("<-")) {
                     input2 = input2.substring(2).stripLeading();
                     ParseResult exprParseRes = new Expr().parse(input2);
@@ -61,6 +61,21 @@ public class Assignment implements ASTNode {
                         expr = exprParseRes.syntaxNode().get();
                         input2 = exprParseRes.leftOverString().stripLeading();
                         return new ParseResult(Optional.of(this), input2, "");
+                    }
+                }
+            } else {
+                ParseResult identParseRes = new IdentifierExpr().parse(input2);
+                if (identParseRes.syntaxNode().isPresent()) {
+                    assignedObj = identParseRes.syntaxNode().get();
+                    input2 = identParseRes.leftOverString().stripLeading();
+                    if (input2.startsWith("<-")) {
+                        input2 = input2.substring(2).stripLeading();
+                        ParseResult exprParseRes = new Expr().parse(input2);
+                        if (exprParseRes.syntaxNode().isPresent()) {
+                            expr = exprParseRes.syntaxNode().get();
+                            input2 = exprParseRes.leftOverString().stripLeading();
+                            return new ParseResult(Optional.of(this), input2, "");
+                        }
                     }
                 }
             }
@@ -86,6 +101,11 @@ public class Assignment implements ASTNode {
             // thus, we're not changing the ASTNode of a GraphNode for a new one
             // we're making an update to the ASTNode's content
             recordAccess.assignValue(expr.interpret(contextNode, additionalContext), contextNode, additionalContext);
+        } else if (assignedObj instanceof ArrayAccess arrayAccess) {
+            // this means that we assign to a record field
+            // thus, we're not changing the ASTNode of a GraphNode for a new one
+            // we're making an update to the ASTNode's content
+            arrayAccess.assignValue(expr.interpret(contextNode, additionalContext), contextNode, additionalContext);
         }
 
         return new UnitLiteral();

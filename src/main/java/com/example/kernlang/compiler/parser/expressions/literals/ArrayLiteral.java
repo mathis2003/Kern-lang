@@ -15,7 +15,7 @@ public class ArrayLiteral implements ASTNode {
 
     @Override
     public String toString(String indent) {
-        return elements
+        return indent + "array:\n" + elements
                 .stream()
                 .map(el -> el == null ? indent + "\tnull" : el.toString(indent + "\t"))
                 .collect(Collectors.joining("\n"));
@@ -49,5 +49,13 @@ public class ArrayLiteral implements ASTNode {
     @Override
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         return this;
+    }
+
+    public ASTNode getElement(NumberLiteral idx) {
+        return elements.get(idx.getNumber().intValue());
+    }
+
+    public void setElement(NumberLiteral idx, ASTNode value) {
+        elements.set(idx.getNumber().intValue(), value);
     }
 }

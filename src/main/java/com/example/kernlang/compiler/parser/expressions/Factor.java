@@ -11,6 +11,7 @@ public class Factor extends ExtendibleASTNode {
                 new ArrayList<>(Arrays.asList(
                         UnaryExpr::new,
                         RecordAccess::new,
+                        ArrayAccess::new,
                         IfExpr::new,
                         FunctionCall::new,
                         ParenExpr::new,
