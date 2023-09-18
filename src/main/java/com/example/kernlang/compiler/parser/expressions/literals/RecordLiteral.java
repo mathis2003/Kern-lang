@@ -61,6 +61,9 @@ public class RecordLiteral implements ASTNode {
 
     @Override
     public ASTNode interpret(GraphNode context, HashMap<String, ASTNode> additionalContext) {
+        for (RecordField field : recordFields) {
+            field.expr = field.expr.interpret(context, additionalContext);
+        }
         return this;
     }
 

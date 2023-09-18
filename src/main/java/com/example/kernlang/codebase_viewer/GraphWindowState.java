@@ -8,6 +8,7 @@ import com.example.kernlang.codebase_viewer.graph.Types;
 import com.example.kernlang.compiler.Compiler;
 import com.example.kernlang.db.EdgeData;
 import com.example.kernlang.db.NodeData;
+import com.example.kernlang.operating_system.OS;
 import javafx.beans.InvalidationListener;
 
 import java.util.ArrayList;
@@ -46,11 +47,18 @@ public class GraphWindowState {
     public final CodebaseViewer cbv;
     private final TextEditor textEditor;
 
+    private final OS os;
+
     public GraphWindowState(CodebaseViewer cbv, TextEditor textEditor) {
         this.listeners = new ArrayList<>();
         this.graphNodes = new ArrayList<>();
         this.cbv = cbv;
         this.textEditor = textEditor;
+        this.os = new OS();
+    }
+
+    public void addProcess(GraphNode n) {
+        os.addNewProcess(n);
     }
 
     public void setTextEditorNode(GraphNode node) {

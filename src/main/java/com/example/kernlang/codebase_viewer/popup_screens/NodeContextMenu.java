@@ -35,7 +35,12 @@ public class NodeContextMenu extends ContextMenu {
             node.runNode();
         });
 
-        getItems().addAll(move, importFreeMenuItem, viewCode, viewAST, runCode);
+        MenuItem runApp = new MenuItem("Run App");
+        runApp.setOnAction(e -> {
+            gws.addProcess(node);
+        });
+
+        getItems().addAll(move, importFreeMenuItem, viewCode, viewAST, runCode, runApp);
         if (node.isCollapsed()) {
             MenuItem openCluster = new MenuItem("Open Cluster");
             openCluster.setOnAction(e -> node.openSubClusters(node));
