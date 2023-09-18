@@ -62,4 +62,10 @@ public class UnaryExpr implements ASTNode {
     public ASTNode getExpr() {
         return expr;
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

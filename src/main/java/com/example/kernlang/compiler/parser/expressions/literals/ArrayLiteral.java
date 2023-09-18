@@ -22,6 +22,23 @@ public class ArrayLiteral implements ASTNode {
     }
 
     @Override
+    public ASTNode deepcopy() {
+        ArrayLiteral result = new ArrayLiteral();
+        for (ASTNode element : elements) {
+            result.addElement(element.deepcopy());
+        }
+        return result;
+    }
+
+    public ArrayList<ASTNode> getElements() {
+        return elements;
+    }
+
+    public void addElement(ASTNode el) {
+        elements.add(el);
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String originalInput = input;
         input = input.stripLeading();

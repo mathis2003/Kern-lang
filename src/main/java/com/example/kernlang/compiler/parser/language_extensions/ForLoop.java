@@ -61,4 +61,10 @@ public class ForLoop implements ASTNode {
         }
         return new UnitLiteral();
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // no one's gonna make a copy of this
+        return this;
+    }
 }

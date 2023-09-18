@@ -15,6 +15,13 @@ public class BoolLiteral implements ASTNode {
         return "\n" + indent + literal;
     }
 
+    @Override
+    public ASTNode deepcopy() {
+        BoolLiteral result = new BoolLiteral();
+        result.literal = literal.booleanValue();
+        return result;
+    }
+
     public BoolLiteral() {}
 
     public BoolLiteral(Boolean literal) {

@@ -11,9 +11,20 @@ public class CharLiteral implements ASTNode {
 
     Character literal;
 
+    public void setLiteral(Character c) {
+        literal = c;
+    }
+
     @Override
     public String toString(String indent) {
         return "\n" + indent + "'" + literal + "'";
+    }
+
+    @Override
+    public ASTNode deepcopy() {
+        CharLiteral result = new CharLiteral();
+        result.literal = literal.charValue();
+        return result;
     }
 
 
@@ -25,7 +36,7 @@ public class CharLiteral implements ASTNode {
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         if (input2.startsWith("'")) {
-            literal = input.charAt(1);
+            literal = input2.charAt(1);
             input2 = input2.substring(2);
             if (input2.startsWith(("'"))) {
                 input2 = input2.substring(1).stripLeading();

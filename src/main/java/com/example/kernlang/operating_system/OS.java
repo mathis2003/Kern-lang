@@ -20,6 +20,8 @@ public class OS {
         ASTNode startData = appRecord.getField("start_data");
         FunctionLiteral update = (FunctionLiteral) appRecord.getField("update");
         FunctionLiteral render = (FunctionLiteral) appRecord.getField("render");
-        processes.add(new KernProcess(startData, update, render, g.getName()));
+        FunctionLiteral terminal = (FunctionLiteral) appRecord.getField("terminal");
+        //processes.add(new KernProcess(startData, update, render, terminal, g));
+        processes.add(new KernProcess(startData, update, null, terminal, g));
     }
 }

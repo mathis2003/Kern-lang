@@ -24,6 +24,13 @@ public class RecordLiteral implements ASTNode {
     }
 
     @Override
+    public ASTNode deepcopy() {
+        RecordLiteral result = new RecordLiteral();
+        for (RecordField f : recordFields) result.addRecordField(f);
+        return result;
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String originalInput = input;
         input = input.stripLeading();
@@ -87,6 +94,10 @@ public class RecordLiteral implements ASTNode {
         this.recordFields.add(new RecordField(identifier, expr));
     }
 
+    public void addRecordField(RecordField f) {
+        this.recordFields.add(f);
+    }
+
     public ArrayList<RecordField> getRecordFields() {
         return recordFields;
     }
@@ -94,6 +105,10 @@ public class RecordLiteral implements ASTNode {
     public static class RecordField {
         private final String identifier;
         private ASTNode expr;
+
+        public RecordField deepcopy() {
+            return new RecordField(identifier, expr.deepcopy());
+        }
 
         public RecordField(String identifier, ASTNode expr) {
             this.identifier = identifier;

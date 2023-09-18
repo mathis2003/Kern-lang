@@ -42,4 +42,10 @@ public class ReturnStmt implements ASTNode {
         // note: the expressions in the function literal, are to be evaluated in that function's context
         return returnExpr.interpret(contextNode, additionalContext);
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // no one's gonna make a copy of this
+        return this;
+    }
 }

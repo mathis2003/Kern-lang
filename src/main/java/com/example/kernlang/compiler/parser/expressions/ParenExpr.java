@@ -34,4 +34,10 @@ public class ParenExpr implements ASTNode {
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         return expr.interpret(contextNode, additionalContext);
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

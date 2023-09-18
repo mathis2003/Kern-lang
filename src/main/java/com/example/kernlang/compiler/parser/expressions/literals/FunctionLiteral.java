@@ -4,10 +4,12 @@ import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.IdentifierExpr;
+import com.example.kernlang.compiler.parser.statements.ReturnStmt;
 import com.example.kernlang.compiler.parser.statements.Statement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class FunctionLiteral implements ASTNode {
@@ -28,6 +30,13 @@ public class FunctionLiteral implements ASTNode {
 
         return result;
 
+    }
+
+    @Override
+    public ASTNode deepcopy() {
+        // i know it isn't a deep copy but should be fine for now
+        // (don't wanna copy the context and such yet)
+        return this;
     }
 
     public FunctionLiteral() {}
@@ -89,5 +98,21 @@ public class FunctionLiteral implements ASTNode {
 
     public GraphNode getFunctionContext() {
         return functionContext;
+    }
+
+    public ASTNode callWithArgs(HashMap<String, ASTNode> additionalContext) {
+        // getting the actual function literal
+        FunctionLiteral fLit = this;
+
+        // statements
+        for (Statement stmt : fLit.getStatements()) {
+            if (stmt.getStatement() instanceof ReturnStmt) {
+                // note: the expressions in the function literal, are to be evaluated in that function's context
+                return stmt.interpret(fLit.getFunctionContext(), additionalContext);
+            } else {
+                stmt.interpret(fLit.getFunctionContext(), additionalContext);
+            }
+        }
+        return new UnitLiteral();
     }
 }

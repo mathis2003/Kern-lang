@@ -26,6 +26,13 @@ public class NumberLiteral implements ASTNode {
     }
 
     @Override
+    public ASTNode deepcopy() {
+        NumberLiteral result = new NumberLiteral();
+        result.number = number.doubleValue();
+        return result;
+    }
+
+    @Override
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         number = 0.0;

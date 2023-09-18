@@ -53,4 +53,10 @@ public class Comparison implements ASTNode {
                 ((NumberLiteral)left.interpret(contextNode, additionalContext)).getNumber() <
                         ((NumberLiteral)right.interpret(contextNode, additionalContext)).getNumber());
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

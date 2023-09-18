@@ -41,6 +41,11 @@ public abstract class ExtendibleASTNode implements ASTNode {
         }
         return new ParseResult(Optional.empty(), input, parseErrorString);
     }
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 
     @Override
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {

@@ -93,21 +93,27 @@ public class Assignment implements ASTNode {
             for (GraphEdge edge : contextNode.getImports()) {
                 if (edge.getEndNode().name.equals(ident)) {
                     // note: the expressions in the function literal, are to be evaluated in that function's (callee's) context
-                    edge.getEndNode().setAstExpr(expr.interpret(contextNode, additionalContext));
+                    edge.getEndNode().setAstExpr(expr.interpret(contextNode, additionalContext).deepcopy());
                 }
             }
         } else if (assignedObj instanceof RecordAccess recordAccess) {
             // this means that we assign to a record field
             // thus, we're not changing the ASTNode of a GraphNode for a new one
             // we're making an update to the ASTNode's content
-            recordAccess.assignValue(expr.interpret(contextNode, additionalContext), contextNode, additionalContext);
+            recordAccess.assignValue(expr.interpret(contextNode, additionalContext).deepcopy(), contextNode, additionalContext);
         } else if (assignedObj instanceof ArrayAccess arrayAccess) {
             // this means that we assign to a record field
             // thus, we're not changing the ASTNode of a GraphNode for a new one
             // we're making an update to the ASTNode's content
-            arrayAccess.assignValue(expr.interpret(contextNode, additionalContext), contextNode, additionalContext);
+            arrayAccess.assignValue(expr.interpret(contextNode, additionalContext).deepcopy(), contextNode, additionalContext);
         }
 
         return new UnitLiteral();
+    }
+
+    @Override
+    public ASTNode deepcopy() {
+        // no one's gonna make a copy of this
+        return this;
     }
 }

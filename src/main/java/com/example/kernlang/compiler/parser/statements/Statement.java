@@ -58,4 +58,10 @@ public class Statement implements ASTNode {
     public String toString(String indent) {
         return "\n\t" + indent + "statement" + expr.toString(indent + "\t");
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // no one's gonna make a copy of this
+        return this;
+    }
 }

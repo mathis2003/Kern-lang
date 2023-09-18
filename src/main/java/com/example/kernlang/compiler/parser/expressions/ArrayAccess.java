@@ -65,4 +65,10 @@ public class ArrayAccess implements ASTNode {
 
         arrayLit.setElement((NumberLiteral) this.indexExpr.interpret(contextNode, additionalContext), value);
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

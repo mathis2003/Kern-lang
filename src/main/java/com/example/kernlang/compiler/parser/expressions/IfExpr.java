@@ -64,4 +64,10 @@ public class IfExpr implements ASTNode {
             return falseCaseExpr.interpret(context, additionalContext);
         }
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

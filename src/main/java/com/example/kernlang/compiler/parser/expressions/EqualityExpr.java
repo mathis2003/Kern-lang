@@ -50,4 +50,10 @@ public class EqualityExpr implements ASTNode {
         return new BoolLiteral(!left.interpret(contextNode, additionalContext)
                 .equals(right.interpret(contextNode, additionalContext)));
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

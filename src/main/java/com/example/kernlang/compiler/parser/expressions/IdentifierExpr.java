@@ -66,4 +66,10 @@ public class IdentifierExpr implements ASTNode {
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
 }

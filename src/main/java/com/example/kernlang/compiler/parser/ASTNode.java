@@ -9,6 +9,8 @@ public interface ASTNode {
 
     public String toString(String indent);
 
+    public ASTNode deepcopy();
+
     ParseResult parse(String input);
 
     ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext);

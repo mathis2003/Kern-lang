@@ -20,6 +20,12 @@ public class AddSub implements ASTNode {
                 "\n" + right.toString(indent + "\t");
     }
 
+    @Override
+    public ASTNode deepcopy() {
+        // why on earth would anyone make copies of unevaluated expressions
+        return this;
+    }
+
     public char getOperator() {
         return operator;
     }

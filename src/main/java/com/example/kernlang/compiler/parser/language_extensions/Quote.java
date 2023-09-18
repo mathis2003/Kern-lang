@@ -37,4 +37,10 @@ public class Quote implements ASTNode {
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         return quotedExpr;
     }
+
+    @Override
+    public ASTNode deepcopy() {
+        // no one's gonna make a copy of this
+        return this;
+    }
 }
