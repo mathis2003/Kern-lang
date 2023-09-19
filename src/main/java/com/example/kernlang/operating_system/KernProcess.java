@@ -5,6 +5,7 @@ import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.expressions.literals.ArrayLiteral;
 import com.example.kernlang.compiler.parser.expressions.literals.CharLiteral;
 import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
+import com.example.kernlang.compiler.parser.expressions.literals.NumberLiteral;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -60,6 +61,7 @@ public class KernProcess extends Stage {
 
         // Start a new thread for your while loop
         Thread loopThread = new Thread(() -> {
+            long startTime = System.currentTimeMillis();
             StringBuilder s = new StringBuilder();
             while (!Thread.currentThread().isInterrupted()) {
                 StringBuilder currentS = new StringBuilder(s);
@@ -79,6 +81,9 @@ public class KernProcess extends Stage {
                 HashMap<String, ASTNode> args = new HashMap<>();
                 args.put("app_data", processData);
                 args.put("input_key", inputKey);
+                long time = System.currentTimeMillis() - startTime;
+                NumberLiteral timeArg = new NumberLiteral((double) time);
+                args.put("time", timeArg);
                 processData = update.callWithArgs(args);
 
                 // Update the label's text on the JavaFX application thread
@@ -108,7 +113,7 @@ public class KernProcess extends Stage {
 
                 // Optionally add a sleep to control the loop speed
                 try {
-                    Thread.sleep(10); // Sleep for 1 second
+                    Thread.sleep(5); // Sleep for 1 second
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt(); // Restore interrupted status
                 }
