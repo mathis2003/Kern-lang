@@ -65,6 +65,27 @@ public class GraphWindowState {
         textEditor.setCurrentNode(node);
     }
 
+    public void deleteNode(GraphNode node) {
+        ArrayList<GraphEdge> imports = node.getImports();
+        for (int i = 0; i < imports.size(); i++) {
+            GraphEdge e = imports.get(i);
+            e.getEndNode().getExports().remove(e);
+            node.getImports().remove(e);
+            cbv.getChildren().remove(e);
+            cbv.getChildren().remove(e.getArrowHead());
+        }
+        ArrayList<GraphEdge> exports = node.getExports();
+        for (int i = 0; i < exports.size(); i++) {
+            GraphEdge e = exports.get(i);
+            e.getStartNode().getImports().remove(e);
+            node.getExports().remove(e);
+            cbv.getChildren().remove(e);
+            cbv.getChildren().remove(e.getArrowHead());
+        }
+        cbv.getChildren().remove(node);
+        this.graphNodes.remove(node);
+    }
+
     public void setStateDraggingNode(GraphNode node) {
         draggedNode = node;
         this.state = State.DRAGGING_NODE;
@@ -79,6 +100,7 @@ public class GraphWindowState {
 
         ArrowHead arrowHead = new ArrowHead(importLine);
         this.cbv.getChildren().add(arrowHead);
+        importLine.setArrowHead(arrowHead);
     }
 
     public void addEdge() {
@@ -153,6 +175,7 @@ public class GraphWindowState {
         this.cbv.getChildren().add(e);
         ArrowHead arrowHead = new ArrowHead(e);
         this.cbv.getChildren().add(arrowHead);
+        e.setArrowHead(arrowHead);
     }
 
     public void addNodeFromDB(NodeData nodeData) {

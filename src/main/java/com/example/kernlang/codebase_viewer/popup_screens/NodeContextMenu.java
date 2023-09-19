@@ -40,7 +40,12 @@ public class NodeContextMenu extends ContextMenu {
             gws.addProcess(node);
         });
 
-        getItems().addAll(move, importFreeMenuItem, viewCode, viewAST, runCode, runApp);
+        MenuItem delete = new MenuItem("Delete");
+        delete.setOnAction(e -> {
+            new DeletePopup(gws, node);
+        });
+
+        getItems().addAll(move, importFreeMenuItem, viewCode, viewAST, runCode, runApp, delete);
         if (node.isCollapsed()) {
             MenuItem openCluster = new MenuItem("Open Cluster");
             openCluster.setOnAction(e -> node.openSubClusters(node));

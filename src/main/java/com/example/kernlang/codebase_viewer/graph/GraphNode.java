@@ -149,6 +149,10 @@ public class GraphNode extends Pane {
         return this.imports;
     }
 
+    public ArrayList<GraphEdge> getExports() {
+        return this.exports;
+    }
+
     public void collapseSubClusters(GraphNode mainNode) {
         if (this == mainNode) {
             collapsed = true;

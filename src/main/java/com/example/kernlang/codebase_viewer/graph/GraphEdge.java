@@ -11,6 +11,8 @@ public class GraphEdge extends Line {
     private final GraphNode startNode;
     private GraphNode endNode;
 
+    private ArrowHead arrowHead;
+
     private final static int ARROW_HEAD_RADIUS = 5;
 
     /**
@@ -33,6 +35,14 @@ public class GraphEdge extends Line {
         if (isBound) {
             setStroke(Color.GREEN);
         }
+    }
+
+    public ArrowHead getArrowHead() {
+        return this.arrowHead;
+    }
+
+    public void setArrowHead(ArrowHead arrowHead) {
+        this.arrowHead = arrowHead;
     }
 
     public void setEndNode(GraphNode endNode) {
