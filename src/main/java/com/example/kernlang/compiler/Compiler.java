@@ -15,6 +15,7 @@ public class Compiler {
             try {
                 //ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode(errors);
 
+                if (node == null) continue;
                 if (node.getCodeString().strip().equals("")) continue;
 
                 ParseResult res = new Expr().parse(node.getCodeString());// = //new Parser(tokens, node).parseLiteral();
