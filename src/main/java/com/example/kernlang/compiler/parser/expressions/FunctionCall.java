@@ -91,12 +91,14 @@ public class FunctionCall implements ASTNode {
     public ASTNode interpret(GraphNode contextNode, HashMap<String, ASTNode> additionalContext) {
         // getting the actual function literal
         FunctionLiteral fLit = null;
-        if (functionExpr instanceof FunctionLiteral) {
+        /*if (functionExpr instanceof FunctionLiteral) {
             fLit = (FunctionLiteral) functionExpr;
         } else {
             // for instance, the functionExpr is actually a composition of functions, or an identifier of a function
-            fLit = (FunctionLiteral) functionExpr.interpret(contextNode, additionalContext);
-        }
+
+        }*/
+
+        fLit = (FunctionLiteral) functionExpr.interpret(contextNode, additionalContext);
 
         HashMap<String, ASTNode> argumentsHm = new HashMap<>();
         // evaluating the args given with the function call
