@@ -36,8 +36,18 @@ public class CharLiteral implements ASTNode {
     public ParseResult parse(String input) {
         String input2 = input.stripLeading();
         if (input2.startsWith("'")) {
-            literal = input2.charAt(1);
-            input2 = input2.substring(2);
+            input2 = input2.substring(1);
+            if (input2.startsWith("\\")) {
+                input2 = input2.substring(1);
+                if (input2.startsWith("n")) this.literal = '\n';
+                else if (input2.startsWith("t")) this.literal = '\t';
+                else if (input2.startsWith("\\")) this.literal = '\\';
+                else return new ParseResult(Optional.empty(), input, "failed to parse char literal");
+            } else {
+                literal = input2.charAt(0);
+            }
+            input2 = input2.substring(1);
+
             if (input2.startsWith(("'"))) {
                 input2 = input2.substring(1).stripLeading();
                 return new ParseResult(Optional.of(this), input2, "");

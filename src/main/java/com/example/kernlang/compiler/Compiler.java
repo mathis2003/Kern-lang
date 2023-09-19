@@ -22,11 +22,11 @@ public class Compiler {
                     ASTNode astExpr = res.syntaxNode().get();
                     node.setAstExpr(astExpr);
                 } else {
-                    errors.add(res.optionalErrMsg());
+                    errors.add("node " + node.getName() + " : " + res.optionalErrMsg());
                 }
 
             } catch (ParseError parseError) {
-                errors.add(parseError.toString());
+                errors.add("node " + node.getName() + " : " + parseError.toString());
             }
         }
 
