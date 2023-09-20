@@ -15,13 +15,13 @@ public class Compiler {
             try {
                 //ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode(errors);
 
-                if (node == null) continue;
-                if (node.getCodeString().strip().equals("")) continue;
+                if (node == null || node.isCompiled() || node.getCodeString().strip().equals("")) continue;
 
                 ParseResult res = new Expr().parse(node.getCodeString());// = //new Parser(tokens, node).parseLiteral();
                 if (res.syntaxNode().isPresent()) {
                     ASTNode astExpr = res.syntaxNode().get();
                     node.setAstExpr(astExpr);
+                    node.setCompiled();
                 } else {
                     errors.add("node " + node.getName() + " : " + res.optionalErrMsg());
                 }

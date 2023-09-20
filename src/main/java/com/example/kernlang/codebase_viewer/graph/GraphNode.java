@@ -36,6 +36,8 @@ public class GraphNode extends Pane {
     public boolean collapsable;
     public GraphNode collapser;
 
+    private boolean isCompiled = false;
+
     // These fields contain the edges of the imports, and the edges of the exports
     private final ArrayList<GraphEdge> imports;
     private final ArrayList<GraphEdge> exports;
@@ -87,6 +89,7 @@ public class GraphNode extends Pane {
 
     public void setCodeString(String codeString) {
         this.codeString = codeString;
+        this.isCompiled = false;
     }
 
     public String getCodeString() {
@@ -280,6 +283,14 @@ public class GraphNode extends Pane {
 
     public void setAstExpr(ASTNode astLiteralExpr) {
         this.astLiteralExpr = astLiteralExpr;
+    }
+
+    public void setCompiled() {
+        this.isCompiled = true;
+    }
+
+    public boolean isCompiled() {
+        return isCompiled;
     }
 
     public ASTNode getAST() {
