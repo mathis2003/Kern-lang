@@ -1,7 +1,6 @@
-package com.example.kernlang.codebase_viewer.popup_screens;
+package com.example.kernlang;
 
-import com.example.kernlang.codebase_viewer.GraphWindowState;
-import com.example.kernlang.codebase_viewer.graph.GraphNode;
+import com.example.kernlang.codebase_viewer.CodebaseViewer;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,16 +8,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-
-public class DeletePopup extends Stage {
-    public DeletePopup(GraphWindowState gws, GraphNode node) {
+public class ClearPopup extends Stage {
+    public ClearPopup(CodebaseViewer cbv) {
         super();
 
-        Label label = new Label("Are you sure you want to delete node: " + node.getName() + "?");
+        Label label = new Label("Are you sure you want to remove all nodes?");
 
         Button yesButton = new Button("yes");
         yesButton.setOnAction(e -> {
-            gws.deleteNode(node);
+            cbv.removeAllNodes();
             this.close();
         });
 

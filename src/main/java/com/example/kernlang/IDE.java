@@ -52,7 +52,10 @@ public class IDE extends BorderPane {
                     }
                 });
 
-                projectMenu.getItems().addAll(compileItem, openItem, exportItem);
+                MenuItem clearItem = new MenuItem("Clear");
+                clearItem.setOnAction(e -> new ClearPopup(codebaseViewer));
+
+                projectMenu.getItems().addAll(compileItem, openItem, exportItem, clearItem);
             }
 
             // statistics menu

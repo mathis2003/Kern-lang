@@ -74,6 +74,10 @@ public class CodebaseViewer extends Pane {
         return graphWindowState;
     }
 
+    public void removeAllNodes() {
+        graphWindowState.removeAllNodes();
+    }
+
     public void compileNodes() {
         graphWindowState.compileNodes();
     }

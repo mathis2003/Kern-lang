@@ -91,6 +91,11 @@ public class GraphWindowState {
         this.state = State.DRAGGING_NODE;
     }
 
+    public void removeAllNodes() {
+        this.cbv.getChildren().clear();
+        this.graphNodes.clear();
+    }
+
     public void setStateDraggingEdge(GraphNode startNode, boolean isBound) {
         state = State.DRAGGING_EDGE;
         importLine = new GraphEdge(startNode, isBound);
