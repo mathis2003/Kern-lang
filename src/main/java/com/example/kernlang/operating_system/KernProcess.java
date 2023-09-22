@@ -43,7 +43,7 @@ public class KernProcess extends Stage {
         final Label label = new Label("this is to be replaced with the apps data");
         VBox container = new VBox(label);
 
-        Scene scene = new Scene(container);
+        Scene scene = new Scene(container, 600, 400);
 
         scene.setOnKeyPressed(event -> {
             String eventString = event.getText();
