@@ -3,6 +3,7 @@ package com.example.kernlang.compiler.parser.expressions;
 import com.example.kernlang.codebase_viewer.graph.GraphNode;
 import com.example.kernlang.compiler.parser.ASTNode;
 import com.example.kernlang.compiler.parser.ParseResult;
+import com.example.kernlang.compiler.parser.expressions.literals.NumberLiteral;
 import com.example.kernlang.compiler.parser.expressions.literals.UnitLiteral;
 import com.example.kernlang.compiler.parser.statements.ReturnStmt;
 import com.example.kernlang.compiler.parser.expressions.literals.FunctionLiteral;
@@ -98,6 +99,14 @@ public class FunctionCall implements ASTNode {
 
         }*/
 
+        if (functionExpr instanceof IdentifierExpr) {
+            if (((IdentifierExpr) functionExpr).getIdentifier().equals("mod")) {
+                NumberLiteral a = (NumberLiteral) args.get(0).interpret(contextNode, additionalContext);
+                NumberLiteral b = (NumberLiteral) args.get(1).interpret(contextNode, additionalContext);
+                int val = a.getNumber().intValue() % b.getNumber().intValue();
+                return new NumberLiteral(((Integer) val).doubleValue());
+            }
+        }
         fLit = (FunctionLiteral) functionExpr.interpret(contextNode, additionalContext);
 
         HashMap<String, ASTNode> argumentsHm = new HashMap<>();
