@@ -9,8 +9,5 @@
         <module name="kernlang" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="kernlang" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>
