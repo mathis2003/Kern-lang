@@ -6,10 +6,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class CompileErrorPopup extends Stage {
-    public CompileErrorPopup(ArrayList<String> errors) {
+    public CompileErrorPopup(List<String> errors) {
         final Button closeButton = new Button("close");
         closeButton.setOnAction(e -> this.close());
 

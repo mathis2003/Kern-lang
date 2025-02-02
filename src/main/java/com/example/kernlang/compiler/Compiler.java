@@ -6,38 +6,36 @@ import com.example.kernlang.compiler.parser.ParseResult;
 import com.example.kernlang.compiler.parser.expressions.Expr;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Compiler {
     public static void compile(ArrayList<GraphNode> nodes) {
-        ArrayList<String> errors = new ArrayList<>();
 
+        //CompileProgressWindow compileProgressWindow = new CompileProgressWindow();
+
+        List<String> errors = Collections.synchronizedList(new ArrayList<String>());
+        ArrayList<CompileThread> compileThreads = new ArrayList<>();
         for (GraphNode node : nodes) {
+            CompileThread t = new CompileThread(errors, node);
+            compileThreads.add(t);
+            t.start();
+        }
+
+        for (int i = 0; i < compileThreads.size(); i++) {
+            Thread t = compileThreads.get(i);
+            GraphNode node = nodes.get(i);
             try {
-                //ArrayList<Token> tokens = new Lexer(node.getCodeString(), node).lexCode(errors);
-
-                if (node == null || node.isCompiled() || node.getCodeString().strip().equals("")) continue;
-
-                ParseResult res = new Expr().parse(node.getCodeString());// = //new Parser(tokens, node).parseLiteral();
-                if (res.syntaxNode().isPresent()) {
-                    ASTNode astExpr = res.syntaxNode().get();
-                    node.setAstExpr(astExpr);
-                    node.setCompiled();
-                } else {
-                    errors.add("node " + node.getName() + " : " + res.optionalErrMsg());
-                }
-
-            } catch (ParseError parseError) {
-                errors.add("node " + node.getName() + " : " + parseError.toString());
+                t.join();
+            } catch (InterruptedException e) {
+                errors.add("node: " + node.getName() + " failed to compile");
             }
         }
 
-        if (errors.size() == 0) {
-            // show popup saying the compilation was successful
-        } else {
-            // show popup with errors
+        if (!errors.isEmpty()) {
             new CompileErrorPopup(errors);
         }
-
     }
 
 
