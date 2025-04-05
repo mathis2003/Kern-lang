@@ -12,6 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         Scene scene = new Scene(new IDE(), 1000, 600);
+        //scene.getRoot().setStyle("-fx-base:#000000");
         stage.setScene(scene);
         stage.show();
     }
